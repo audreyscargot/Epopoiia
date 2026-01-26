@@ -4,22 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "MyPlayerController.generated.h"
+#include "MainPlayerController.generated.h"
 
 class UInputMappingContext;
 
 UCLASS()
-class EPOPOIIA_API AMyPlayerController : public APlayerController
+class EPOPOIIA_API AMainPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
-public : 
-	AMyPlayerController();
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
+	UInputMappingContext* InputMappingContext;
 	
-	UPROPERTY(EditAnywhere, Category = "Input")
-	TArray<UInputMappingContext*> InputMapping;
-	
-protected:
 	virtual void SetupInputComponent() override;
-	
 };

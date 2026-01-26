@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-#include "MyPlayerController.h"
+#include "InteractInterface.h"
 #include "Epopoiia/Epopoiia.h"
 
 // Sets default values
@@ -31,17 +31,6 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	AMyPlayerController* PlayerController;
-	PlayerController = Cast<AMyPlayerController>(Controller);
-	if (PlayerController)
-	{
-		UEnhancedInputLocalPlayerSubsystem* charSubSystem;
-		charSubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-		if (charSubSystem)
-		{
-			charSubSystem->AddMappingContext(InputMappingContext, 0);
-		}
-	}
 }
 
 // Called every frame
@@ -55,10 +44,12 @@ void APlayerCharacter::Tick(float DeltaTime)
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-	
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
-	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
+	};
 	
 }
 
@@ -95,5 +86,40 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 		AddMovementInput(ForwardDirection, Forward);
 		AddMovementInput(RightDirection, Right);
 		
+	}
+}
+
+void APlayerCharacter::Interact()
+{
+	float InteractionDistance = 200.0f;
+	FVector PlayerLocation = GetActorLocation();
+	FVector PlayerForward = GetActorForwardVector();
+	
+	FVector TraceStart = PlayerLocation;
+	FVector TraceEnd = TraceStart + (PlayerForward * InteractionDistance);
+	
+	FHitResult HitResult;
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	
+	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, QueryParams);
+	
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, bHit ? FColor::Green : FColor::Red, false, 1.0f, 0, 1.0f);
+	if (bHit)
+	{
+		AActor* HitActor = HitResult.GetActor();
+		if (HitActor && HitActor->Implements<UInteractInterface>())
+		{
+			IInteractInterface::Execute_Interact(HitActor, this);
+			UE_LOG(LogTemp, Warning, TEXT("Interacted with: %s"), *HitActor->GetName());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hit actor doesn't implement interaction interface"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No hit"));
 	}
 }

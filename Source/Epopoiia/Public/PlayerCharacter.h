@@ -12,6 +12,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class UInteractInterface;
 struct FInputActionValue;
 
 UCLASS()
@@ -26,19 +27,20 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
-
-protected:
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
-	UInputMappingContext* InputMappingContext;
 	
 	/** Move Input Action */
-	UPROPERTY(EditAnywhere, Category="Enhanced Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input", meta = (AllowPrivateAccess))
 	UInputAction* MoveAction;
 
 	/** Look Input Action */
-	UPROPERTY(EditAnywhere, Category="Enhanced Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enhanced Input", meta = (AllowPrivateAccess))
 	UInputAction* LookAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
+	UInputAction* InteractAction;
+
+
+protected:
 	
 public:
 	// Sets default values for this character's properties
@@ -68,5 +70,9 @@ public:
 	/** Handles look inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoLook(float Yaw);
+	
+	/**Interaction Linetrace**/
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void Interact();
 
 };
