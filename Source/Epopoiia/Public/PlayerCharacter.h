@@ -3,11 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EnhancedInputSubsystemInterface.h"
 #include "GameFramework/Character.h"
+#include "InputAction.h"
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
+class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 
@@ -25,12 +28,16 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	UCameraComponent* FollowCamera;
 
 protected:
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input")
+	UInputMappingContext* InputMappingContext;
+	
 	/** Move Input Action */
-	UPROPERTY(EditAnywhere, Category="Input")
+	UPROPERTY(EditAnywhere, Category="Enhanced Input")
 	UInputAction* MoveAction;
 
 	/** Look Input Action */
-	UPROPERTY(EditAnywhere, Category="Input")
+	UPROPERTY(EditAnywhere, Category="Enhanced Input")
 	UInputAction* LookAction;
 	
 public:
@@ -54,6 +61,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	
+	/** Handles move inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoMove(float Right, float Forward);
+
+	/** Handles look inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoLook(float Yaw);
 
 };
