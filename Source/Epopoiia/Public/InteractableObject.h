@@ -12,6 +12,10 @@ class EPOPOIIA_API AInteractableObject : public AActor, public IInteractInterfac
 {
 	GENERATED_BODY()
 	
+private:
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess))
+	bool bIsOpen = true;
+	
 public:	
 	// Sets default values for this actor's properties
 	AInteractableObject();
@@ -24,5 +28,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void Interact_Implementation(APawn* InstigatorPawn);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void CallOpenDoor(bool bIsDoorOpen);
+	
+	UFUNCTION(BlueprintCallable)
+	void Scream();
+	
 
 };

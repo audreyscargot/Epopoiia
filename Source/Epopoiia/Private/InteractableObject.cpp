@@ -27,7 +27,23 @@ void AInteractableObject::Tick(float DeltaTime)
 
 void AInteractableObject::Interact_Implementation(APawn* InstigatorPawn)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Implements interface"));
-
+	CallOpenDoor(bIsOpen);
 }
+
+void AInteractableObject::Scream()
+{
+	UE_LOG(LogTemp, Warning, TEXT("AAAAAAAAAAAAAAAAAAAAAAAH"))
+}
+
+void AInteractableObject::CallOpenDoor_Implementation(bool bIsDoorOpen)
+{
+	if (bIsOpen)
+	{
+		bIsOpen = false;
+	}
+	else bIsOpen = true;
+}
+
+
+
 
