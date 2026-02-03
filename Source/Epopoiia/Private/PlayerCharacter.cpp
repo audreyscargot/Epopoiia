@@ -85,6 +85,7 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 		
 		AddMovementInput(ForwardDirection, Forward);
 		AddMovementInput(RightDirection, Right);
+		UE_LOG(LogTemp, Warning, TEXT("Rotation: %f - %f - %f"), ForwardDirection.X, ForwardDirection.Y, ForwardDirection.Z);
 		
 	}
 }
