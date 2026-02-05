@@ -92,12 +92,8 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 
 void APlayerCharacter::Interact()
 {
-	float InteractionDistance = 200.0f;
-	FVector PlayerLocation = GetActorLocation();
-	FVector PlayerForward = GetActorForwardVector();
-	
-	FVector TraceStart = PlayerLocation;
-	FVector TraceEnd = TraceStart + (PlayerForward * InteractionDistance);
+	FVector TraceStart = GetActorLocation();
+	FVector TraceEnd = TraceStart + (GetActorForwardVector() * TraceLength);
 	
 	FHitResult HitResult;
 	FCollisionQueryParams QueryParams;
@@ -123,4 +119,35 @@ void APlayerCharacter::Interact()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No hit"));
 	}
+}
+
+void APlayerCharacter::LookForInteract()
+{
+	FVector TraceStart = GetActorLocation();
+	FVector TraceEnd = TraceStart + (GetActorForwardVector() * TraceLength);
+	
+	FHitResult HitResult;
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	
+	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, QueryParams);
+	if (bHit)
+	{
+		AActor* HitActor = HitResult.GetActor();
+		if (HitActor && HitActor->Implements<UInteractInterface>())
+		{
+			InteractActor = HitActor;
+			IInteractInterface::Execute_CanBeInteracted(HitActor);
+		}
+		else
+		{
+			if (InteractActor) IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+		}
+	}
+}
+
+// Getter
+int APlayerCharacter::GetTimeRewindAbilityLevel()
+{
+	return TimeRewindAbilityLevel;
 }

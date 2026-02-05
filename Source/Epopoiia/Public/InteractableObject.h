@@ -7,12 +7,19 @@
 #include "GameFramework/Actor.h"
 #include "InteractableObject.generated.h"
 
+class APlayerCharacter;
+class UWidgetComponent;
+
 UCLASS()
 class EPOPOIIA_API AInteractableObject : public AActor, public IInteractInterface
 {
 	GENERATED_BODY()
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UWidgetComponent* InteractWidget;
+	
 private:
+	// TO DO : Delete
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess))
 	bool bIsOpen = true;
 	
@@ -27,13 +34,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void Interact_Implementation(APawn* InstigatorPawn);
-	
-	UFUNCTION(BlueprintNativeEvent)
-	void CallOpenDoor(bool bIsDoorOpen);
-	
-	UFUNCTION(BlueprintCallable)
-	void Scream();
+	virtual void Interact_Implementation(APlayerCharacter* InstigatorPawn) override;
+	virtual void CanBeInteracted_Implementation() override;
+	virtual void RemoveInteractFeedback_Implementation() override;
 	
 
 };

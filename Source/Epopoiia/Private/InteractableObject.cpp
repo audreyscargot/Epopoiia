@@ -2,12 +2,15 @@
 
 
 #include "InteractableObject.h"
+#include "Components/WidgetComponent.h"
+#include "InteractInterface.h"
 
 // Sets default values
 AInteractableObject::AInteractableObject()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	InteractWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("InteractWidget"));
 
 }
 
@@ -25,23 +28,19 @@ void AInteractableObject::Tick(float DeltaTime)
 
 }
 
-void AInteractableObject::Interact_Implementation(APawn* InstigatorPawn)
+void AInteractableObject::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 {
-	CallOpenDoor(bIsOpen);
+	
 }
 
-void AInteractableObject::Scream()
+void AInteractableObject::CanBeInteracted_Implementation()
 {
-	UE_LOG(LogTemp, Warning, TEXT("AAAAAAAAAAAAAAAAAAAAAAAH"))
+	InteractWidget->SetVisibility(true);
 }
 
-void AInteractableObject::CallOpenDoor_Implementation(bool bIsDoorOpen)
+void AInteractableObject::RemoveInteractFeedback_Implementation()
 {
-	if (bIsOpen)
-	{
-		bIsOpen = false;
-	}
-	else bIsOpen = true;
+	InteractWidget->SetVisibility(false);
 }
 
 

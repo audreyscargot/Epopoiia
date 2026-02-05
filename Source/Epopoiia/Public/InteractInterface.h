@@ -7,15 +7,12 @@
 #include "InteractInterface.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI, Blueprintable)
 class UInteractInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-/**
- * 
- */
 class EPOPOIIA_API IInteractInterface
 {
 	GENERATED_BODY()
@@ -24,5 +21,11 @@ class EPOPOIIA_API IInteractInterface
 public:
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Interact(APawn* InstigatorPawn);
+	void Interact(APlayerCharacter* InstigatorPawn);
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void CanBeInteracted();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void RemoveInteractFeedback();
 };

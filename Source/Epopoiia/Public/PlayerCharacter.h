@@ -58,8 +58,21 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+	
+	// Ability level variable, TODO : change if multiple abilities
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties", meta = (AllowPrivateAccess = "true"))
+	int TimeRewindAbilityLevel = 0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Trace")
+	float TraceLength = 200.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Interact")
+	AActor* InteractActor;
 
-public:	
+public:
+	
+	int GetTimeRewindAbilityLevel();
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -74,5 +87,9 @@ public:
 	/**Interaction Linetrace**/
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void Interact();
+	
+	/** Look for Interaction **/
+	UFUNCTION(BlueprintCallable)
+	virtual void LookForInteract();
 
 };
