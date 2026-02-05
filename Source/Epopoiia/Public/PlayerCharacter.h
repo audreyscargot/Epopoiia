@@ -38,6 +38,13 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
 	UInputAction* InteractAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
+	UInputAction* OpenPhoneAction;
+	
+	//Front Camera (for phone use)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess))
+	UCameraComponent* FrontViewCamera;
 
 
 protected:
@@ -91,5 +98,9 @@ public:
 	/** Look for Interaction **/
 	UFUNCTION(BlueprintCallable)
 	virtual void LookForInteract();
+	
+	/** Open Phone Function **/
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OpenPhone();
 
 };

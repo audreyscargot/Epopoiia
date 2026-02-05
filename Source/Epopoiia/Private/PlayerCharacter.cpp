@@ -23,6 +23,9 @@ APlayerCharacter::APlayerCharacter()
 	
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom);
+	
+	FrontViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FrontViewCamera"));
+	FrontViewCamera->SetupAttachment(CameraBoom);
 
 }
 
@@ -37,6 +40,7 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	LookForInteract();
 
 }
 
@@ -49,6 +53,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
+		EnhancedInputComponent->BindAction(OpenPhoneAction, ETriggerEvent::Started, this, &APlayerCharacter::OpenPhone);
 	};
 	
 }
@@ -131,20 +136,36 @@ void APlayerCharacter::LookForInteract()
 	QueryParams.AddIgnoredActor(this);
 	
 	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, QueryParams);
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, bHit ? FColor::Green : FColor::Red, false, 1.0f, 0, 1.0f);
 	if (bHit)
 	{
 		AActor* HitActor = HitResult.GetActor();
 		if (HitActor && HitActor->Implements<UInteractInterface>())
 		{
+			if (HitActor != InteractActor && InteractActor != nullptr) IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
 			InteractActor = HitActor;
 			IInteractInterface::Execute_CanBeInteracted(HitActor);
-		}
-		else
-		{
-			if (InteractActor) IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *HitActor->GetName());
 		}
 	}
+	else
+	{
+		if (InteractActor != nullptr)
+		{
+			IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+			UE_LOG(LogTemp, Warning, TEXT("RemoveFeedback"));
+		}
+		else UE_LOG(LogTemp, Warning, TEXT("NoActorRegistered"));
+	}
 }
+
+void APlayerCharacter::OpenPhone_Implementation()
+{
+	
+	
+	
+}
+
 
 // Getter
 int APlayerCharacter::GetTimeRewindAbilityLevel()

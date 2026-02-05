@@ -18,8 +18,15 @@ class EPOPOIIA_API AFixableObject : public AInteractableObject
 	
 private:
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties", meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties", meta = (AllowPrivateAccess = true, InstanceEditable = true))
 	int RequiredLevel;
+	
+	//Mesh to change (broken and repaired vesrion)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties", meta = (AllowPrivateAccess = true))
+	UStaticMesh* BrokenMesh;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties", meta = (AllowPrivateAccess = true))
+	UStaticMesh* RepairedMesh;
 	
 public:
 	AFixableObject();

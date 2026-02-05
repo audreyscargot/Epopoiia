@@ -15,15 +15,22 @@ class EPOPOIIA_API AInteractableObject : public AActor, public IInteractInterfac
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	USceneComponent* Root;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	UWidgetComponent* InteractWidget;
 	
-private:
-	// TO DO : Delete
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess))
-	bool bIsOpen = true;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	bool bIsInteractable = true;
 	
-public:	
+public:
+	
+	
+	
 	// Sets default values for this actor's properties
 	AInteractableObject();
 
@@ -37,6 +44,9 @@ public:
 	virtual void Interact_Implementation(APlayerCharacter* InstigatorPawn) override;
 	virtual void CanBeInteracted_Implementation() override;
 	virtual void RemoveInteractFeedback_Implementation() override;
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void FeedbackWidgetAppear();
 	
 
 };
