@@ -2,6 +2,8 @@
 
 
 #include "InteractableObject.h"
+
+#include "DetectUserWidget.h"
 #include "Components/WidgetComponent.h"
 #include "InteractInterface.h"
 
@@ -38,7 +40,7 @@ void AInteractableObject::Interact_Implementation(APlayerCharacter* InstigatorPa
 
 void AInteractableObject::CanBeInteracted_Implementation()
 {
-	if (bIsInteractable && InteractWidget->IsVisible()==false)
+	if (bIsInteractable && !InteractWidget->IsVisible())
 	{
 		InteractWidget->SetVisibility(true);
 		FeedbackWidgetAppear();
@@ -47,12 +49,17 @@ void AInteractableObject::CanBeInteracted_Implementation()
 
 void AInteractableObject::RemoveInteractFeedback_Implementation()
 {
-	InteractWidget->SetVisibility(false);
+	if (InteractWidget->IsVisible())
+	{
+		InteractWidget->SetVisibility(false);
+	}
+	
 }
 
-void AInteractableObject::FeedbackWidgetAppear_Implementation()
+void AInteractableObject::FeedbackWidgetAppear()
 {
-	
+	UDetectUserWidget* DetectWidget = Cast<UDetectUserWidget>(InteractWidget->GetWidget());
+	if (DetectWidget != nullptr) DetectWidget->MakeDetectionAppear();
 }
 
 

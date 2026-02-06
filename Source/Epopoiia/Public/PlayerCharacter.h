@@ -41,10 +41,6 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
 	UInputAction* OpenPhoneAction;
-	
-	//Front Camera (for phone use)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess))
-	UCameraComponent* FrontViewCamera;
 
 
 protected:
@@ -75,6 +71,24 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Interact")
 	AActor* InteractActor;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
+	FTransform CameraRegularTransform;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
+	FTransform CameraPhoneTransform;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
+	float PhoneTargetArmLength;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
+	bool bUsingPhone = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
+	bool bCanLookMove = true;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
+	UDetectUserWidget* PhoneWidget;
 
 public:
 	
@@ -99,8 +113,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void LookForInteract();
 	
-	/** Open Phone Function **/
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetCameraView(bool bIsPhoneView, FTransform CameraTransform, float ArmLength);
+	
+	/** Open Phone Function **/
+	UFUNCTION(BlueprintCallable)
 	void OpenPhone();
 
+	UFUNCTION(BlueprintCallable)
+	void CreatePhoneWidget(TSubclassOf<class UDetectUserWidget> PhoneClass);
 };

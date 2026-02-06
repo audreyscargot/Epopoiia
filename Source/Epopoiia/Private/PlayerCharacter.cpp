@@ -2,6 +2,10 @@
 
 
 #include "PlayerCharacter.h"
+
+#include <ranges>
+
+#include "DetectUserWidget.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -10,6 +14,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "InteractInterface.h"
+#include "Blueprint/UserWidget.h"
 #include "Epopoiia/Epopoiia.h"
 
 // Sets default values
@@ -24,8 +29,7 @@ APlayerCharacter::APlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom);
 	
-	FrontViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FrontViewCamera"));
-	FrontViewCamera->SetupAttachment(CameraBoom);
+	CameraRegularTransform = CameraBoom->GetRelativeTransform();
 
 }
 
@@ -60,8 +64,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
 {
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-	DoLook(LookAxisVector.X);
+	if (bCanLookMove)
+	{
+		FVector2D LookAxisVector = Value.Get<FVector2D>();
+		DoLook(LookAxisVector.X);
+	}
 }
 
 void APlayerCharacter::DoLook(float Yaw)
@@ -74,8 +81,12 @@ void APlayerCharacter::DoLook(float Yaw)
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
-	FVector2D MovementVector = Value.Get<FVector2D>();
-	DoMove(MovementVector.X, MovementVector.Y);
+	if (bCanLookMove)
+	{
+		FVector2D MovementVector = Value.Get<FVector2D>();
+		DoMove(MovementVector.X, MovementVector.Y);
+	}
+	
 }
 
 void APlayerCharacter::DoMove(float Right, float Forward)
@@ -95,34 +106,13 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 	}
 }
 
+// Interaction System
+
 void APlayerCharacter::Interact()
 {
-	FVector TraceStart = GetActorLocation();
-	FVector TraceEnd = TraceStart + (GetActorForwardVector() * TraceLength);
-	
-	FHitResult HitResult;
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(this);
-	
-	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, QueryParams);
-	
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, bHit ? FColor::Green : FColor::Red, false, 1.0f, 0, 1.0f);
-	if (bHit)
+	if (InteractActor != nullptr)
 	{
-		AActor* HitActor = HitResult.GetActor();
-		if (HitActor && HitActor->Implements<UInteractInterface>())
-		{
-			IInteractInterface::Execute_Interact(HitActor, this);
-			UE_LOG(LogTemp, Warning, TEXT("Interacted with: %s"), *HitActor->GetName());
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Hit actor doesn't implement interaction interface"));
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No hit"));
+		IInteractInterface::Execute_Interact(InteractActor, this);
 	}
 }
 
@@ -142,28 +132,56 @@ void APlayerCharacter::LookForInteract()
 		AActor* HitActor = HitResult.GetActor();
 		if (HitActor && HitActor->Implements<UInteractInterface>())
 		{
-			if (HitActor != InteractActor && InteractActor != nullptr) IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
-			InteractActor = HitActor;
-			IInteractInterface::Execute_CanBeInteracted(HitActor);
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *HitActor->GetName());
+			if (HitActor != InteractActor) 
+			{
+				if (InteractActor != nullptr) IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+				InteractActor = HitActor;
+				IInteractInterface::Execute_CanBeInteracted(HitActor);
+				UE_LOG(LogTemp, Warning, TEXT("%s"), *HitActor->GetName());
+			}
+			
 		}
 	}
 	else
 	{
-		if (InteractActor != nullptr)
-		{
-			IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
-			UE_LOG(LogTemp, Warning, TEXT("RemoveFeedback"));
-		}
-		else UE_LOG(LogTemp, Warning, TEXT("NoActorRegistered"));
+		if (InteractActor) IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+		InteractActor = nullptr;
 	}
 }
 
-void APlayerCharacter::OpenPhone_Implementation()
+void APlayerCharacter::SetCameraView_Implementation(bool bIsPhoneView, FTransform CameraTransform, float ArmLength)
 {
+	bUsingPhone = bIsPhoneView;
+	bCanLookMove = !bUsingPhone;
 	
-	
-	
+}
+
+//Phone TO DO
+void APlayerCharacter::OpenPhone()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Open Phone"));
+	FTransform Transform = bUsingPhone? CameraRegularTransform : CameraPhoneTransform;
+	float Length = bUsingPhone? 300.0 : PhoneTargetArmLength;
+	SetCameraView(!bUsingPhone, Transform, Length);
+}
+
+void APlayerCharacter::CreatePhoneWidget(TSubclassOf<class UDetectUserWidget> PhoneClass)
+{
+	if (bUsingPhone)
+	{
+		PhoneWidget = Cast<UDetectUserWidget>(CreateWidget(GetWorld(), PhoneClass, "PhoneWidget"));
+		PhoneWidget->AddToViewport();
+		PhoneWidget->MakeDetectionAppear();
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *PhoneWidget->GetName());
+	}
+	else
+	{
+		if (PhoneWidget)
+		{
+			PhoneWidget = nullptr;
+			UE_LOG(LogTemp, Warning, TEXT("Removed"));
+		}
+	}
 }
 
 

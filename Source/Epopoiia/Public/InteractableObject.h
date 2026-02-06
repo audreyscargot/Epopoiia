@@ -45,7 +45,7 @@ public:
 	virtual void CanBeInteracted_Implementation() override;
 	virtual void RemoveInteractFeedback_Implementation() override;
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable)
 	void FeedbackWidgetAppear();
 	
 
