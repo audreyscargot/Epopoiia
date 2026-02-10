@@ -58,8 +58,7 @@ void AInteractableObject::RemoveInteractFeedback_Implementation()
 
 void AInteractableObject::FeedbackWidgetAppear()
 {
-	UDetectUserWidget* DetectWidget = Cast<UDetectUserWidget>(InteractWidget->GetWidget());
-	if (DetectWidget != nullptr) DetectWidget->MakeDetectionAppear();
+	if (UDetectUserWidget* DetectWidget = Cast<UDetectUserWidget>(InteractWidget->GetWidget())) DetectWidget->MakeDetectionAppear();
 }
 
 
