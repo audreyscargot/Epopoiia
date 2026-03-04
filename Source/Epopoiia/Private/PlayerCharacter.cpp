@@ -16,6 +16,7 @@
 #include "InteractInterface.h"
 #include "Blueprint/UserWidget.h"
 #include "Epopoiia/Epopoiia.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -66,8 +67,16 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 {
 	if (bCanLookMove)
 	{
-		FVector2D LookAxisVector = Value.Get<FVector2D>();
-		DoLook(LookAxisVector.X);
+		switch (LookMoveMode)
+		{
+		case ELookMoveMode::FreeMovement :
+			FVector2D LookAxisVector = Value.Get<FVector2D>();
+			DoLook(LookAxisVector.X);
+			break;
+		case ELookMoveMode::GridMovement :
+			break;
+		}
+		
 	}
 }
 
@@ -84,7 +93,16 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 	if (bCanLookMove)
 	{
 		FVector2D MovementVector = Value.Get<FVector2D>();
-		DoMove(MovementVector.X, MovementVector.Y);
+		switch (LookMoveMode)
+		{
+		case ELookMoveMode::FreeMovement:
+			DoMove(MovementVector.X, MovementVector.Y);
+			break;
+		case ELookMoveMode::GridMovement: 
+			DoGridMove(MovementVector.X, MovementVector.Y);
+			break;
+		}
+		
 	}
 	
 }
@@ -105,11 +123,19 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 	}
 }
 
+void APlayerCharacter::DoGridMove(float Right, float Forward)
+{
+	UE_LOG(LogTemp, Warning, TEXT("%f"), cellSize);
+	FVector _moveVector = (Forward != 0) ? GetActorForwardVector() : GetActorRightVector();
+	float _moveSign = (Forward != 0) ? Forward : Right;
+	SetActorLocation(GetActorLocation() + _moveVector * cellSize * UKismetMathLibrary::SignOfFloat(_moveSign));
+}
+
 // Interaction System
 
 void APlayerCharacter::Interact()
 {
-	if (InteractActor != nullptr)
+	if (InteractActor)
 	{
 		IInteractInterface::Execute_Interact(InteractActor, this);
 	}
@@ -133,7 +159,10 @@ void APlayerCharacter::LookForInteract()
 		{
 			if (HitActor != InteractActor) 
 			{
-				if (InteractActor != nullptr) IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+				if (InteractActor)
+				{
+					IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+				}
 				InteractActor = HitActor;
 				IInteractInterface::Execute_CanBeInteracted(HitActor);
 				UE_LOG(LogTemp, Warning, TEXT("%s"), *HitActor->GetName());
@@ -143,11 +172,15 @@ void APlayerCharacter::LookForInteract()
 	}
 	else
 	{
-		if (InteractActor) IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+		if (InteractActor)
+		{
+			IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
+		}
 		InteractActor = nullptr;
 	}
 }
 
+// Camera feedback movement for phone
 void APlayerCharacter::SetCameraView_Implementation(bool bIsPhoneView, FTransform CameraTransform, float ArmLength)
 {
 	bUsingPhone = bIsPhoneView;
@@ -155,12 +188,12 @@ void APlayerCharacter::SetCameraView_Implementation(bool bIsPhoneView, FTransfor
 	
 }
 
-//Phone TO DO
+//Phone
 void APlayerCharacter::OpenPhone()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Open Phone"));
 	FTransform Transform = bUsingPhone? CameraRegularTransform : CameraPhoneTransform;
-	float Length = bUsingPhone? 300.0 : PhoneTargetArmLength;
+	float Length = bUsingPhone? RegularTargetArmLength : PhoneTargetArmLength;
 	SetCameraView(!bUsingPhone, Transform, Length);
 }
 
@@ -183,9 +216,23 @@ void APlayerCharacter::CreatePhoneWidget(TSubclassOf<class UDetectUserWidget> Ph
 	}
 }
 
-
 // Getter
 int APlayerCharacter::GetTimeRewindAbilityLevel()
 {
 	return TimeRewindAbilityLevel;
+}
+
+FTransform APlayerCharacter::GetCameraRegularTransform()
+{
+	return CameraRegularTransform;
+}
+
+float APlayerCharacter::GetRegularTargetArmLength()
+{
+	return RegularTargetArmLength;
+}
+
+void APlayerCharacter::SetCanLookMove(bool _canLookMove)
+{
+	bCanLookMove = _canLookMove;
 }

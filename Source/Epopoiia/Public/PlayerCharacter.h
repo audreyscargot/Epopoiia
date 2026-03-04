@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystemInterface.h"
 #include "GameFramework/Character.h"
 #include "InputAction.h"
+#include "MovableObject.h"
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -14,6 +15,13 @@ class UInputMappingContext;
 class UInputAction;
 class UInteractInterface;
 struct FInputActionValue;
+
+UENUM(BlueprintType)
+enum class ELookMoveMode : uint8
+{
+	FreeMovement = 0 UMETA(DisplayName = "FreeMovement"),
+	GridMovement = 1 UMETA(DisplayName = "GridMovement"),
+};
 
 UCLASS()
 class EPOPOIIA_API APlayerCharacter : public ACharacter
@@ -41,6 +49,9 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
 	UInputAction* OpenPhoneAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enum", meta = (AllowPrivateAccess = "true"))
+	ELookMoveMode LookMoveMode;
 
 
 protected:
@@ -66,14 +77,19 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties", meta = (AllowPrivateAccess = "true"))
 	int TimeRewindAbilityLevel = 0;
 	
+	//Base Properties
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Trace")
 	float TraceLength = 200.0f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Interact")
 	AActor* InteractActor;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
+	//Camera & PhoneCamera Parameters
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties")
 	FTransform CameraRegularTransform;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties")
+	float RegularTargetArmLength = 300.0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
 	FTransform CameraPhoneTransform;
@@ -89,10 +105,17 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Phone")
 	UDetectUserWidget* PhoneWidget;
+	
+	//Grid Movement Mode
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Grid")
+	float cellSize = 100.0;
 
 public:
 	
 	int GetTimeRewindAbilityLevel();
+	FTransform GetCameraRegularTransform();
+	float GetRegularTargetArmLength();
+	void SetCanLookMove(bool _canLookMove);
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -100,6 +123,9 @@ public:
 	/** Handles move inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoMove(float Right, float Forward);
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoGridMove(float Right, float Forward);
 
 	/** Handles look inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
@@ -121,5 +147,5 @@ public:
 	void OpenPhone();
 
 	UFUNCTION(BlueprintCallable)
-	void CreatePhoneWidget(TSubclassOf<class UDetectUserWidget> PhoneClass);
+	void CreatePhoneWidget(TSubclassOf<class UDetectUserWidget> _widgetClass);
 };
