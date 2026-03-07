@@ -43,12 +43,12 @@ public:
 	
 	void Interact_Implementation(APlayerCharacter* InstigatorPawn) override;
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable)
 	void Dialogue();
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable)
 	void Thinking();
 	
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable)
 	void SetDialogueView(APlayerCharacter* InstigatorPawn);
 };

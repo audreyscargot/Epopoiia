@@ -44,7 +44,7 @@ void ALevelSwitcherBox::SwitchWorld()
 {
 	FString Options = "";
 	LevelToOpen.LoadSynchronous();
-	if (LevelToOpen) UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(), LevelToOpen, true, Options);
-	UE_LOG(LogTemp, Warning, TEXT("Switch"));
+	if (!LevelToOpen.IsNull()) UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),LevelToOpen , true, Options);
+	UE_LOG(LogTemp, Warning, TEXT("%d"), LevelToOpen.IsValid());
 }
 

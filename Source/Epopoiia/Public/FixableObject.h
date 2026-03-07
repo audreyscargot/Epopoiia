@@ -13,8 +13,7 @@ class EPOPOIIA_API AFixableObject : public AInteractableObject
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(Category=Actor, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	UStaticMeshComponent* Mesh;
+	
 	
 private:
 	

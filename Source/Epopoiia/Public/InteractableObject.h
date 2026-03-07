@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "InteractableObject.generated.h"
 
+class UBoxComponent;
 class APlayerCharacter;
 class UWidgetComponent;
 
@@ -24,12 +25,21 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	UWidgetComponent* InteractWidget;
 	
+	UPROPERTY(Category=Actor, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UStaticMeshComponent* Mesh;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UBoxComponent* BoxComponent;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bIsInteractable = true;
 	
+	
+	
 public:
 	
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FVector> InteractPoints = {GetActorLocation(), GetActorLocation(), GetActorLocation(), GetActorLocation()} ;
 	
 	// Sets default values for this actor's properties
 	AInteractableObject();
@@ -37,6 +47,11 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	virtual void OnConstruction(const FTransform& Transform) override;
+	
+	UFUNCTION(BlueprintCallable)
+	FVector MakeInteractPoints(FVector _direction);
 
 public:	
 	// Called every frame

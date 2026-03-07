@@ -3,15 +3,13 @@
 
 #include "FixableObject.h"
 
-#include "K2Node_GetClassDefaults.h"
 #include "PlayerCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
 
 AFixableObject::AFixableObject()
 {
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(RootComponent);
+	
 }
 
 

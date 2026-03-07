@@ -12,6 +12,7 @@
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "HoldInteractComponent.h"
 #include "InputActionValue.h"
 #include "InteractInterface.h"
 #include "Blueprint/UserWidget.h"
@@ -38,6 +39,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GetController()->SetControlRotation(FRotator (0,0,0));
 	
 }
 
@@ -57,27 +59,30 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &APlayerCharacter::Interact);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Interact);
+		EnhancedInputComponent->BindAction(InteractHoldAction, ETriggerEvent::Triggered, this, &APlayerCharacter::InteractHold);
 		EnhancedInputComponent->BindAction(OpenPhoneAction, ETriggerEvent::Started, this, &APlayerCharacter::OpenPhone);
 	};
 	
 }
 
+// NOT USED : TO REMOVE
 void APlayerCharacter::Look(const FInputActionValue& Value)
 {
-	if (bCanLookMove)
-	{
-		switch (LookMoveMode)
-		{
-		case ELookMoveMode::FreeMovement :
-			FVector2D LookAxisVector = Value.Get<FVector2D>();
-			DoLook(LookAxisVector.X);
-			break;
-		case ELookMoveMode::GridMovement :
-			break;
-		}
-		
-	}
+	
+	// if (bCanLookMove)
+	// {
+	// 	switch (LookMoveMode)
+	// 	{
+	// 	case ELookMoveMode::FreeMovement :
+	// 		FVector2D LookAxisVector = Value.Get<FVector2D>();
+	// 		DoLook(LookAxisVector.X);
+	// 		break;
+	// 	case ELookMoveMode::GridMovement :
+	// 		break;
+	// 	}
+	// 	
+	// }
 }
 
 void APlayerCharacter::DoLook(float Yaw)
@@ -103,6 +108,7 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 			break;
 		}
 		
+		
 	}
 	
 }
@@ -125,10 +131,15 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 
 void APlayerCharacter::DoGridMove(float Right, float Forward)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%f"), cellSize);
 	FVector _moveVector = (Forward != 0) ? GetActorForwardVector() : GetActorRightVector();
 	float _moveSign = (Forward != 0) ? Forward : Right;
-	SetActorLocation(GetActorLocation() + _moveVector * cellSize * UKismetMathLibrary::SignOfFloat(_moveSign));
+	FVector _displacement = GetActorLocation() + _moveVector * cellSize * UKismetMathLibrary::SignOfFloat(_moveSign);
+	SetActorLocation(_displacement);
+	if (_moveVector.Length() > 0)
+	{
+		OnMovedDelegate.ExecuteIfBound(_displacement);
+	}
+	UE_LOG(LogTemp, Warning, TEXT("%f"), _moveVector.Length());
 }
 
 // Interaction System
@@ -138,6 +149,28 @@ void APlayerCharacter::Interact()
 	if (InteractActor)
 	{
 		IInteractInterface::Execute_Interact(InteractActor, this);
+	}
+}
+
+void APlayerCharacter::InteractHold()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Hold Started"));
+	LookMoveMode = ELookMoveMode::FreeMovement;
+	if (InteractActor)
+	{
+		UHoldInteractComponent* HoldComponent = InteractActor->GetComponentByClass<UHoldInteractComponent>();
+		if (HoldComponent)
+		{
+			if (HoldComponent->isActiveHold)
+			{
+				HoldComponent->ActivateHold(false, this);
+			}
+			else
+			{
+				HoldComponent->ActivateHold(true, this);
+				LookMoveMode = ELookMoveMode::GridMovement;
+			}
+		}
 	}
 }
 

@@ -23,6 +23,8 @@ enum class ELookMoveMode : uint8
 	GridMovement = 1 UMETA(DisplayName = "GridMovement"),
 };
 
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnMoved, FVector, _direction);
+
 UCLASS()
 class EPOPOIIA_API APlayerCharacter : public ACharacter
 {
@@ -50,8 +52,12 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
 	UInputAction* OpenPhoneAction;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enum", meta = (AllowPrivateAccess = "true"))
-	ELookMoveMode LookMoveMode;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* InteractHoldAction;
+	
+	
+	
+	
 
 
 protected:
@@ -111,6 +117,8 @@ protected:
 	float cellSize = 100.0;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enum", meta = (AllowPrivateAccess = "true"))
+	ELookMoveMode LookMoveMode;
 	
 	int GetTimeRewindAbilityLevel();
 	FTransform GetCameraRegularTransform();
@@ -126,6 +134,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoGridMove(float Right, float Forward);
+	
+	//Delegate OnMoved for moving objects
+	UPROPERTY(EditAnywhere, Category= "Delegate")
+	FOnMoved OnMovedDelegate;
 
 	/** Handles look inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
@@ -134,6 +146,9 @@ public:
 	/**Interaction Linetrace**/
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void Interact();
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void InteractHold();
 	
 	/** Look for Interaction **/
 	UFUNCTION(BlueprintCallable)

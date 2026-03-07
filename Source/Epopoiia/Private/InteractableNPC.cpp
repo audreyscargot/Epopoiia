@@ -3,7 +3,6 @@
 
 #include "InteractableNPC.h"
 
-#include "IEditableSkeleton.h"
 #include "PlayerCharacter.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -30,10 +29,11 @@ void AInteractableNPC::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 		}
 		isInteracted = false;
 	}
-	SetDialogueView_Implementation(InstigatorPawn);
+	SetDialogueView(InstigatorPawn);
 }
 
-void AInteractableNPC::SetDialogueView_Implementation(APlayerCharacter* InstigatorPawn)
+
+void AInteractableNPC::SetDialogueView(APlayerCharacter* InstigatorPawn)
 {
 	//Set view and Widget TO DO
 	UE_LOG(LogTemp, Warning, TEXT("%hhd"), isInteracted);
@@ -47,12 +47,12 @@ void AInteractableNPC::SetDialogueView_Implementation(APlayerCharacter* Instigat
 	SetActorRotation(FRotator(0, _newRotation.Yaw, 0));
 }
 
-void AInteractableNPC::Thinking_Implementation()
+void AInteractableNPC::Thinking()
 {
 	
 }
 
-void AInteractableNPC::Dialogue_Implementation()
+void AInteractableNPC::Dialogue()
 {
 	
 }
