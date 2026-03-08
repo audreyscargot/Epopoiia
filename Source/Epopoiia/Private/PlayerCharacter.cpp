@@ -18,6 +18,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Epopoiia/Epopoiia.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -131,15 +132,33 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 
 void APlayerCharacter::DoGridMove(float Right, float Forward)
 {
-	FVector _moveVector = (Forward != 0) ? GetActorForwardVector() : GetActorRightVector();
-	float _moveSign = (Forward != 0) ? Forward : Right;
-	FVector _displacement = GetActorLocation() + _moveVector * cellSize * UKismetMathLibrary::SignOfFloat(_moveSign);
-	SetActorLocation(_displacement);
-	if (_moveVector.Length() > 0)
+	
+	float _timeToMove = 0.5;
+	FVector _moveVector = Forward != 0 ? FVector(1,0,0) : FVector(0,1,0);
+	float _moveSign = UKismetMathLibrary::SignOfFloat(UKismetMathLibrary::Abs(Forward) > 0.2 ? Forward : Right);
+	FVector _displacement = GetActorLocation() + _moveVector * cellSize * _moveSign;
+	if (canGridMove)
 	{
-		OnMovedDelegate.ExecuteIfBound(_displacement);
+		SmoothGridMove_Implementation(GetActorLocation(), _displacement, _timeToMove);
+		canGridMove = false;
+		UKismetSystemLibrary::K2_SetTimer(this, "ResetCanGridMove", _timeToMove*1.5, false, false);
 	}
-	UE_LOG(LogTemp, Warning, TEXT("%f"), _moveVector.Length());
+}
+
+void APlayerCharacter::SmoothGridMove_Implementation(FVector _basePosition, FVector _displacement, float _movementSpeed)
+{
+	SmoothGridMove(_basePosition, _displacement, _movementSpeed);
+}
+
+void APlayerCharacter::ResetCanGridMove()
+{
+	canGridMove = true;
+	UE_LOG(LogTemp, Warning, TEXT("ResetCanGridMove"));
+}
+
+void APlayerCharacter::CallDelegate(FVector _displacement)
+{
+	OnMovedDelegate.ExecuteIfBound(_displacement);
 }
 
 // Interaction System

@@ -113,8 +113,11 @@ protected:
 	UDetectUserWidget* PhoneWidget;
 	
 	//Grid Movement Mode
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Grid")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Grid")
 	float cellSize = 100.0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Grid")
+	bool canGridMove = true;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enum", meta = (AllowPrivateAccess = "true"))
@@ -135,8 +138,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoGridMove(float Right, float Forward);
 	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SmoothGridMove(FVector _basePosition, FVector _displacement, float _movementSpeed);
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void ResetCanGridMove();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void CallDelegate(FVector _displacement);
+	
 	//Delegate OnMoved for moving objects
-	UPROPERTY(EditAnywhere, Category= "Delegate")
+	UPROPERTY(BlueprintReadWrite, Category= "Delegate")
 	FOnMoved OnMovedDelegate;
 
 	/** Handles look inputs from either controls or UI interfaces */

@@ -5,16 +5,11 @@
 
 #include "PlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values for this component's properties
 UHoldInteractComponent::UHoldInteractComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -27,12 +22,9 @@ void UHoldInteractComponent::BeginPlay()
 }
 
 
-// Called every frame
 void UHoldInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 void UHoldInteractComponent::ActivateHold(bool _isActive, APlayerCharacter* _player)
@@ -40,10 +32,13 @@ void UHoldInteractComponent::ActivateHold(bool _isActive, APlayerCharacter* _pla
 	isActiveHold = _isActive;
 	if (isActiveHold)
 	{
+		Owner->RemoveInteractFeedback_Implementation();
+		//TODO: Remove Can Be Interacted while held !!
+		
 		Player = _player;
 		Player->OnMovedDelegate.BindDynamic(this, &ThisClass::PushPull);
 		
-		//Make closest Point
+		//Make close Point
 		FVector _closestPoint;
 		_closestPoint.X = GetPointCloserTo().X;
 		_closestPoint.Y = GetPointCloserTo().Y;
@@ -57,6 +52,7 @@ void UHoldInteractComponent::ActivateHold(bool _isActive, APlayerCharacter* _pla
 	}
 	else
 	{
+		Owner->SetActorLocation(FVector(Player->GetActorLocation().X+vectorToPlayer.X, Player->GetActorLocation().Y+vectorToPlayer.Y, Owner->GetActorLocation().Z));
 		Player->OnMovedDelegate.Unbind();
 		Player = nullptr;
 	}
@@ -80,11 +76,10 @@ FVector UHoldInteractComponent::GetPointCloserTo()
 	return _closestPoint;
 }
 
-//Push Pull functions
+//Push Pull function
 void UHoldInteractComponent::PushPull(FVector _direction)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%f"), _direction.X);
-	FVector _displacement = vectorToPlayer + _direction;
+	FVector _displacement = Player->GetActorLocation() + vectorToPlayer;
 	Owner->SetActorLocation(FVector(_displacement.X, _displacement.Y, Owner->GetActorLocation().Z));
 }
 
