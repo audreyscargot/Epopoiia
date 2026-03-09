@@ -3,15 +3,17 @@
 
 #include "HoldInteractComponent.h"
 
+#include <gsl/pointers>
+
 #include "PlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values for this component's properties
 UHoldInteractComponent::UHoldInteractComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	
 }
-
 
 // Called when the game starts
 void UHoldInteractComponent::BeginPlay()
@@ -37,6 +39,7 @@ void UHoldInteractComponent::ActivateHold(bool _isActive, APlayerCharacter* _pla
 		
 		Player = _player;
 		Player->OnMovedDelegate.BindDynamic(this, &ThisClass::PushPull);
+		Player->OnShouldTurn.BindDynamic(this, &UHoldInteractComponent::Turn);
 		
 		//Make close Point
 		FVector _closestPoint;
@@ -54,6 +57,7 @@ void UHoldInteractComponent::ActivateHold(bool _isActive, APlayerCharacter* _pla
 	{
 		Owner->SetActorLocation(FVector(Player->GetActorLocation().X+vectorToPlayer.X, Player->GetActorLocation().Y+vectorToPlayer.Y, Owner->GetActorLocation().Z));
 		Player->OnMovedDelegate.Unbind();
+		Player->OnShouldTurn.Unbind();
 		Player = nullptr;
 	}
 }
@@ -79,8 +83,28 @@ FVector UHoldInteractComponent::GetPointCloserTo()
 //Push Pull function
 void UHoldInteractComponent::PushPull(FVector _direction)
 {
-	FVector _displacement = Player->GetActorLocation() + vectorToPlayer;
-	Owner->SetActorLocation(FVector(_displacement.X, _displacement.Y, Owner->GetActorLocation().Z));
+		FVector _displacement = Player->GetActorLocation() + vectorToPlayer;
+		Owner->SetActorLocation(FVector(_displacement.X, _displacement.Y, Owner->GetActorLocation().Z));
+}
+
+void UHoldInteractComponent::AddTurn()
+{
+	Owner->AddActorWorldRotation(FRotator (0,TurnDirection.Y + TurnDirection.X >= 0 ? -1 : 1,0));
+	RotationTemp ++;
+	if (RotationTemp > 89)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(TurnTimerHandle);
+		RotationTemp = 0;
+		UE_LOG(LogTemp, Warning, TEXT("RotationTemp = 0"));
+	}
+	
+}
+
+void UHoldInteractComponent::Turn(FVector _direction)
+{
+	TurnDirection = _direction - Owner->GetActorLocation();
+	TurnTimerHandle = UKismetSystemLibrary::K2_SetTimer(this, "AddTurn", (0.5/90), true, false, 0, 0);
+	UE_LOG(LogTemp, Warning, TEXT("%d"), TurnTimerHandle.IsValid());
 }
 
 

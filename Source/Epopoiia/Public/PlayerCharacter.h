@@ -24,6 +24,7 @@ enum class ELookMoveMode : uint8
 };
 
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnMoved, FVector, _direction);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnShouldTurn, FVector, _direction);
 
 UCLASS()
 class EPOPOIIA_API APlayerCharacter : public ACharacter
@@ -145,15 +146,15 @@ public:
 	virtual void ResetCanGridMove();
 	
 	UFUNCTION(BlueprintCallable)
-	virtual void CallDelegate(FVector _displacement);
+	virtual void CallDelegate(FVector _displacement, bool _shouldTurn);
 	
 	//Delegate OnMoved for moving objects
 	UPROPERTY(BlueprintReadWrite, Category= "Delegate")
 	FOnMoved OnMovedDelegate;
-
-	/** Handles look inputs from either controls or UI interfaces */
-	UFUNCTION(BlueprintCallable, Category="Input")
-	virtual void DoLook(float Yaw);
+	
+	//Delegate for turning objects
+	UPROPERTY(BlueprintReadWrite, Category= "Delegate")
+	FOnShouldTurn OnShouldTurn;
 	
 	/**Interaction Linetrace**/
 	UFUNCTION(BlueprintCallable, Category="Input")

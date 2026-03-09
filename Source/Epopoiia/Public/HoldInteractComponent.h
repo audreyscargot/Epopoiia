@@ -32,6 +32,15 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 	FVector vectorToPlayer;
 	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	FTimerHandle TurnTimerHandle;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	FVector TurnDirection;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	float RotationTemp;
+	
 public:	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 	bool isActiveHold = false;
@@ -47,5 +56,11 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void PushPull(FVector _direction);
+	
+	UFUNCTION()
+	virtual void Turn(FVector _direction);
+	
+	UFUNCTION()
+	virtual void AddTurn();
 	
 };

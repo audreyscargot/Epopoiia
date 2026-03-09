@@ -59,39 +59,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Interact);
 		EnhancedInputComponent->BindAction(InteractHoldAction, ETriggerEvent::Triggered, this, &APlayerCharacter::InteractHold);
 		EnhancedInputComponent->BindAction(OpenPhoneAction, ETriggerEvent::Started, this, &APlayerCharacter::OpenPhone);
 	};
 	
-}
-
-// NOT USED : TO REMOVE
-void APlayerCharacter::Look(const FInputActionValue& Value)
-{
-	
-	// if (bCanLookMove)
-	// {
-	// 	switch (LookMoveMode)
-	// 	{
-	// 	case ELookMoveMode::FreeMovement :
-	// 		FVector2D LookAxisVector = Value.Get<FVector2D>();
-	// 		DoLook(LookAxisVector.X);
-	// 		break;
-	// 	case ELookMoveMode::GridMovement :
-	// 		break;
-	// 	}
-	// 	
-	// }
-}
-
-void APlayerCharacter::DoLook(float Yaw)
-{
-	if (GetController() != nullptr)
-	{
-		AddControllerYawInput(Yaw);
-	}
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
@@ -139,7 +111,15 @@ void APlayerCharacter::DoGridMove(float Right, float Forward)
 	FVector _displacement = GetActorLocation() + _moveVector * cellSize * _moveSign;
 	if (canGridMove)
 	{
-		SmoothGridMove_Implementation(GetActorLocation(), _displacement, _timeToMove);
+		bool _shouldTurn = UKismetMathLibrary::Abs(UKismetMathLibrary::Dot_VectorVector(_moveVector, GetActorForwardVector())) < 0.2;
+		if (_shouldTurn)
+		{
+			OnShouldTurn.ExecuteIfBound(_displacement);
+		}
+		else
+		{
+			SmoothGridMove_Implementation(GetActorLocation(), _displacement, _timeToMove);
+		}
 		canGridMove = false;
 		UKismetSystemLibrary::K2_SetTimer(this, "ResetCanGridMove", _timeToMove*1.5, false, false);
 	}
@@ -156,7 +136,7 @@ void APlayerCharacter::ResetCanGridMove()
 	UE_LOG(LogTemp, Warning, TEXT("ResetCanGridMove"));
 }
 
-void APlayerCharacter::CallDelegate(FVector _displacement)
+void APlayerCharacter::CallDelegate(FVector _displacement, bool _shouldTurn)
 {
 	OnMovedDelegate.ExecuteIfBound(_displacement);
 }
