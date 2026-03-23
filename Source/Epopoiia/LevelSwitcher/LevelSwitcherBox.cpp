@@ -3,7 +3,7 @@
 
 #include "LevelSwitcherBox.h"
 
-#include "PlayerCharacter.h"
+#include "Epopoiia/Player/PlayerCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 

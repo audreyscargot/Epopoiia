@@ -6,13 +6,22 @@
 #include "GameFramework/GameModeBase.h"
 #include "EpopoiiaGameMode.generated.h"
 
-/**
- * 
- */
+class APlayerCharacter;
+
+
 UCLASS()
 class EPOPOIIA_API AEpopoiiaGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
 	AEpopoiiaGameMode();
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UDataTable* AvailableItems;
+
+public:
+	
+	UFUNCTION()
+	virtual void UseObject(int itemID);
 };

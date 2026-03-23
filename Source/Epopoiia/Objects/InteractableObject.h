@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InteractInterface.h"
+#include "Epopoiia/Interface/InteractInterface.h"
 #include "GameFramework/Actor.h"
 #include "InteractableObject.generated.h"
 
@@ -62,6 +62,12 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void FeedbackWidgetAppear();
+	
+	UFUNCTION()
+	UStaticMeshComponent* GetMesh();
+	
+	UFUNCTION()
+	virtual void SetMesh(UStaticMesh* NewMesh);
 	
 
 };

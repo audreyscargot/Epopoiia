@@ -3,7 +3,7 @@
 
 #include "DetectUserWidget.h"
 
-#include "InteractableObject.h"
+#include "Epopoiia/Objects/InteractableObject.h"
 
 void UDetectUserWidget::MakeDetectionAppear_Implementation()
 {

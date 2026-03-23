@@ -6,9 +6,9 @@
 #include "EnhancedInputSubsystemInterface.h"
 #include "GameFramework/Character.h"
 #include "InputAction.h"
-#include "MovableObject.h"
 #include "PlayerCharacter.generated.h"
 
+class UInventoryComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -56,10 +56,9 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* InteractHoldAction;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enhanced Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* PickUpAction;
 	
-	
-	
-
 
 protected:
 	
@@ -121,9 +120,16 @@ protected:
 	bool canGridMove = true;
 
 public:
+	
+	//Inventory
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInventoryComponent* Inventory;
+	
+	//Type of Movement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enum", meta = (AllowPrivateAccess = "true"))
 	ELookMoveMode LookMoveMode;
 	
+	//Get and Set
 	int GetTimeRewindAbilityLevel();
 	FTransform GetCameraRegularTransform();
 	float GetRegularTargetArmLength();
@@ -156,21 +162,25 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category= "Delegate")
 	FOnShouldTurn OnShouldTurn;
 	
-	/**Interaction Linetrace**/
+	// Interaction Linetrace
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void Interact();
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void InteractHold();
 	
-	/** Look for Interaction **/
+	// Look for Interaction
 	UFUNCTION(BlueprintCallable)
 	virtual void LookForInteract();
+	
+	//Pick Up object
+	UFUNCTION(BlueprintCallable)
+	virtual void TryPickUp();
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetCameraView(bool bIsPhoneView, FTransform CameraTransform, float ArmLength);
 	
-	/** Open Phone Function **/
+	// Open Phone Function
 	UFUNCTION(BlueprintCallable)
 	void OpenPhone();
 

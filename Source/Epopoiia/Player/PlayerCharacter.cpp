@@ -5,18 +5,20 @@
 
 #include <ranges>
 
-#include "DetectUserWidget.h"
+#include "Epopoiia/Widgets/DetectUserWidget.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "HoldInteractComponent.h"
+#include "Epopoiia/Interface/HoldInteractComponent.h"
 #include "InputActionValue.h"
-#include "InteractInterface.h"
+#include "Epopoiia/Interface/InteractInterface.h"
 #include "Blueprint/UserWidget.h"
 #include "Epopoiia/Epopoiia.h"
+#include "Epopoiia/Interface/InventoryComponent.h"
+#include "Epopoiia/Interface/PickUpInterface.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -34,6 +36,7 @@ APlayerCharacter::APlayerCharacter()
 	
 	CameraRegularTransform = CameraBoom->GetRelativeTransform();
 
+	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
 }
 
 // Called when the game starts or when spawned
@@ -62,6 +65,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Interact);
 		EnhancedInputComponent->BindAction(InteractHoldAction, ETriggerEvent::Triggered, this, &APlayerCharacter::InteractHold);
 		EnhancedInputComponent->BindAction(OpenPhoneAction, ETriggerEvent::Started, this, &APlayerCharacter::OpenPhone);
+		EnhancedInputComponent->BindAction(PickUpAction, ETriggerEvent::Triggered,this, &APlayerCharacter::TryPickUp);
 	};
 	
 }
@@ -209,6 +213,19 @@ void APlayerCharacter::LookForInteract()
 			IInteractInterface::Execute_RemoveInteractFeedback(InteractActor);
 		}
 		InteractActor = nullptr;
+	}
+}
+
+//Pick Up
+void APlayerCharacter::TryPickUp()
+{
+	if (InteractActor)
+	{
+		UPickUpInterface* _tempPickUp = InteractActor->GetComponentByClass<UPickUpInterface>();
+		if (_tempPickUp)
+		{
+			_tempPickUp->PickedUp(this);
+		}
 	}
 }
 

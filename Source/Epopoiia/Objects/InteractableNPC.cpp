@@ -3,7 +3,7 @@
 
 #include "InteractableNPC.h"
 
-#include "PlayerCharacter.h"
+#include "Epopoiia/Player/PlayerCharacter.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/KismetMathLibrary.h"
 

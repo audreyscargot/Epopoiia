@@ -3,9 +3,8 @@
 
 #include "HoldInteractComponent.h"
 
-#include <gsl/pointers>
-
-#include "PlayerCharacter.h"
+#include "Epopoiia/Objects/InteractableObject.h"
+#include "Epopoiia/Player/PlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 

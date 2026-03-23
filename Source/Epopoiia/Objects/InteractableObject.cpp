@@ -3,9 +3,9 @@
 
 #include "InteractableObject.h"
 
-#include "DetectUserWidget.h"
+#include "Epopoiia/Widgets/DetectUserWidget.h"
 #include "Components/WidgetComponent.h"
-#include "InteractInterface.h"
+#include "Epopoiia/Interface/InteractInterface.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -93,6 +93,17 @@ void AInteractableObject::RemoveInteractFeedback_Implementation()
 void AInteractableObject::FeedbackWidgetAppear()
 {
 	if (UDetectUserWidget* DetectWidget = Cast<UDetectUserWidget>(InteractWidget->GetWidget())) DetectWidget->MakeDetectionAppear();
+}
+
+//Get Set Mesh
+UStaticMeshComponent* AInteractableObject::GetMesh()
+{
+	return Mesh;
+}
+
+void AInteractableObject::SetMesh(UStaticMesh* NewMesh)
+{
+	Mesh->SetStaticMesh(NewMesh);
 }
 
 

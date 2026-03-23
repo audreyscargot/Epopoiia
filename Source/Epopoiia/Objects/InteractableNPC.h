@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DetectUserWidget.h"
+#include "Epopoiia/Widgets/DetectUserWidget.h"
 #include "InteractableObject.h"
 #include "InteractableNPC.generated.h"
 

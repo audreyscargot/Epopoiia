@@ -3,7 +3,7 @@
 
 #include "FixableObject.h"
 
-#include "PlayerCharacter.h"
+#include "Epopoiia/Player/PlayerCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
 
