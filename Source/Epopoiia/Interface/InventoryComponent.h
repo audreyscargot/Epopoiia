@@ -6,6 +6,7 @@
 #include "Epopoiia/Core/EpopoiiaGameMode.h"
 #include "InventoryComponent.generated.h"
 
+class UBaseWidget;
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnUseItem, int, itemID);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -34,6 +35,12 @@ protected:
 	
 	UPROPERTY()
 	AEpopoiiaGameMode* gameMode;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowedPrivateAccess = true))
+	UBaseWidget* InventoryWidget;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowedPrivateAccess = true))
+	TSubclassOf<UBaseWidget> InventoryWidgetClass;
 
 public:	
 	
@@ -48,6 +55,9 @@ public:
 	
 	UFUNCTION()
 	virtual bool CheckHasSpace();
+	
+	UFUNCTION()
+	virtual void OpenInventory();
 	
 	// Use Object Functions
 	UFUNCTION(BlueprintCallable)

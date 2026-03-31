@@ -3,6 +3,9 @@
 
 #include "Epopoiia/Interface/InventoryComponent.h"
 
+#include "Blueprint/UserWidget.h"
+#include "Epopoiia/Widgets/BaseWidget.h"
+
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
@@ -43,6 +46,12 @@ bool UInventoryComponent::CheckHasSpace()
 		return false;
 	}
 	return true;
+}
+
+void UInventoryComponent::OpenInventory()
+{
+	InventoryWidget = Cast<UBaseWidget>(CreateWidget(GetWorld(), InventoryWidgetClass, "Inventory"));
+	InventoryWidget->AddToViewport();
 }
 
 void UInventoryComponent::UseItem(int itemID)
