@@ -21,7 +21,6 @@ UInventoryComponent::UInventoryComponent()
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Inventory.SetNum(inventorySlots);
 	
 	gameMode = Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode());
 	OnUseItem.BindDynamic(gameMode, &AEpopoiiaGameMode::UseObject);
@@ -41,8 +40,9 @@ void UInventoryComponent::RemoveFromInventory(int itemID)
 
 bool UInventoryComponent::CheckHasSpace()
 {
-	if (Inventory.Last() >= inventorySlots)
+	if (Inventory.Num() >= inventorySlots)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Inventory is %d"), Inventory.Num());
 		return false;
 	}
 	return true;

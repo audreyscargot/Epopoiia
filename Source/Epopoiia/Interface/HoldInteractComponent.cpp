@@ -99,6 +99,7 @@ void UHoldInteractComponent::AddTurn()
 	
 }
 
+//Turn furniture function
 void UHoldInteractComponent::Turn(FVector _direction)
 {
 	TurnDirection = _direction - Owner->GetActorLocation();

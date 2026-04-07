@@ -6,6 +6,7 @@
 #include "UObject/Interface.h"
 #include "InteractInterface.generated.h"
 
+class APlayerCharacter;
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI, Blueprintable)
 class UInteractInterface : public UInterface

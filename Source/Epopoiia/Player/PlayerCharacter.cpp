@@ -106,6 +106,7 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 	}
 }
 
+//Grid move system when pushing/pulling furniture (depends on cellSize)
 void APlayerCharacter::DoGridMove(float Right, float Forward)
 {
 	
@@ -129,6 +130,7 @@ void APlayerCharacter::DoGridMove(float Right, float Forward)
 	}
 }
 
+//Blueprint implemented function for movement timeline
 void APlayerCharacter::SmoothGridMove_Implementation(FVector _basePosition, FVector _displacement, float _movementSpeed)
 {
 	SmoothGridMove(_basePosition, _displacement, _movementSpeed);
@@ -146,7 +148,6 @@ void APlayerCharacter::CallDelegate(FVector _displacement, bool _shouldTurn)
 }
 
 // Interaction System
-
 void APlayerCharacter::Interact()
 {
 	if (InteractActor)
@@ -177,6 +178,7 @@ void APlayerCharacter::InteractHold()
 	}
 }
 
+//Tick function, linetrace to check for interactable interface
 void APlayerCharacter::LookForInteract()
 {
 	FVector TraceStart = GetActorLocation();
@@ -237,7 +239,7 @@ void APlayerCharacter::SetCameraView_Implementation(bool bIsPhoneView, FTransfor
 	
 }
 
-//Phone
+//Phone system
 void APlayerCharacter::OpenPhone()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Open Phone"));
