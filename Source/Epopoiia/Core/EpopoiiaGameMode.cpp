@@ -11,7 +11,7 @@
 
 const int startingWidth = 15; //DO NOT USE ODD NUMBERS (for perfect middle)
 const int startingDepth = 11;
-const int cellSize = 75;
+const int cellSize = 150;
 
 AEpopoiiaGameMode::AEpopoiiaGameMode()
 {
@@ -119,6 +119,7 @@ void AEpopoiiaGameMode::SpawnObject(FItemStruct& _itemInfo)
 		if (_spawnToY >= GetGridMinY() && _spawnToY <= GetGridMaxY()) //check if spawnable (in between grid availables cell)
 		{
 			bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, _playerCell, _spawnToCell, ECC_Visibility, QueryParams);
+			DrawDebugLine(GetWorld(), _playerCell, _spawnToCell, bHit ? FColor::Green : FColor::Red, false, 1.0f, 0, 1.0f);
 			_canSpawn = !bHit;
 		}
 	}

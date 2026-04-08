@@ -1,0 +1,64 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Engine/GameInstance.h"
+#include "GameInstanceMain.generated.h"
+
+class USaveGameEpopoiia;
+//struct to register all elements placed in temples and if they are fixed
+USTRUCT(BlueprintType)
+struct FFurnitureState
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int index;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	FVector location;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	bool isFixed;
+	
+	
+};
+
+USTRUCT(BlueprintType)
+struct FShopState
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int index;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	bool state;
+};
+
+UCLASS()
+class EPOPOIIA_API UGameInstanceMain : public UGameInstance
+{
+	GENERATED_BODY()
+	
+	protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<FFurnitureState> TempleState;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<int> playerInventory;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int seed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<FShopState> shopState;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	USaveGameEpopoiia* currentSaveGame;
+	
+public :
+	virtual void Init() override;
+	
+	virtual void SaveAll();
+	
+};
