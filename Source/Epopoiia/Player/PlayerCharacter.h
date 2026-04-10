@@ -8,6 +8,14 @@
 #include "InputAction.h"
 #include "PlayerCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class PushPullState : uint8
+{
+	PUSH = 0 UMETA(DisplayName = "Push"),
+	PULL = 1 UMETA(DisplayName = "Pull"),
+	DEFAULT = 2 UMETA(DisplayName = "Default"),
+};
+
 class UInventoryComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -118,6 +126,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Grid")
 	bool canGridMove = true;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	PushPullState currentState = PushPullState::DEFAULT;
 
 public:
 	
