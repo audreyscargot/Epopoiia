@@ -115,8 +115,12 @@ void APlayerCharacter::DoGridMove(float Right, float Forward)
 	float _timeToMove = 0.5;
 	FVector _moveVector = Forward != 0 ? FVector(1,0,0) : FVector(0,1,0);
 	float _moveSign = UKismetMathLibrary::SignOfFloat(UKismetMathLibrary::Abs(Forward) > 0.2 ? Forward : Right);
-	if (Right <= 0 || Forward <= 0) currentState = PushPullState::PULL;
+	
+	//Animation state function
+	if (Right <= 0 && Forward <= 0) currentState = PushPullState::PULL;
 	else currentState = PushPullState::PUSH;
+	
+	UE_LOG(LogTemp, Warning, TEXT("Forward %f"), Forward);
 	FVector _displacement = GetActorLocation() + _moveVector * cellSize * _moveSign;
 	if (canGridMove)
 	{

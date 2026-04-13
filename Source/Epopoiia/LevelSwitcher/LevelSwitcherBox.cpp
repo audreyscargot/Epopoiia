@@ -5,6 +5,9 @@
 
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "Components/BoxComponent.h"
+#include "Epopoiia/Core/GameInstanceMain.h"
+#include "Epopoiia/Objects/FixableObject.h"
+#include "Epopoiia/Objects/InteractableObject.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -42,9 +45,22 @@ void ALevelSwitcherBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 
 void ALevelSwitcherBox::SwitchWorld()
 {
+	if (isSavingBox)
+	{
+		SendToSave();
+	}
 	FString Options = "";
 	LevelToOpen.LoadSynchronous();
 	if (!LevelToOpen.IsNull()) UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),LevelToOpen , true, Options);
 	UE_LOG(LogTemp, Warning, TEXT("%d"), LevelToOpen.IsValid());
+}
+
+void ALevelSwitcherBox::SendToSave()
+{
+	UGameInstanceMain* GI = Cast<UGameInstanceMain>(GetGameInstance());
+	if (GI)
+	{
+		GI->SaveTemple();
+	}
 }
 

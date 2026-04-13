@@ -25,6 +25,7 @@ void AFixableObject::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 void AFixableObject::Repair()
 {
 	bIsInteractable = false;
+	isFixed = true;
 	InteractWidget->SetVisibility(false);
 	UE_LOG(LogTemp, Warning, TEXT("Fixing !"))
 	Mesh->SetStaticMesh(RepairedMesh);

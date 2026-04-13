@@ -52,7 +52,7 @@ void AInteractableObject::OnConstruction(const FTransform& Transform)
 FVector AInteractableObject::MakeInteractPoints(FVector _direction)
 {
 	FVector InteractPoint;
-	float value = 50.0;
+	float value = 100.0;
 	InteractPoint.X = (_direction * value).X;
 	InteractPoint.Y = (_direction * value).Y;
 	InteractPoint.Z = -BoxComponent->Bounds.BoxExtent.Z;

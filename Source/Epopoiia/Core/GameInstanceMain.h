@@ -61,4 +61,13 @@ public :
 	
 	virtual void SaveAll();
 	
+	TArray<FFurnitureState> GetTempleState();
+	void SetTempleState(TArray<FFurnitureState> templeState);
+	
+	int GetSeed();
+	void SetSeed(int _newSeed);
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SaveTemple();
+	
 };

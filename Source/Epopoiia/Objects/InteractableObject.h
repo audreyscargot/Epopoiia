@@ -34,12 +34,17 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bIsInteractable = true;
 	
+
+	
 	
 	
 public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FVector> InteractPoints = {GetActorLocation(), GetActorLocation(), GetActorLocation(), GetActorLocation()} ;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	int ID;
 	
 	// Sets default values for this actor's properties
 	AInteractableObject();

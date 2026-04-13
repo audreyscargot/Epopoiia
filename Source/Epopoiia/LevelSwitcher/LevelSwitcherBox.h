@@ -25,7 +25,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
 	TSoftObjectPtr<UWorld> LevelToOpen;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
+	bool isSavingBox;
 
 public:	
 	// Called every frame
@@ -36,5 +38,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SwitchWorld();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SendToSave();
 
 };

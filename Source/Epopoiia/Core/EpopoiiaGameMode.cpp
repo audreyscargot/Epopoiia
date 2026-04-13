@@ -3,11 +3,13 @@
 
 #include "EpopoiiaGameMode.h"
 
+#include "GameInstanceMain.h"
 #include "ItemStruct.h"
 #include "Components/CapsuleComponent.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetStringLibrary.h"
 
 const int startingWidth = 15; //DO NOT USE ODD NUMBERS (for perfect middle)
 const int startingDepth = 11;
@@ -22,6 +24,7 @@ void AEpopoiiaGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	CreateGrid(startingWidth, startingDepth);
+	makeSeed();
 }
 
 //Getters
@@ -139,4 +142,17 @@ void AEpopoiiaGameMode::SpawnObject(FItemStruct& _itemInfo)
 	FRotator _rotation = FRotator(0, 0, 0);
 	FActorSpawnParameters _spawnParams;
 	if (_classToSpawn && _canSpawn) GetWorld()->SpawnActor<AInteractableObject>(_classToSpawn, _spawnToCell, _rotation, _spawnParams);
+}
+
+void AEpopoiiaGameMode::makeSeed()
+{
+	FDateTime _now = UKismetMathLibrary::GetDate(UKismetMathLibrary::Now());
+	FString _seed = FString::Printf(TEXT("%i%i%i") , _now.GetYear(), _now.GetMonth(), _now.GetDay());
+	int _newSeed = UKismetStringLibrary::Conv_StringToInt(_seed);
+	UGameInstanceMain* _GI = Cast<UGameInstanceMain>(GetGameInstance());
+	if (_GI->GetSeed() != _newSeed)
+	{
+		_GI->SetSeed(_newSeed);
+		UE_LOG(LogTemp, Warning, TEXT("New Seed: %i"), _GI->GetSeed());
+	}
 }

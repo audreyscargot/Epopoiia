@@ -28,6 +28,9 @@ private:
 	UStaticMesh* RepairedMesh;
 	
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties", meta = (AllowPrivateAccess = true))
+	bool isFixed = false;
+	
 	AFixableObject();
 	
 	virtual void Interact_Implementation(APlayerCharacter* InstigatorPawn) override;

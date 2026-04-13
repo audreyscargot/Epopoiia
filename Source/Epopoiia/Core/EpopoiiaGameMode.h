@@ -67,4 +67,7 @@ public:
 	
 	UFUNCTION()
 	virtual void SpawnObject(FItemStruct& _itemInfo);
+	
+	UFUNCTION()
+	virtual void makeSeed();
 };
