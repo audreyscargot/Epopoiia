@@ -36,10 +36,13 @@ void AWorldManager::Tick(float DeltaTime)
 
 void AWorldManager::ManageWorld()
 {
+	//Place all registered objects
 	GameInstance = Cast<UGameInstanceMain>(UGameplayStatics::GetGameInstance(this));
 	WorldState = GameInstance->GetTempleState();
+	UE_LOG(LogTemp, Warning, TEXT("ManageWorld"))
 	for (auto i : WorldState)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Object placed"))
 		FName s = UKismetStringLibrary::Conv_StringToName(UKismetStringLibrary::Conv_IntToString(i.index));
 		FItemStruct* _itemStruct = nullptr;
 		if (DataTable) _itemStruct = DataTable->FindRow<FItemStruct>(s, "", true);

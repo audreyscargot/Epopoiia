@@ -30,6 +30,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	USaveGameEpopoiia* currentSaveGame;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<FNPCsQuest> questsOfDay;
+	
 public:
 	
 	TArray<FFurnitureState> GetTempleState();
@@ -41,7 +44,9 @@ public:
 	int GetSeed();
 	void SetSeed(int _seed);
 	
-	
 	TArray<FShopState> GetShopState();
 	void SetShopState(TArray<FShopState> _shopState);
+	
+	TArray<FNPCsQuest> GetQuests();
+	void SetQuests(TArray<FNPCsQuest> _quests);
 };

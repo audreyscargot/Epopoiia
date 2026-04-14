@@ -43,4 +43,14 @@ void USaveGameEpopoiia::SetShopState(TArray<FShopState> _shopState)
 	shopState = _shopState;
 }
 
+TArray<FNPCsQuest> USaveGameEpopoiia::GetQuests()
+{
+	return questsOfDay;
+}
+
+void USaveGameEpopoiia::SetQuests(TArray<FNPCsQuest> _quests)
+{
+	questsOfDay = _quests;
+}
+
 

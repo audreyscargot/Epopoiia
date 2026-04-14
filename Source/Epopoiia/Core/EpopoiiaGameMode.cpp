@@ -154,5 +154,6 @@ void AEpopoiiaGameMode::makeSeed()
 	{
 		_GI->SetSeed(_newSeed);
 		UE_LOG(LogTemp, Warning, TEXT("New Seed: %i"), _GI->GetSeed());
+		_GI->ResetGameInstance();
 	}
 }

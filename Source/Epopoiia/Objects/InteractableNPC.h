@@ -5,11 +5,18 @@
 #include "CoreMinimal.h"
 #include "Epopoiia/Widgets/DetectUserWidget.h"
 #include "InteractableObject.h"
+#include "Epopoiia/Core/GameInstanceMain.h"
 #include "InteractableNPC.generated.h"
 
-/**
- * 
- */
+USTRUCT(BlueprintType)
+struct FGreetings 
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> Greetings;
+};
+
 UCLASS()
 class EPOPOIIA_API AInteractableNPC : public AInteractableObject
 {
@@ -38,10 +45,48 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties")
 	FRotator regularRotator;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties")
+	int questDailyQuantity;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties")
+	int npcID;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Quest")
+	FNPCsQuest Quests;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Quest")
+	FName activeQuest;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Quest")
+	int index;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "GameMode")
+	UGameInstanceMain* GameInstance;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "GameMode")
+	UDataTable* availableQuests;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Dialogue")
+	FGreetings greetings;
+	
 public:
 	AInteractableNPC();
 	
 	void Interact_Implementation(APlayerCharacter* InstigatorPawn) override;
+	
+	void BeginPlay() override;
+	
+	UFUNCTION()
+	void MakeQuests();
+	
+	UFUNCTION()
+	void AssignQuests();
+	
+	UFUNCTION()
+	void SetActiveQuest();
+	
+	UFUNCTION()
+	void FinishQuest();
 	
 	UFUNCTION(BlueprintCallable)
 	void Dialogue();

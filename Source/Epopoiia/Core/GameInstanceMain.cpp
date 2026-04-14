@@ -29,6 +29,7 @@ void UGameInstanceMain::Init()
 	{
 		currentSaveGame = Cast<USaveGameEpopoiia>(UGameplayStatics::LoadGameFromSlot(saveName, 0));
 		UE_LOG(LogTemp, Warning, TEXT("Save Loaded"));
+		setSavedVariables();
 	}
 }
 
@@ -51,6 +52,21 @@ int UGameInstanceMain::GetSeed()
 void UGameInstanceMain::SetSeed(int _newSeed)
 {
 	seed = _newSeed;
+}
+
+TArray<FNPCsQuest> UGameInstanceMain::GetQuestsOfDay()
+{
+	return questsOfDay;
+}
+
+void UGameInstanceMain::AddQuestsOfDay(FNPCsQuest _quest)
+{
+	questsOfDay.Add(_quest);
+}
+
+void UGameInstanceMain::UpdateQuestsOfDay(FNPCsQuest _quest)
+{
+	questsOfDay[_quest.npcID] = _quest;
 }
 
 
@@ -104,6 +120,11 @@ void UGameInstanceMain::SaveTemple()
 	
 }
 
+void UGameInstanceMain::SaveQuests()
+{
+	currentSaveGame->SetQuests(questsOfDay);
+}
+
 void UGameInstanceMain::SaveGeneral()
 {
 	if (currentSaveGame)
@@ -112,9 +133,27 @@ void UGameInstanceMain::SaveGeneral()
 		SaveInventory();
 		SaveSeed();
 		SaveShopState();
+		SaveQuests();
 	}
 	
 	//TODO : Add quests save (NPC state ?)
+}
+
+void UGameInstanceMain::ResetGameInstance()
+{
+	questsOfDay.Empty();
+	shopState.Empty();
+}
+
+void UGameInstanceMain::setSavedVariables()
+{
+	if (currentSaveGame)
+	{
+		playerInventory = currentSaveGame->GetPlayerInventory();
+		TempleState = currentSaveGame->GetTempleState();
+		shopState = currentSaveGame->GetShopState();
+		questsOfDay = currentSaveGame->GetQuests();
+	}
 }
 
 

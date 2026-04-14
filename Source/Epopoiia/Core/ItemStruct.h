@@ -7,6 +7,14 @@
 
 class AInteractableObject;
 
+UENUM(BlueprintType)
+enum class ESpirit : uint8
+{
+	None = 0,
+	Korrigan = 1 UMETA(DisplayName = "Korrigan"),
+	Willowisp = 2 UMETA(DisplayName = "Will'o the Wisp"),
+};
+
 USTRUCT(BlueprintType)
 struct FItemStruct : public FTableRowBase
 {
@@ -26,4 +34,18 @@ struct FItemStruct : public FTableRowBase
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* Icon;
+};
+
+USTRUCT(BlueprintType)
+struct FQuestsInfo : public FTableRowBase
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ESpirit Spirit = ESpirit::None;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> DialogueSentences;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> ThinkingBubbles;
 };

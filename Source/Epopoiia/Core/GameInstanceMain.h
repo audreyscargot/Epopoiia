@@ -13,27 +13,36 @@ USTRUCT(BlueprintType)
 struct FFurnitureState
 {
 	GENERATED_BODY()
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
 	int index;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
 	FVector location;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
 	bool isFixed;
-	
-	
 };
 
 USTRUCT(BlueprintType)
 struct FShopState
 {
 	GENERATED_BODY()
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | ShopState")
 	int index;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | ShopState")
 	bool state;
+};
+
+USTRUCT(BlueprintType)
+struct FNPCsQuest
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | NPCQuest")
+	int npcID;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | NPCQuest")
+	TArray<FName> quest; //int -> quests ID, bool -> isQuestFinished ?
 };
 
 UCLASS()
@@ -60,6 +69,9 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	USaveGameEpopoiia* currentSaveGame;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<FNPCsQuest> questsOfDay;
+	
 public :
 	virtual void Init() override;
 	
@@ -68,6 +80,10 @@ public :
 	
 	int GetSeed();
 	void SetSeed(int _newSeed);
+	
+	TArray<FNPCsQuest> GetQuestsOfDay();
+	void AddQuestsOfDay(FNPCsQuest _quest);
+	void UpdateQuestsOfDay(FNPCsQuest _quest);
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SaveInventory();
@@ -82,6 +98,15 @@ public :
 	virtual void SaveTemple();
 	
 	UFUNCTION(BlueprintCallable)
+	virtual void SaveQuests();
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void SaveGeneral();
+	
+	UFUNCTION()
+	virtual void ResetGameInstance();
+	
+	UFUNCTION()
+	virtual void setSavedVariables();
 	
 };

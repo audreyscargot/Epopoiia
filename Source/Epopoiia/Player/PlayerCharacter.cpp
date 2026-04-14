@@ -104,34 +104,35 @@ void APlayerCharacter::DoMove(float Right, float Forward)
 		
 		AddMovementInput(ForwardDirection, Forward);
 		AddMovementInput(RightDirection, Right);
-		
 	}
 }
 
 //Grid move system when pushing/pulling furniture (depends on cellSize)
 void APlayerCharacter::DoGridMove(float Right, float Forward)
 {
+	if (Right == 0 && Forward == 0) currentState = PushPullState::DEFAULT;
 	
 	float _timeToMove = 0.5;
 	FVector _moveVector = Forward != 0 ? FVector(1,0,0) : FVector(0,1,0);
 	float _moveSign = UKismetMathLibrary::SignOfFloat(UKismetMathLibrary::Abs(Forward) > 0.2 ? Forward : Right);
 	
-	//Animation state function
-	if (Right <= 0 && Forward <= 0) currentState = PushPullState::PULL;
-	else currentState = PushPullState::PUSH;
-	
 	UE_LOG(LogTemp, Warning, TEXT("Forward %f"), Forward);
 	FVector _displacement = GetActorLocation() + _moveVector * cellSize * _moveSign;
+	
 	if (canGridMove)
 	{
-		bool _shouldTurn = UKismetMathLibrary::Abs(UKismetMathLibrary::Dot_VectorVector(_moveVector, GetActorForwardVector())) < 0.2;
+		bool _shouldTurn = UKismetMathLibrary::Abs(UKismetMathLibrary::Dot_VectorVector(_moveVector, GetActorForwardVector())) < 0.01;
 		if (_shouldTurn)
 		{
+			currentState = PushPullState::DEFAULT;
 			OnShouldTurn.ExecuteIfBound(_displacement);
 		}
 		else
 		{
 			SmoothGridMove_Implementation(GetActorLocation(), _displacement, _timeToMove);
+			//Animation state function
+			if (UKismetMathLibrary::Dot_VectorVector(_moveVector*_moveSign, GetMesh()->GetForwardVector()) < 0) currentState = PushPullState::PULL;
+			else currentState = PushPullState::PUSH;
 		}
 		canGridMove = false;
 		UKismetSystemLibrary::K2_SetTimer(this, "ResetCanGridMove", _timeToMove*1.5, false, false);
