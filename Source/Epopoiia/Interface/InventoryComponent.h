@@ -59,6 +59,9 @@ public:
 	UFUNCTION()
 	virtual void OpenInventory();
 	
+	UFUNCTION()
+	TArray<int> GetInventory();
+	
 	// Use Object Functions
 	UFUNCTION(BlueprintCallable)
 	virtual void UseItem(int itemID);

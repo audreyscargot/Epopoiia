@@ -54,6 +54,11 @@ void UInventoryComponent::OpenInventory()
 	InventoryWidget->AddToViewport();
 }
 
+TArray<int> UInventoryComponent::GetInventory()
+{
+	return Inventory;
+}
+
 void UInventoryComponent::UseItem(int itemID)
 {
 	OnUseItem.ExecuteIfBound(itemID);

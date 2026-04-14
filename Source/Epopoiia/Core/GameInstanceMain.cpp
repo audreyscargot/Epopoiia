@@ -6,12 +6,13 @@
 #include "GroomVisualizationData.h"
 #include "GameFramework/SaveGame.h"
 #include "SaveGameEpopoiia.h"
+#include "Epopoiia/Interface/InventoryComponent.h"
 #include "Epopoiia/Objects/FixableObject.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Kismet/GameplayStatics.h"
 
-const FString saveName = FString("EpopoiiaSave");
-const TSubclassOf<USaveGameEpopoiia> saveGameClass;
+const FString saveName = "EpopoiiaSave";
+const TSubclassOf<USaveGameEpopoiia> saveGameClass = USaveGameEpopoiia::StaticClass();
 
 void UGameInstanceMain::Init()
 {
@@ -22,17 +23,15 @@ void UGameInstanceMain::Init()
 	{
 		currentSaveGame = Cast<USaveGameEpopoiia>(UGameplayStatics::CreateSaveGameObject(saveGameClass));
 		UGameplayStatics::SaveGameToSlot(currentSaveGame, saveName, 0);
+		UE_LOG(LogTemp, Warning, TEXT("Save Created"));
 	}
 	else
 	{
 		currentSaveGame = Cast<USaveGameEpopoiia>(UGameplayStatics::LoadGameFromSlot(saveName, 0));
-	} 
+		UE_LOG(LogTemp, Warning, TEXT("Save Loaded"));
+	}
 }
 
-void UGameInstanceMain::SaveAll()
-{
-	
-}
 
 TArray<FFurnitureState> UGameInstanceMain::GetTempleState()
 {
@@ -54,6 +53,27 @@ void UGameInstanceMain::SetSeed(int _newSeed)
 	seed = _newSeed;
 }
 
+
+//--------SAVE FUNCTIONS-----------
+
+void UGameInstanceMain::SaveInventory()
+{
+	player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
+	TSubclassOf<UInventoryComponent> inventoryClass = UInventoryComponent::StaticClass();
+	playerInventory = Cast<UInventoryComponent>(player->GetComponentByClass(inventoryClass))->GetInventory();
+	currentSaveGame->SetPlayerInventory(playerInventory);
+}
+
+void UGameInstanceMain::SaveSeed()
+{
+	currentSaveGame->SetSeed(seed);
+}
+
+void UGameInstanceMain::SaveShopState()
+{
+	currentSaveGame->SetShopState(shopState);
+}
+
 void UGameInstanceMain::SaveTemple()
 {
 	//Registering all interactables actors in the scene
@@ -63,7 +83,7 @@ void UGameInstanceMain::SaveTemple()
 	for (AActor* Actor : _actorInScene)
 	{
 		AInteractableObject* _objectTemp = Cast<AInteractableObject>(Actor);
-		if (!_objectTemp)
+		if (_objectTemp)
 		{
 			_objectsInScene.Add(_objectTemp);
 		}
@@ -81,6 +101,20 @@ void UGameInstanceMain::SaveTemple()
 	
 	TempleState = _currentFurnitureStates;
 	UE_LOG(LogTemp, Warning, TEXT("Saved"));
+	
+}
+
+void UGameInstanceMain::SaveGeneral()
+{
+	if (currentSaveGame)
+	{
+		currentSaveGame->SetTempleState(TempleState);
+		SaveInventory();
+		SaveSeed();
+		SaveShopState();
+	}
+	
+	//TODO : Add quests save (NPC state ?)
 }
 
 

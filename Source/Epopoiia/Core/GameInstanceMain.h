@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Epopoiia/Player/PlayerCharacter.h"
 #include "GameInstanceMain.generated.h"
 
 class USaveGameEpopoiia;
@@ -41,6 +42,9 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	GENERATED_BODY()
 	
 	protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main")
+	APlayerCharacter* player;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	TArray<FFurnitureState> TempleState;
 	
@@ -59,8 +63,6 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 public :
 	virtual void Init() override;
 	
-	virtual void SaveAll();
-	
 	TArray<FFurnitureState> GetTempleState();
 	void SetTempleState(TArray<FFurnitureState> templeState);
 	
@@ -68,6 +70,18 @@ public :
 	void SetSeed(int _newSeed);
 	
 	UFUNCTION(BlueprintCallable)
+	virtual void SaveInventory();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SaveSeed();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SaveShopState();
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void SaveTemple();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SaveGeneral();
 	
 };

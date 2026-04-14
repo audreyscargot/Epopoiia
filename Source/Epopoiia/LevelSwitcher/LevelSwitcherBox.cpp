@@ -45,10 +45,7 @@ void ALevelSwitcherBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 
 void ALevelSwitcherBox::SwitchWorld()
 {
-	if (isSavingBox)
-	{
-		SendToSave();
-	}
+	SendToSave();
 	FString Options = "";
 	LevelToOpen.LoadSynchronous();
 	if (!LevelToOpen.IsNull()) UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),LevelToOpen , true, Options);
@@ -58,9 +55,10 @@ void ALevelSwitcherBox::SwitchWorld()
 void ALevelSwitcherBox::SendToSave()
 {
 	UGameInstanceMain* GI = Cast<UGameInstanceMain>(GetGameInstance());
-	if (GI)
+	if (GI && isSavingBox)
 	{
 		GI->SaveTemple();
 	}
+	GI->SaveGeneral();
 }
 

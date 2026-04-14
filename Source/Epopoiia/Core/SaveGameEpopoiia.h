@@ -41,6 +41,7 @@ public:
 	int GetSeed();
 	void SetSeed(int _seed);
 	
+	
 	TArray<FShopState> GetShopState();
 	void SetShopState(TArray<FShopState> _shopState);
 };
