@@ -44,7 +44,7 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	GetController()->SetControlRotation(FRotator (0,0,0));
-	
+	GameMode = Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode());
 }
 
 // Called every frame
@@ -116,7 +116,6 @@ void APlayerCharacter::DoGridMove(float Right, float Forward)
 	FVector _moveVector = Forward != 0 ? FVector(1,0,0) : FVector(0,1,0);
 	float _moveSign = UKismetMathLibrary::SignOfFloat(UKismetMathLibrary::Abs(Forward) > 0.2 ? Forward : Right);
 	
-	UE_LOG(LogTemp, Warning, TEXT("Forward %f"), Forward);
 	FVector _displacement = GetActorLocation() + _moveVector * cellSize * _moveSign;
 	
 	if (canGridMove)
@@ -125,14 +124,19 @@ void APlayerCharacter::DoGridMove(float Right, float Forward)
 		if (_shouldTurn)
 		{
 			currentState = PushPullState::DEFAULT;
-			OnShouldTurn.ExecuteIfBound(_displacement);
+			OnShouldTurn.ExecuteIfBound(_moveVector*_moveSign);
 		}
 		else
 		{
-			SmoothGridMove_Implementation(GetActorLocation(), _displacement, _timeToMove);
-			//Animation state function
-			if (UKismetMathLibrary::Dot_VectorVector(_moveVector*_moveSign, GetMesh()->GetForwardVector()) < 0) currentState = PushPullState::PULL;
-			else currentState = PushPullState::PUSH;
+			if (_displacement.X > GameMode->GetGridMinX() && _displacement.X < GameMode->GetGridMaxX() && _displacement.Y > GameMode->GetGridMinY() && _displacement.Y < GameMode->GetGridMaxY())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Y Grid %d"), GameMode->GetGridMinY());
+				UE_LOG(LogTemp, Warning, TEXT("displacement %f"), _displacement.Y);
+				SmoothGridMove_Implementation(GetActorLocation(), _displacement, _timeToMove);
+				//Animation state function
+				if (UKismetMathLibrary::Dot_VectorVector(_moveVector*_moveSign, GetMesh()->GetForwardVector()) < 0) currentState = PushPullState::PULL;
+				else currentState = PushPullState::PUSH;
+			}
 		}
 		canGridMove = false;
 		UKismetSystemLibrary::K2_SetTimer(this, "ResetCanGridMove", _timeToMove*1.5, false, false);
@@ -148,7 +152,6 @@ void APlayerCharacter::SmoothGridMove_Implementation(FVector _basePosition, FVec
 void APlayerCharacter::ResetCanGridMove()
 {
 	canGridMove = true;
-	UE_LOG(LogTemp, Warning, TEXT("ResetCanGridMove"));
 }
 
 void APlayerCharacter::CallDelegate(FVector _displacement, bool _shouldTurn)
@@ -167,7 +170,6 @@ void APlayerCharacter::Interact()
 
 void APlayerCharacter::InteractHold()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Hold Started"));
 	LookMoveMode = ELookMoveMode::FreeMovement;
 	if (InteractActor)
 	{

@@ -8,6 +8,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+const APlayerCharacter* player = nullptr;
+
 // Sets default values for this component's properties
 UHoldInteractComponent::UHoldInteractComponent()
 {
@@ -88,21 +90,50 @@ void UHoldInteractComponent::PushPull(FVector _direction)
 
 void UHoldInteractComponent::AddTurn()
 {
-	Owner->AddActorWorldRotation(FRotator (0,TurnDirection.Y + TurnDirection.X >= 0 ? -1 : 1,0));
+	if (Player)
+	{
+		player = Player;
+	}
+	if (player)
+	{
+		int _rot = UKismetMathLibrary::Round(player->GetActorRotation().Yaw);
+		UE_LOG(LogTemp, Warning, TEXT("%i"), _rot);
+		switch (UKismetMathLibrary::Round(player->GetActorRotation().Yaw))
+		{
+		case 0 :
+			Owner->AddActorLocalRotation(FRotator (0,(TurnDirection.Y + TurnDirection.X) >= 0 ? -1 : 1,0));
+			break;
+		case 90 :
+			Owner->AddActorLocalRotation(FRotator (0,(TurnDirection.Y + TurnDirection.X) >= 0 ? 1 : -1,0));
+			break;
+		case -90 :
+			Owner->AddActorLocalRotation(FRotator (0,(TurnDirection.Y + TurnDirection.X) >= 0 ? -1 : 1,0));
+			break;
+		case 180 :
+			Owner->AddActorLocalRotation(FRotator (0,(TurnDirection.Y + TurnDirection.X) >= 0 ? 1 : -1,0));
+			break;
+		default :
+			break;
+		}
+	}
 	RotationTemp ++;
 	if (RotationTemp > 89)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(TurnTimerHandle);
 		RotationTemp = 0;
-		UE_LOG(LogTemp, Warning, TEXT("RotationTemp = 0"));
+		player = nullptr;
 	}
 	
 }
 
-//Turn furniture function
+
+/**
+ * Turn furniture function
+ * @param _direction vecteur de direction
+ */
 void UHoldInteractComponent::Turn(FVector _direction)
 {
-	TurnDirection = _direction - Owner->GetActorLocation();
+	TurnDirection = _direction;
 	TurnTimerHandle = UKismetSystemLibrary::K2_SetTimer(this, "AddTurn", (0.5/90), true, false, 0, 0);
 	UE_LOG(LogTemp, Warning, TEXT("%d"), TurnTimerHandle.IsValid());
 }

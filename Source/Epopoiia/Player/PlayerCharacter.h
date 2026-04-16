@@ -8,6 +8,8 @@
 #include "InputAction.h"
 #include "PlayerCharacter.generated.h"
 
+class AEpopoiiaGameMode;
+
 UENUM(BlueprintType)
 enum class PushPullState : uint8
 {
@@ -66,6 +68,9 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enhanced Input", meta = (AllowPrivateAccess = "true"))
 	UInputAction* PickUpAction;
+	
+	UPROPERTY()
+	AEpopoiiaGameMode* GameMode;
 	
 
 protected:

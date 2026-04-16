@@ -7,6 +7,7 @@
 #include "GameFramework/SaveGame.h"
 #include "SaveGameEpopoiia.h"
 #include "Epopoiia/Interface/InventoryComponent.h"
+#include "Epopoiia/Interface/PickUpInterface.h"
 #include "Epopoiia/Objects/FixableObject.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Kismet/GameplayStatics.h"
@@ -98,10 +99,13 @@ void UGameInstanceMain::SaveTemple()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AInteractableObject::StaticClass(), _actorInScene);
 	for (AActor* Actor : _actorInScene)
 	{
-		AInteractableObject* _objectTemp = Cast<AInteractableObject>(Actor);
-		if (_objectTemp)
+		if (Actor->FindComponentByClass(UPickUpInterface::StaticClass()))
 		{
-			_objectsInScene.Add(_objectTemp);
+			AInteractableObject* _objectTemp = Cast<AInteractableObject>(Actor);
+			if (_objectTemp)
+			{
+				_objectsInScene.Add(_objectTemp);
+			}
 		}
 	}
 	

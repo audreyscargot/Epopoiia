@@ -13,7 +13,7 @@
 
 const int startingWidth = 15; //DO NOT USE ODD NUMBERS (for perfect middle)
 const int startingDepth = 11;
-const int cellSize = 150;
+const int cellSize = 100;
 
 AEpopoiiaGameMode::AEpopoiiaGameMode()
 {
@@ -23,7 +23,7 @@ AEpopoiiaGameMode::AEpopoiiaGameMode()
 void AEpopoiiaGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	CreateGrid(startingWidth, startingDepth);
+	CreateGrid(startingWidth/2, startingDepth/2);
 	makeSeed();
 }
 
@@ -51,23 +51,6 @@ int AEpopoiiaGameMode::GetGridMinY() const
 //Grid For Spawners
 void AEpopoiiaGameMode::CreateGrid(int _width, int _depth)
 {
-	// for (int i = 0; i < _depth; i++)
-	// {
-	// 	for (int j = 0; j < _width; j++)
-	// 	{
-	// 		int _newDepth = i * cellSize;
-	// 		int _newWidth;
-	// 		
-	// 		//new width : if less than middle, -100; -200 etc/ if middle, 0 / if more, +100; +200
-	// 		if (j < int32(_width/2)) _newWidth = (_width/2 - j) * -cellSize;
-	// 		else if (j > int32(_width/2)) _newWidth = (j - _width/2) * cellSize;
-	// 		else _newWidth = 0;
-	// 		
-	// 		FVector _newVector = FVector(_newDepth, _newWidth, 0);
-	// 		Grid.Add(_newVector);
-	// 	}
-	// }
-	
 	gridMinX = 0;
 	gridMinY = -_width * cellSize;
 	gridMaxX = _depth * cellSize;
