@@ -117,10 +117,10 @@ void UGameInstanceMain::SaveTemple()
 		bool _isFixed = _tempActor != nullptr ? _tempActor->isFixed: false;
 		FFurnitureState _objectState = FFurnitureState(Actor->ID, Actor->GetActorLocation(), _isFixed);
 		_currentFurnitureStates.Add(_objectState);
+		UE_LOG(LogTemp, Warning, TEXT("Saved"));
 	}
 	
 	TempleState = _currentFurnitureStates;
-	UE_LOG(LogTemp, Warning, TEXT("Saved"));
 	
 }
 
@@ -153,6 +153,7 @@ void UGameInstanceMain::setSavedVariables()
 {
 	if (currentSaveGame)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("setVariables"));
 		playerInventory = currentSaveGame->GetPlayerInventory();
 		TempleState = currentSaveGame->GetTempleState();
 		shopState = currentSaveGame->GetShopState();
