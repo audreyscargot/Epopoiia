@@ -140,3 +140,8 @@ void AEpopoiiaGameMode::makeSeed()
 		_GI->ResetGameInstance();
 	}
 }
+
+UDataTable* AEpopoiiaGameMode::GetAvailableItems()
+{
+	return AvailableItems;
+}

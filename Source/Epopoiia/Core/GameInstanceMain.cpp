@@ -139,6 +139,7 @@ void UGameInstanceMain::SaveGeneral()
 		SaveShopState();
 		SaveQuests();
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Saved General"));
 	
 	//TODO : Add quests save (NPC state ?)
 }

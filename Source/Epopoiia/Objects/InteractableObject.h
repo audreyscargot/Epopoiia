@@ -34,9 +34,6 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bIsInteractable = true;
 	
-
-	
-	
 	
 public:
 	

@@ -70,4 +70,7 @@ public:
 	
 	UFUNCTION()
 	virtual void makeSeed();
+
+	UFUNCTION()
+	UDataTable* GetAvailableItems();
 };

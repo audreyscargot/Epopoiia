@@ -27,13 +27,19 @@ struct FItemStruct : public FTableRowBase
 	FString name = "";
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AInteractableObject> actorClass;
+	TSubclassOf<AInteractableObject> actorClass = nullptr ;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMesh* Mesh;
+	UStaticMesh* Mesh = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMesh* FixedMesh = nullptr ;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int levelOfFix = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UTexture2D* Icon;
+	UTexture2D* Icon = nullptr;
 };
 
 USTRUCT(BlueprintType)
