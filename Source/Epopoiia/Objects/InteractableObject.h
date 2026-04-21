@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Epopoiia/Core/ItemStruct.h"
 #include "Epopoiia/Interface/InteractInterface.h"
 #include "GameFramework/Actor.h"
 #include "InteractableObject.generated.h"
@@ -33,6 +34,12 @@ protected:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool bIsInteractable = true;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UDataTable* DataTable;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties", meta = (AllowPrivateAccess = true))
+	FItemStruct itemInfo;
 	
 	
 public:
@@ -70,6 +77,12 @@ public:
 	
 	UFUNCTION()
 	virtual void SetMesh(UStaticMesh* NewMesh);
+	
+	UFUNCTION()
+	virtual void MakeMesh();
+	
+	UFUNCTION()
+	virtual void MakeItemInfo();
 	
 
 };

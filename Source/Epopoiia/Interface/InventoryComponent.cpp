@@ -24,6 +24,7 @@ void UInventoryComponent::BeginPlay()
 	
 	gameMode = Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode());
 	OnUseItem.BindDynamic(gameMode, &AEpopoiiaGameMode::UseObject);
+	gameMode->OnSuccessfullyUsed.BindDynamic(this, &UInventoryComponent::AddToInventory);
 	
 }
 
@@ -62,7 +63,6 @@ TArray<int> UInventoryComponent::GetInventory()
 void UInventoryComponent::UseItem(int itemID)
 {
 	OnUseItem.ExecuteIfBound(itemID);
-	RemoveFromInventory(itemID);
 }
 
 

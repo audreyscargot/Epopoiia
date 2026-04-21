@@ -5,12 +5,22 @@
 
 TArray<FFurnitureState> USaveGameEpopoiia::GetTempleState()
 {
-	return TArray<FFurnitureState>();
+	return templeState;
 }
 
 void USaveGameEpopoiia::SetTempleState(TArray<FFurnitureState> _templeState)
 {
 	templeState = _templeState;
+}
+
+TMap<int, bool> USaveGameEpopoiia::GetFixedState()
+{
+	return templeFixedState;
+}
+
+void USaveGameEpopoiia::SetFixedState(TMap<int, bool> _fixedState)
+{
+	templeFixedState = _fixedState;
 }
 
 TArray<int> USaveGameEpopoiia::GetPlayerInventory()

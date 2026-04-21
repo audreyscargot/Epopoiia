@@ -10,6 +10,7 @@
 
 class APlayerCharacter;
 
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnSuccessfullyUsed, int, itemID);
 
 UCLASS()
 class EPOPOIIA_API AEpopoiiaGameMode : public AGameModeBase
@@ -28,10 +29,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	int gridMaxX;
 
-public:
-	
-
-protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	int gridMinX;
 	
@@ -44,6 +41,8 @@ protected:
 	// TMap<FVector, bool> Grid2
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	FOnSuccessfullyUsed OnSuccessfullyUsed;
 	
 	virtual void BeginPlay() override;
 	

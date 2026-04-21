@@ -3,13 +3,16 @@
 
 #include "InteractableObject.h"
 
+#include "K2Node_GetDataTableRow.h"
 #include "Epopoiia/Widgets/DetectUserWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Epopoiia/Interface/InteractInterface.h"
 #include "Components/BoxComponent.h"
+#include "Epopoiia/Core/EpopoiiaGameMode.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Net/Core/Connection/NetConnectionFaultRecoveryBase.h"
 
 // Sets default values
 AInteractableObject::AInteractableObject()
@@ -47,6 +50,8 @@ void AInteractableObject::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 	BoxComponent->SetRelativeLocation(FVector(0, 0, BoxComponent->Bounds.BoxExtent.Z));
+	MakeMesh();
+	MakeItemInfo();
 }
 
 FVector AInteractableObject::MakeInteractPoints(FVector _direction)
@@ -104,6 +109,31 @@ UStaticMeshComponent* AInteractableObject::GetMesh()
 void AInteractableObject::SetMesh(UStaticMesh* NewMesh)
 {
 	Mesh->SetStaticMesh(NewMesh);
+}
+
+void AInteractableObject::MakeMesh()
+{
+	FName _row = FName(FString::FromInt(ID));
+	FString _context = "";
+	if (!DataTable)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DataTable null"));
+		return;
+	}
+	FItemStruct* _itemInfo = DataTable->FindRow<FItemStruct>(_row, _context, true);
+	if (_itemInfo)
+	{
+		SetMesh(_itemInfo->Mesh);
+	}
+}
+
+void AInteractableObject::MakeItemInfo()
+{
+	FName _row = FName(FString::FromInt(ID));
+	FString _context = "";
+	if (!DataTable) return;
+	FItemStruct* _rowStruct = DataTable->FindRow<FItemStruct>(_row, _context, true);
+	if (_rowStruct) itemInfo = *_rowStruct;
 }
 
 

@@ -26,7 +26,7 @@ void UPickUpInterface::BeginPlay()
 	Temp = Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode())->GetAvailableItems();
 	
 	//Initialize objet with data from ID row
-	FName _row = FName(FString::FromInt(ItemProperties.ID));
+	FName _row = FName(FString::FromInt(Owner->ID));
 	FString _context = "";
 	if (Temp)
 	{

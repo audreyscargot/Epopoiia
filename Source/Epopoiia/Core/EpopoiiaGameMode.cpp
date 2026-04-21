@@ -122,9 +122,15 @@ void AEpopoiiaGameMode::SpawnObject(FItemStruct& _itemInfo)
 	}
 	
 	UE_LOG(LogTemp, Warning, TEXT("spawn Cell %f, %f"), _spawnToCell.X, _spawnToCell.Y);
-	FRotator _rotation = FRotator(0, 0, 0);
-	FActorSpawnParameters _spawnParams;
-	if (_classToSpawn && _canSpawn) GetWorld()->SpawnActor<AInteractableObject>(_classToSpawn, _spawnToCell, _rotation, _spawnParams);
+	if (_classToSpawn && _canSpawn)
+	{
+		FTransform _transform;
+		_transform.SetLocation(_spawnToCell);
+		AInteractableObject* _tempObj = GetWorld()->SpawnActorDeferred<AInteractableObject>(_classToSpawn, _transform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, ESpawnActorScaleMethod::MultiplyWithRoot);
+		_tempObj->ID = _itemInfo.ID;
+		_tempObj->FinishSpawning(_transform, false);
+		OnSuccessfullyUsed.ExecuteIfBound(_tempObj->ID);
+	}
 }
 
 void AEpopoiiaGameMode::makeSeed()

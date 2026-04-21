@@ -19,6 +19,9 @@ protected:
 	TArray<FFurnitureState> templeState;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TMap<int, bool> templeFixedState;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	TArray<int> playerInventory;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
@@ -37,6 +40,9 @@ public:
 	
 	TArray<FFurnitureState> GetTempleState();
 	void SetTempleState(TArray<FFurnitureState> _templeState);
+	
+	TMap<int, bool> GetFixedState();
+	void SetFixedState(TMap<int, bool> _fixedState);
 	
 	TArray<int> GetPlayerInventory();
 	void SetPlayerInventory(TArray<int> _playerInventory);

@@ -7,6 +7,7 @@
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "GameInstanceMain.generated.h"
 
+class AInteractableObject;
 class USaveGameEpopoiia;
 //struct to register all elements placed in temples and if they are fixed
 USTRUCT(BlueprintType)
@@ -18,6 +19,9 @@ struct FFurnitureState
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
 	FVector location;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
+	FTransform transform;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
 	bool isFixed;
@@ -58,6 +62,9 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	TArray<FFurnitureState> TempleState;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TMap<int, bool> TempleFixedState;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	TArray<int> playerInventory;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
@@ -76,7 +83,8 @@ public :
 	virtual void Init() override;
 	
 	TArray<FFurnitureState> GetTempleState();
-	void SetTempleState(TArray<FFurnitureState> templeState);
+	
+	TMap<int, bool> GetTempleFixedState();
 	
 	int GetSeed();
 	void SetSeed(int _newSeed);
@@ -96,6 +104,9 @@ public :
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SaveTemple();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SaveFixedTemple(TArray<AInteractableObject*> _registeredActors);
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SaveQuests();

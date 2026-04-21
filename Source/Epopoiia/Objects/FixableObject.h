@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "InteractableObject.h"
+#include "Epopoiia/Core/ItemStruct.h"
 #include "FixableObject.generated.h"
 
 class UStaticMeshComponent;
@@ -32,10 +33,17 @@ public:
 	bool isFixed = false;
 	
 	AFixableObject();
+	virtual void BeginPlay() override;
+	virtual void OnConstruction(const FTransform& Transform) override;
+	virtual void Tick(float DeltaTime) override;
 	
 	virtual void Interact_Implementation(APlayerCharacter* InstigatorPawn) override;
+	virtual void CanBeInteracted_Implementation() override;
+	virtual void RemoveInteractFeedback_Implementation() override;
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void Repair();
+	
+	virtual void MakeMesh() override;
 	
 };

@@ -37,12 +37,16 @@ void UGameInstanceMain::Init()
 
 TArray<FFurnitureState> UGameInstanceMain::GetTempleState()
 {
+	for (auto i : TempleState)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Temple State: %i"), i.index)
+	}
 	return TempleState;
 }
 
-void UGameInstanceMain::SetTempleState(TArray<FFurnitureState> templeState)
+TMap<int, bool> UGameInstanceMain::GetTempleFixedState()
 {
-	TempleState = templeState;
+	return TempleFixedState;
 }
 
 int UGameInstanceMain::GetSeed()
@@ -115,13 +119,36 @@ void UGameInstanceMain::SaveTemple()
 	{
 		AFixableObject* _tempActor = Cast<AFixableObject>(Actor);
 		bool _isFixed = _tempActor != nullptr ? _tempActor->isFixed: false;
-		FFurnitureState _objectState = FFurnitureState(Actor->ID, Actor->GetActorLocation(), _isFixed);
+		UE_LOG(LogTemp, Warning, TEXT("IsFixed %d"), _isFixed);
+		FFurnitureState _objectState = FFurnitureState(Actor->ID, Actor->GetActorLocation(),Actor->GetTransform(), _isFixed);
 		_currentFurnitureStates.Add(_objectState);
 		UE_LOG(LogTemp, Warning, TEXT("Saved"));
 	}
 	
 	TempleState = _currentFurnitureStates;
+	SaveFixedTemple(_objectsInScene);
+	currentSaveGame->SetTempleState(TempleState);
 	
+}
+
+void UGameInstanceMain::SaveFixedTemple(TArray<AInteractableObject*> _registeredActors)
+{
+	TArray<AActor*> _actorInScene;
+	TArray<AInteractableObject*> _objectsInScene;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFixableObject::StaticClass(), _actorInScene);
+	for (AActor* Actor : _actorInScene)
+	{
+		AFixableObject* _objectTemp = Cast<AFixableObject>(Actor);
+		if (_objectTemp)
+		{
+			int _index;
+			if (!_registeredActors.Find(_objectTemp, _index ))
+			{
+				TempleFixedState.Add(_objectTemp->ID, _objectTemp->isFixed);
+			}
+		}
+	}
+	currentSaveGame->SetFixedState(TempleFixedState);
 }
 
 void UGameInstanceMain::SaveQuests()
@@ -134,12 +161,14 @@ void UGameInstanceMain::SaveGeneral()
 	if (currentSaveGame)
 	{
 		currentSaveGame->SetTempleState(TempleState);
+		currentSaveGame->SetFixedState(TempleFixedState);
 		SaveInventory();
 		SaveSeed();
 		SaveShopState();
 		SaveQuests();
+		UGameplayStatics::SaveGameToSlot(currentSaveGame, saveName, 0);
+		UE_LOG(LogTemp, Warning, TEXT("Saved General"));
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Saved General"));
 	
 	//TODO : Add quests save (NPC state ?)
 }
@@ -157,6 +186,7 @@ void UGameInstanceMain::setSavedVariables()
 		UE_LOG(LogTemp, Warning, TEXT("setVariables"));
 		playerInventory = currentSaveGame->GetPlayerInventory();
 		TempleState = currentSaveGame->GetTempleState();
+		TempleFixedState = currentSaveGame->GetFixedState();
 		shopState = currentSaveGame->GetShopState();
 		questsOfDay = currentSaveGame->GetQuests();
 	}

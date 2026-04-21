@@ -8,9 +8,12 @@
 #include "K2Node_GetDataTableRow.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Core/ItemStruct.h"
+#include "Epopoiia/Interface/PickUpInterface.h"
+#include "Epopoiia/Objects/FixableObject.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "Runtime/Datasmith/DatasmithCore/Public/DatasmithDefinitions.h"
 
 
 // Sets default values
@@ -46,13 +49,54 @@ void AWorldManager::ManageWorld()
 		FName s = UKismetStringLibrary::Conv_StringToName(UKismetStringLibrary::Conv_IntToString(i.index));
 		FItemStruct* _itemStruct = nullptr;
 		if (DataTable) _itemStruct = DataTable->FindRow<FItemStruct>(s, "", true);
-		FRotator _tempRot = FRotator{0,0,0};
 		FActorSpawnParameters spawnParams;
 		
 		if (_itemStruct)
 		{
 			TSubclassOf<AInteractableObject> _classToSpawn = _itemStruct->actorClass;
-			GetWorld()->SpawnActor<AInteractableObject>(_classToSpawn, i.location, _tempRot, spawnParams);
+			AInteractableObject* _tempObj = GetWorld()->SpawnActorDeferred<AInteractableObject>(_classToSpawn, i.transform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, ESpawnActorScaleMethod::MultiplyWithRoot);
+			_tempObj->ID = _itemStruct->ID;
+			FixFurniture(_tempObj, i.isFixed);
+			_tempObj->FinishSpawning(i.transform);
+		}
+	}
+	FixTempleState();
+}
+
+void AWorldManager::FixFurniture(AInteractableObject* _obj, bool _isFixed)
+{
+	AFixableObject* _tempActor = Cast<AFixableObject>(_obj);
+	_tempActor->isFixed = _isFixed;
+}
+
+void AWorldManager::FixTempleState()
+{
+	TArray<AActor*> _actorInScene;
+	TArray<AFixableObject*> _fixableObjects;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFixableObject::StaticClass(), _actorInScene);
+	for (AActor* actor : _actorInScene)
+	{
+		if (!actor->FindComponentByClass<UPickUpInterface>())
+		{
+			AFixableObject* _fixActor = Cast<AFixableObject>(actor); 
+			if (_fixActor)
+			{
+				_fixableObjects.Add(_fixActor);
+			}
+		}
+	}
+	TMap<int, bool> _tempFixed = GameInstance->GetTempleFixedState();
+	for (auto _fixable : _tempFixed)
+	{
+		for (auto _fixActor : _fixableObjects)
+		{
+			if (_fixActor->ID == _fixable.Key)
+			{
+				_fixActor->isFixed = _fixable.Value;
+				_fixActor->MakeMesh();
+				_fixableObjects.RemoveSingle(_fixActor);
+				break;
+			}
 		}
 	}
 }

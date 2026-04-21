@@ -25,7 +25,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowedPrivateAccess = true))
-	TArray<int> Inventory;
+	TArray<int> Inventory = {1};
 	
 	UPROPERTY()
 	FOnUseItem OnUseItem;
