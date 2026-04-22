@@ -46,7 +46,7 @@ void AInteractableNPC::MakeQuests()
 {
 	if (GameInstance)
 	{
-		if (GameInstance->GetQuestsOfDay().IsValidIndex(ID)) //if quests are already saved in GameInstance, use the saved ones
+		if (GameInstance->GetQuestsOfDay().IsValidIndex(npcID)) //if quests are already saved in GameInstance, use the saved ones
 		{
 			TArray<FNPCsQuest> _tempQuest = GameInstance->GetQuestsOfDay();
 			Quests = _tempQuest[npcID];
@@ -62,6 +62,8 @@ void AInteractableNPC::AssignQuests()
 {
 	int randQuestQuantity = FMath::RandRange(1, 2);
 	int _seed = 0;
+	
+	Quests.npcID = npcID;
 	
 	for (int i = 0; i < randQuestQuantity; i++)
 	{

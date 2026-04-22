@@ -17,3 +17,18 @@ void AMainPlayerController::SetupInputComponent()
 	}
 	
 }
+
+void AMainPlayerController::SwitchInput(bool isNewInputUI)
+{
+	if (IsLocalPlayerController())
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+		{
+			if (UIInputMappingContext && InputMappingContext)
+			{
+				Subsystem->RemoveMappingContext(isNewInputUI ? InputMappingContext : UIInputMappingContext);
+				Subsystem->AddMappingContext(isNewInputUI ? UIInputMappingContext : InputMappingContext, 0);
+			}
+		}
+	}
+}

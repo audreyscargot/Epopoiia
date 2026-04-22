@@ -15,6 +15,14 @@ enum class ESpirit : uint8
 	Willowisp = 2 UMETA(DisplayName = "Will'o the Wisp"),
 };
 
+UENUM(BlueprintType)
+enum class EObjectType : uint8
+{
+	None = 0,
+	Furniture = 1,
+	QuestObject = 2,
+};
+
 USTRUCT(BlueprintType)
 struct FItemStruct : public FTableRowBase
 {
@@ -39,7 +47,7 @@ struct FItemStruct : public FTableRowBase
 	int levelOfFix = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UTexture2D* Icon = nullptr;
+	EObjectType ObjectType = EObjectType::Furniture;
 };
 
 USTRUCT(BlueprintType)

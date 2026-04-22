@@ -10,7 +10,7 @@
 
 class APlayerCharacter;
 
-DECLARE_DYNAMIC_DELEGATE_OneParam(FOnSuccessfullyUsed, int, itemID);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSuccessfullyUsed, int, itemID);
 
 UCLASS()
 class EPOPOIIA_API AEpopoiiaGameMode : public AGameModeBase
@@ -41,7 +41,7 @@ protected:
 	// TMap<FVector, bool> Grid2
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true), BlueprintAssignable)
 	FOnSuccessfullyUsed OnSuccessfullyUsed;
 	
 	virtual void BeginPlay() override;
@@ -61,7 +61,7 @@ public:
 	UFUNCTION()
 	virtual void CreateGrid(int _width, int _depth);
 	
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	virtual void UseObject(int itemID);
 	
 	UFUNCTION()

@@ -129,7 +129,7 @@ void AEpopoiiaGameMode::SpawnObject(FItemStruct& _itemInfo)
 		AInteractableObject* _tempObj = GetWorld()->SpawnActorDeferred<AInteractableObject>(_classToSpawn, _transform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, ESpawnActorScaleMethod::MultiplyWithRoot);
 		_tempObj->ID = _itemInfo.ID;
 		_tempObj->FinishSpawning(_transform, false);
-		OnSuccessfullyUsed.ExecuteIfBound(_tempObj->ID);
+		OnSuccessfullyUsed.Broadcast(_tempObj->ID);
 	}
 }
 

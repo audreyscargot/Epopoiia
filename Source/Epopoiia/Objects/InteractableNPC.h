@@ -48,7 +48,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties")
 	int questDailyQuantity;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category= "Properties")
 	int npcID;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Quest")

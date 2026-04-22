@@ -17,5 +17,13 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
 	UInputMappingContext* InputMappingContext;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Enhanced Input", meta = (AllowPrivateAccess))
+	UInputMappingContext* UIInputMappingContext;
+	
+	
 	virtual void SetupInputComponent() override;
+public:
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SwitchInput(bool isNewInputUI);
 };

@@ -67,6 +67,8 @@ TArray<FNPCsQuest> UGameInstanceMain::GetQuestsOfDay()
 void UGameInstanceMain::AddQuestsOfDay(FNPCsQuest _quest)
 {
 	questsOfDay.Add(_quest);
+	UE_LOG(LogTemp, Warning, TEXT("QuestsOfDay Added"));
+	UE_LOG(LogTemp, Warning, TEXT("quests quantity %i"), questsOfDay.Num());
 }
 
 void UGameInstanceMain::UpdateQuestsOfDay(FNPCsQuest _quest)
