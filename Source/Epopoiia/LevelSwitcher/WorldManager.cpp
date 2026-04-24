@@ -56,17 +56,22 @@ void AWorldManager::ManageWorld()
 			TSubclassOf<AInteractableObject> _classToSpawn = _itemStruct->actorClass;
 			AInteractableObject* _tempObj = GetWorld()->SpawnActorDeferred<AInteractableObject>(_classToSpawn, i.transform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, ESpawnActorScaleMethod::MultiplyWithRoot);
 			_tempObj->ID = _itemStruct->ID;
-			FixFurniture(_tempObj, i.isFixed);
+			if (AFixableObject* _tempFixActor = Cast<AFixableObject>(_tempObj))
+			{
+				FixFurniture(_tempFixActor, i.isFixed);
+			}
 			_tempObj->FinishSpawning(i.transform);
 		}
 	}
 	FixTempleState();
 }
 
-void AWorldManager::FixFurniture(AInteractableObject* _obj, bool _isFixed)
+void AWorldManager::FixFurniture(AFixableObject* _obj, bool _isFixed)
 {
-	AFixableObject* _tempActor = Cast<AFixableObject>(_obj);
-	_tempActor->isFixed = _isFixed;
+	if (_obj)
+	{
+		_obj->isFixed = _isFixed;
+	}
 }
 
 void AWorldManager::FixTempleState()

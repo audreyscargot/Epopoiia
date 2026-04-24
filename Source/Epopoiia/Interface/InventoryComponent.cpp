@@ -24,7 +24,7 @@ void UInventoryComponent::BeginPlay()
 	
 	gameMode = Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode());
 	OnUseItem.BindDynamic(gameMode, &AEpopoiiaGameMode::UseObject);
-	gameMode->OnSuccessfullyUsed.AddDynamic(this, &UInventoryComponent::AddToInventory);
+	gameMode->OnSuccessfullyUsed.AddDynamic(this, &UInventoryComponent::RemoveFromInventory);
 	
 }
 

@@ -39,6 +39,17 @@ struct FShopState
 };
 
 USTRUCT(BlueprintType)
+struct FQuestDialogueNPC // to store dialogue lines index to only use the same ones everytime player talks with NPC
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | QuestDialogue")
+	FName questName;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | QuestDialogue")
+	TArray<int> questDialogueIndex;
+};
+
+USTRUCT(BlueprintType)
 struct FNPCsQuest
 {
 	GENERATED_BODY()
@@ -46,7 +57,13 @@ struct FNPCsQuest
 	int npcID;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | NPCQuest")
-	TArray<FName> quest; //int -> quests ID, bool -> isQuestFinished ?
+	TArray<FName> quest;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | NPCQuest")
+	TArray<FQuestDialogueNPC> questDialogueNPC;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | NPCQuest")
+	int currentQuestIndex;
 };
 
 UCLASS()
@@ -78,6 +95,12 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	TArray<FNPCsQuest> questsOfDay;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int templeLevel;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int playerTimeRewindAbilityLevel;
 	
 public :
 	virtual void Init() override;
@@ -113,6 +136,9 @@ public :
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SaveGeneral();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SavePlayerTimeRewindAbility();
 	
 	UFUNCTION()
 	virtual void ResetGameInstance();

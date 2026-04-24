@@ -25,5 +25,5 @@ private:
 public:
 	
 	UFUNCTION(BlueprintCallable)
-	virtual void SwitchInput(bool isNewInputUI);
+	virtual void SwitchInput(bool isNewInputUI, bool isCameraChange);
 };

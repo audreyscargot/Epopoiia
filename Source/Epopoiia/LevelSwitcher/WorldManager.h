@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "WorldManager.generated.h"
 
+class AFixableObject;
 struct FItemStruct;
 class AInteractableObject;
 struct FFurnitureState;
@@ -41,7 +42,7 @@ public:
 	virtual void ManageWorld();
 	
 	UFUNCTION()
-	virtual void FixFurniture(AInteractableObject* _obj, bool _isFixed);
+	virtual void FixFurniture(AFixableObject* _obj, bool _isFixed);
 	
 	UFUNCTION()
 	virtual void FixTempleState();

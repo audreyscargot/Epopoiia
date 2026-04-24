@@ -57,9 +57,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Quest")
 	FName activeQuest;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Quest")
-	int index;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "GameMode")
 	UGameInstanceMain* GameInstance;
 	
@@ -68,6 +65,12 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Dialogue")
 	FGreetings greetings;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Dialogue")
+	TArray<int> dialogueIndex;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Dialogue")
+	int currentQuestIndex;
 	
 public:
 	AInteractableNPC();
@@ -89,11 +92,11 @@ public:
 	void FinishQuest();
 	
 	UFUNCTION(BlueprintCallable)
-	void Dialogue();
-	
-	UFUNCTION(BlueprintCallable)
 	void Thinking();
 	
 	UFUNCTION(BlueprintCallable)
 	void SetDialogueView(APlayerCharacter* InstigatorPawn);
+	
+	UFUNCTION(BlueprintCallable)
+	void AssignDialogueIndex();
 };

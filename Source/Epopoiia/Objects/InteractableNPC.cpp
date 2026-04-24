@@ -50,6 +50,7 @@ void AInteractableNPC::MakeQuests()
 		{
 			TArray<FNPCsQuest> _tempQuest = GameInstance->GetQuestsOfDay();
 			Quests = _tempQuest[npcID];
+			currentQuestIndex = _tempQuest[npcID].currentQuestIndex;
 		}
 		else
 		{
@@ -76,19 +77,31 @@ void AInteractableNPC::AssignQuests()
 			questID = questID % QuestNames.Num();
 			FName QuestName = QuestNames[questID];
 			Quests.quest.Add(QuestName);
+			AssignDialogueIndex();
+			Quests.questDialogueNPC.Add(FQuestDialogueNPC(QuestName, dialogueIndex));
 		}
 	}
 	GameInstance->AddQuestsOfDay(Quests);
+	currentQuestIndex = 0;
+	SetActiveQuest();
 }
 
 void AInteractableNPC::SetActiveQuest()
 {
-	if (Quests.quest[0].IsValid()) activeQuest = Quests.quest[0];
+	if (Quests.quest[currentQuestIndex].IsValid())
+	{
+		activeQuest = Quests.quest[currentQuestIndex];
+	}
 }
 
 void AInteractableNPC::FinishQuest()
 {
-	if (Quests.quest[0].IsValid()) Quests.quest.RemoveAt(0, EAllowShrinking::Yes);
+	if (Quests.quest[currentQuestIndex].IsValid())
+	{
+		currentQuestIndex++;
+		GameInstance->GetQuestsOfDay()[npcID].currentQuestIndex = currentQuestIndex;
+		SetActiveQuest(); //TODO : set new quest at random day time instead of right after completion
+	}
 }
 
 
@@ -108,12 +121,25 @@ void AInteractableNPC::SetDialogueView(APlayerCharacter* InstigatorPawn)
 	SetActorRotation(FRotator(0, _newRotation.Yaw, 0));
 }
 
-void AInteractableNPC::Thinking()
+void AInteractableNPC::AssignDialogueIndex()
 {
-	
+	if (GameInstance && !Quests.quest.IsEmpty())
+	{
+		dialogueIndex.Empty();
+		TArray<FString> QuestNames = availableQuests->FindRow<FQuestsInfo>(Quests.quest[0], "", true)->DialogueSentences;
+		for (int i = 0; i < 2; i++)
+		{
+			int _index = FMath::Rand() % QuestNames.Num();
+			dialogueIndex.Add(_index);
+			if (QuestNames.IsValidIndex(_index))
+			{
+				QuestNames.RemoveAt(_index, EAllowShrinking::Yes);
+			}
+		}
+	}
 }
 
-void AInteractableNPC::Dialogue()
+void AInteractableNPC::Thinking()
 {
 	
 }

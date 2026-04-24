@@ -175,6 +175,11 @@ void UGameInstanceMain::SaveGeneral()
 	//TODO : Add quests save (NPC state ?)
 }
 
+void UGameInstanceMain::SavePlayerTimeRewindAbility()
+{
+	
+}
+
 void UGameInstanceMain::ResetGameInstance()
 {
 	questsOfDay.Empty();

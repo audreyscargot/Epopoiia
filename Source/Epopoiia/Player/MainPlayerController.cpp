@@ -4,6 +4,7 @@
 #include "MainPlayerController.h"
 #include "Engine/LocalPlayer.h"
 #include "EnhancedInputSubsystems.h"
+#include "PlayerCharacter.h"
 
 void AMainPlayerController::SetupInputComponent()
 {
@@ -18,7 +19,7 @@ void AMainPlayerController::SetupInputComponent()
 	
 }
 
-void AMainPlayerController::SwitchInput(bool isNewInputUI)
+void AMainPlayerController::SwitchInput(bool isNewInputUI, bool isCameraChange)
 {
 	if (IsLocalPlayerController())
 	{
