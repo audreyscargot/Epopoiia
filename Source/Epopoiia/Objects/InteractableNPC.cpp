@@ -94,9 +94,13 @@ void AInteractableNPC::SetActiveQuest()
 	}
 }
 
-void AInteractableNPC::FinishQuest()
+void AInteractableNPC::FinishQuest(bool _isGoodAnswer)
 {
-	if (Quests.quest[currentQuestIndex].IsValid())
+	if (_isGoodAnswer)
+	{
+		//TODO : add points to player temple review
+	}
+	if (Quests.quest.IsValidIndex(currentQuestIndex))
 	{
 		currentQuestIndex++;
 		GameInstance->GetQuestsOfDay()[npcID].currentQuestIndex = currentQuestIndex;
@@ -111,6 +115,14 @@ void AInteractableNPC::SetDialogueView(APlayerCharacter* InstigatorPawn)
 {
 	//Set view and Widget TODO
 	UE_LOG(LogTemp, Warning, TEXT("%hhd"), isInteracted);
+	FVector _locationToLookAt = (InstigatorPawn->GetActorLocation()+GetActorLocation())/2;
+	
+	FVector _location = InstigatorPawn->GetActorLocation()+_locationToLookAt;
+	cameraInteractTransform.SetLocation(_location);
+	
+	FRotator _rotation = UKismetMathLibrary::FindLookAtRotation(cameraInteractTransform.GetLocation(), InstigatorPawn->GetCameraRegularTransform().GetLocation());
+	cameraInteractTransform.SetRotation(_rotation.Quaternion());
+	
 	FTransform _transform = isInteracted ? cameraInteractTransform : InstigatorPawn->GetCameraRegularTransform();
 	float _targetArmLength = isInteracted ? interactTargetArmLength : InstigatorPawn->GetRegularTargetArmLength();
 	InstigatorPawn->SetCameraView(false, _transform, _targetArmLength );

@@ -23,6 +23,7 @@ AEpopoiiaGameMode::AEpopoiiaGameMode()
 void AEpopoiiaGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	gameInstance = Cast<UGameInstanceMain>(GetGameInstance());
 	CreateGrid(startingWidth/2, startingDepth/2);
 	makeSeed();
 }
@@ -150,4 +151,4 @@ void AEpopoiiaGameMode::makeSeed()
 UDataTable* AEpopoiiaGameMode::GetAvailableItems()
 {
 	return AvailableItems;
-}
+};

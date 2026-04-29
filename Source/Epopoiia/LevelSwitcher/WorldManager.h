@@ -46,4 +46,7 @@ public:
 	
 	UFUNCTION()
 	virtual void FixTempleState();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void UpdateTempleState(bool _isDay);
 };

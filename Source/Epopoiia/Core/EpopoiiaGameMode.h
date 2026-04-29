@@ -8,6 +8,7 @@
 #include "Spatial/DenseGrid2.h"
 #include "EpopoiiaGameMode.generated.h"
 
+class UGameInstanceMain;
 class APlayerCharacter;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSuccessfullyUsed, int, itemID);
@@ -20,6 +21,9 @@ class EPOPOIIA_API AEpopoiiaGameMode : public AGameModeBase
 	AEpopoiiaGameMode();
 	
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UGameInstanceMain* gameInstance;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
 	UDataTable* AvailableItems;
 	

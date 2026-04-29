@@ -106,3 +106,8 @@ void AWorldManager::FixTempleState()
 	}
 }
 
+void AWorldManager::UpdateTempleState_Implementation(bool _isDay)
+{
+		
+}
+

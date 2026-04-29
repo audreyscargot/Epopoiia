@@ -88,8 +88,8 @@ public:
 	UFUNCTION()
 	void SetActiveQuest();
 	
-	UFUNCTION()
-	void FinishQuest();
+	UFUNCTION(BlueprintCallable)
+	void FinishQuest(bool _isGoodAnswer);
 	
 	UFUNCTION(BlueprintCallable)
 	void Thinking();
