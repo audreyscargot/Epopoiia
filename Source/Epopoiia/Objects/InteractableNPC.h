@@ -8,6 +8,8 @@
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "InteractableNPC.generated.h"
 
+class UQuestComponent;
+
 USTRUCT(BlueprintType)
 struct FGreetings 
 {
@@ -24,6 +26,9 @@ class EPOPOIIA_API AInteractableNPC : public AInteractableObject
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = true))
 	USkeletalMeshComponent* SkeletalMesh;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = true))
+	UQuestComponent* QuestComponent;
 
 	
 protected:
@@ -70,7 +75,10 @@ protected:
 	TArray<int> dialogueIndex;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Dialogue")
-	int currentQuestIndex;
+	int currentQuestIndex = 0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	APlayerCharacter* activePlayer;
 	
 public:
 	AInteractableNPC();
@@ -79,24 +87,10 @@ public:
 	
 	void BeginPlay() override;
 	
-	UFUNCTION()
-	void MakeQuests();
+	int GetNPCID();
 	
-	UFUNCTION()
-	void AssignQuests();
-	
-	UFUNCTION()
-	void SetActiveQuest();
-	
-	UFUNCTION(BlueprintCallable)
-	void FinishQuest(bool _isGoodAnswer);
-	
-	UFUNCTION(BlueprintCallable)
-	void Thinking();
+	APlayerCharacter* GetActivePlayer();
 	
 	UFUNCTION(BlueprintCallable)
 	void SetDialogueView(APlayerCharacter* InstigatorPawn);
-	
-	UFUNCTION(BlueprintCallable)
-	void AssignDialogueIndex();
 };

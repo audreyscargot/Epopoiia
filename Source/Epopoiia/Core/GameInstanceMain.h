@@ -15,16 +15,16 @@ struct FFurnitureState
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
-	int index;
+	int index = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
-	FVector location;
+	FVector location = FVector(0, 0, 0);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
 	FTransform transform;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | Temple")
-	bool isFixed;
+	bool isFixed = false;
 };
 
 USTRUCT(BlueprintType)
@@ -32,10 +32,10 @@ struct FShopState
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | ShopState")
-	int index;
+	int index = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | ShopState")
-	bool state;
+	bool state = false;
 };
 
 USTRUCT(BlueprintType)
@@ -54,7 +54,7 @@ struct FNPCsQuest
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | NPCQuest")
-	int npcID;
+	int npcID = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | NPCQuest")
 	TArray<FName> quest;
@@ -63,7 +63,7 @@ struct FNPCsQuest
 	TArray<FQuestDialogueNPC> questDialogueNPC;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | NPCQuest")
-	int currentQuestIndex;
+	int currentQuestIndex = 0;
 };
 
 UCLASS()
@@ -102,6 +102,15 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	int playerTimeRewindAbilityLevel;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	bool hasAltarBeenUsed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int templeReviewGrade;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int playerMoney;
+	
 public :
 	virtual void Init() override;
 	
@@ -111,6 +120,18 @@ public :
 	
 	int GetSeed();
 	void SetSeed(int _newSeed);
+	
+	int GetTimeRewindAbility();
+	void SetTimeRewindAbility(int _toAdd);
+	
+	bool GetHasAltarBeenUsed();
+	void SetHasAltarBeenUsed(bool _hasAltarBeenUsed);
+	
+	int GetReviewGrade();
+	void SetReviewGrade(int _reviewGrade);
+	
+	int GetPlayerMoney();
+	void SetPlayerMoney(int _playerMoney);
 	
 	TArray<FNPCsQuest> GetQuestsOfDay();
 	void AddQuestsOfDay(FNPCsQuest _quest);
@@ -139,6 +160,14 @@ public :
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SavePlayerTimeRewindAbility();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SaveAltar();
+	
+	virtual void SavePlayerMoney();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SaveGameToSlot();
 	
 	UFUNCTION()
 	virtual void ResetGameInstance();

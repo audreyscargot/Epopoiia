@@ -8,6 +8,7 @@
 #include "InputAction.h"
 #include "PlayerCharacter.generated.h"
 
+class UGameInstanceMain;
 class AEpopoiiaGameMode;
 
 UENUM(BlueprintType)
@@ -80,6 +81,9 @@ public:
 	APlayerCharacter();
 
 protected:
+	UPROPERTY()
+	UGameInstanceMain* gameInstance;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -91,10 +95,6 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-	
-	// Ability level variable, TODO : change if multiple abilities
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Properties", meta = (AllowPrivateAccess = "true"))
-	int TimeRewindAbilityLevel = 0;
 	
 	//Base Properties
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Trace")
@@ -202,4 +202,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CreatePhoneWidget(TSubclassOf<class UDetectUserWidget> _widgetClass);
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void UpdateTimeRewindAbility(int _progress);
 };

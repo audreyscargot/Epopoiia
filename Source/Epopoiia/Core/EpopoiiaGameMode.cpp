@@ -143,6 +143,7 @@ void AEpopoiiaGameMode::makeSeed()
 	if (_GI->GetSeed() != _newSeed)
 	{
 		_GI->SetSeed(_newSeed);
+		_GI->SaveSeed();
 		UE_LOG(LogTemp, Warning, TEXT("New Seed: %i"), _GI->GetSeed());
 		_GI->ResetGameInstance();
 	}

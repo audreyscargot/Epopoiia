@@ -11,6 +11,7 @@
 #include "Epopoiia/Objects/FixableObject.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetStringLibrary.h"
 
 const FString saveName = "EpopoiiaSave";
 const TSubclassOf<USaveGameEpopoiia> saveGameClass = USaveGameEpopoiia::StaticClass();
@@ -59,16 +60,58 @@ void UGameInstanceMain::SetSeed(int _newSeed)
 	seed = _newSeed;
 }
 
+int UGameInstanceMain::GetTimeRewindAbility()
+{
+	return playerTimeRewindAbilityLevel;
+}
+
+void UGameInstanceMain::SetTimeRewindAbility(int _toAdd)
+{
+	playerTimeRewindAbilityLevel += _toAdd;
+}
+
+bool UGameInstanceMain::GetHasAltarBeenUsed()
+{
+	return hasAltarBeenUsed;
+}
+
+void UGameInstanceMain::SetHasAltarBeenUsed(bool _hasAltarBeenUsed)
+{
+	hasAltarBeenUsed = _hasAltarBeenUsed;
+}
+
+int UGameInstanceMain::GetReviewGrade()
+{
+	return templeReviewGrade;
+}
+
+void UGameInstanceMain::SetReviewGrade(int _reviewGrade)
+{
+	templeReviewGrade = _reviewGrade;
+}
+
+int UGameInstanceMain::GetPlayerMoney()
+{
+	return playerMoney;
+}
+
+void UGameInstanceMain::SetPlayerMoney(int _playerMoney)
+{
+	playerMoney += _playerMoney;
+}
+
 TArray<FNPCsQuest> UGameInstanceMain::GetQuestsOfDay()
 {
+	UE_LOG(LogTemp, Warning, TEXT("QuestsOfDay %hs"), questsOfDay.IsEmpty() ? "true" : "false");
 	return questsOfDay;
 }
 
 void UGameInstanceMain::AddQuestsOfDay(FNPCsQuest _quest)
 {
 	questsOfDay.Add(_quest);
-	UE_LOG(LogTemp, Warning, TEXT("QuestsOfDay Added"));
-	UE_LOG(LogTemp, Warning, TEXT("quests quantity %i"), questsOfDay.Num());
+	SaveQuests();
+	SaveGameToSlot();
+	
 }
 
 void UGameInstanceMain::UpdateQuestsOfDay(FNPCsQuest _quest)
@@ -168,22 +211,44 @@ void UGameInstanceMain::SaveGeneral()
 		SaveSeed();
 		SaveShopState();
 		SaveQuests();
-		UGameplayStatics::SaveGameToSlot(currentSaveGame, saveName, 0);
-		UE_LOG(LogTemp, Warning, TEXT("Saved General"));
+		SaveAltar();
+		SavePlayerMoney();
+		SavePlayerTimeRewindAbility();
+		
+		SaveGameToSlot();
 	}
-	
-	//TODO : Add quests save (NPC state ?)
 }
 
 void UGameInstanceMain::SavePlayerTimeRewindAbility()
 {
-	
+	currentSaveGame->SetPlayerTimeRewindAbility(playerTimeRewindAbilityLevel);
+	SaveGameToSlot();
+}
+
+void UGameInstanceMain::SaveAltar()
+{
+	currentSaveGame->SetHasAltarBeenUsed(hasAltarBeenUsed);
+	currentSaveGame->SetTempleReviewGrade(templeReviewGrade);
+}
+
+void UGameInstanceMain::SavePlayerMoney()
+{
+	currentSaveGame->SetPlayerMoney(playerMoney);
+}
+
+void UGameInstanceMain::SaveGameToSlot()
+{
+	UGameplayStatics::SaveGameToSlot(currentSaveGame, saveName, 0);
 }
 
 void UGameInstanceMain::ResetGameInstance()
 {
 	questsOfDay.Empty();
+	currentSaveGame->SetQuests(questsOfDay);
 	shopState.Empty();
+	currentSaveGame->SetShopState(shopState);
+	hasAltarBeenUsed = false;
+	currentSaveGame->SetHasAltarBeenUsed(hasAltarBeenUsed);
 }
 
 void UGameInstanceMain::setSavedVariables()
@@ -196,6 +261,10 @@ void UGameInstanceMain::setSavedVariables()
 		TempleFixedState = currentSaveGame->GetFixedState();
 		shopState = currentSaveGame->GetShopState();
 		questsOfDay = currentSaveGame->GetQuests();
+		hasAltarBeenUsed = currentSaveGame->GetHasAltarBeenUsed();
+		playerMoney = currentSaveGame->GetPlayerMoney();
+		templeReviewGrade = currentSaveGame->GetTempleReviewGrade();
+		seed = currentSaveGame->GetSeed();
 	}
 }
 

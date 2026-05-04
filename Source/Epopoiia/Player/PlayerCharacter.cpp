@@ -17,6 +17,7 @@
 #include "Epopoiia/Interface/InteractInterface.h"
 #include "Blueprint/UserWidget.h"
 #include "Epopoiia/Epopoiia.h"
+#include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Interface/InventoryComponent.h"
 #include "Epopoiia/Interface/PickUpInterface.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -45,6 +46,7 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	GetController()->SetControlRotation(FRotator (0,0,0));
 	GameMode = Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode());
+	gameInstance = Cast<UGameInstanceMain>(GetWorld()->GetGameInstance());
 }
 
 // Called every frame
@@ -277,10 +279,13 @@ void APlayerCharacter::CreatePhoneWidget(TSubclassOf<class UDetectUserWidget> Ph
 	}
 }
 
-// Getter
-int APlayerCharacter::GetTimeRewindAbilityLevel()
+void APlayerCharacter::UpdateTimeRewindAbility(int _progress)
 {
-	return TimeRewindAbilityLevel;
+	if (gameInstance)
+	{
+		gameInstance->SetTimeRewindAbility(_progress);
+		gameInstance->SavePlayerTimeRewindAbility();
+	}
 }
 
 FTransform APlayerCharacter::GetCameraRegularTransform()

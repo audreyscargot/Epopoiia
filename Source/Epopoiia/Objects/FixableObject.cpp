@@ -6,6 +6,7 @@
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Epopoiia/Core/GameInstanceMain.h"
 
 AFixableObject::AFixableObject()
 {
@@ -31,7 +32,7 @@ void AFixableObject::Tick(float DeltaTime)
 
 void AFixableObject::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 {
-	if (InstigatorPawn->GetTimeRewindAbilityLevel() >= RequiredLevel && bIsInteractable)
+	if (Cast<UGameInstanceMain>(GetWorld()->GetGameInstance())->GetTimeRewindAbility() >= RequiredLevel && bIsInteractable)
 	{
 		Repair();
 	}

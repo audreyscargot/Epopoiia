@@ -97,7 +97,6 @@ void UHoldInteractComponent::AddTurn()
 	if (player)
 	{
 		int _rot = UKismetMathLibrary::Round(player->GetActorRotation().Yaw);
-		UE_LOG(LogTemp, Warning, TEXT("%i"), _rot);
 		switch (UKismetMathLibrary::Round(player->GetActorRotation().Yaw))
 		{
 		case 0 :

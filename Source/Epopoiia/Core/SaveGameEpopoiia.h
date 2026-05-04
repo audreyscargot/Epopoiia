@@ -36,6 +36,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	TArray<FNPCsQuest> questsOfDay;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int playerTimeRewindAbilityLevel;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	bool hasAltarBeenUsed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int templeReviewGrade;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	int playerMoney;
+	
 public:
 	
 	TArray<FFurnitureState> GetTempleState();
@@ -55,4 +67,16 @@ public:
 	
 	TArray<FNPCsQuest> GetQuests();
 	void SetQuests(TArray<FNPCsQuest> _quests);
+	
+	bool GetHasAltarBeenUsed();
+	void SetHasAltarBeenUsed(bool _hasAltarBeenUsed);
+	
+	int GetTempleReviewGrade();
+	void SetTempleReviewGrade(int _templeReviewGrade);
+	
+	int GetPlayerMoney();
+	void SetPlayerMoney(int _playerMoney);
+	
+	int GetPlayerTimeRewindAbility();
+	void SetPlayerTimeRewindAbility(int _playerTimeRewindAbility);
 };

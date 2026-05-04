@@ -63,4 +63,44 @@ void USaveGameEpopoiia::SetQuests(TArray<FNPCsQuest> _quests)
 	questsOfDay = _quests;
 }
 
+bool USaveGameEpopoiia::GetHasAltarBeenUsed()
+{
+	return hasAltarBeenUsed;
+}
+
+void USaveGameEpopoiia::SetHasAltarBeenUsed(bool _hasAltarBeenUsed)
+{
+	hasAltarBeenUsed = _hasAltarBeenUsed;
+}
+
+int USaveGameEpopoiia::GetTempleReviewGrade()
+{
+	return templeReviewGrade;
+}
+
+void USaveGameEpopoiia::SetTempleReviewGrade(int _templeReviewGrade)
+{
+	templeReviewGrade = _templeReviewGrade;
+}
+
+int USaveGameEpopoiia::GetPlayerMoney()
+{
+	return playerMoney;
+}
+
+void USaveGameEpopoiia::SetPlayerMoney(int _playerMoney)
+{
+	playerMoney = _playerMoney;
+}
+
+int USaveGameEpopoiia::GetPlayerTimeRewindAbility()
+{
+	return playerTimeRewindAbilityLevel;
+}
+
+void USaveGameEpopoiia::SetPlayerTimeRewindAbility(int _playerTimeRewindAbility)
+{
+	playerTimeRewindAbilityLevel = _playerTimeRewindAbility;
+}
+
 
