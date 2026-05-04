@@ -128,6 +128,19 @@ void UGameInstanceMain::UpdateQuestsOfDay(FNPCsQuest _quest)
 	questsOfDay[_quest.npcID] = _quest;
 }
 
+void UGameInstanceMain::BuyObject(int _price, int _objectID)
+{
+	if (playerMoney >= _price)
+	{
+		if (player->Inventory->GetInventory().Num() < player->Inventory->inventorySlots)
+		{
+			playerMoney -= _price;
+			player->Inventory->AddToInventory(_objectID);
+			SuccessfullyBoughtDelegate.Broadcast();
+		}
+	}
+}
+
 
 //--------SAVE FUNCTIONS-----------
 

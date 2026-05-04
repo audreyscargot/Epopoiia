@@ -50,6 +50,7 @@ void AInteractableShop::MakeShop()
 			if (_availableItems.IsValidIndex(_index))
 			{
 				FShopState _newItem = FShopState(_availableItems[_index], false);
+				shopInventory.Add(_newItem);
 				_availableItems.RemoveAt(_index, EAllowShrinking::Yes);
 			}
 		}
@@ -62,6 +63,11 @@ void AInteractableShop::MakeShop()
 void AInteractableShop::LoadShop()
 {
 	shopInventory = gameInstance->GetShopState();
+}
+
+void AInteractableShop::UpdateShop(FName _objectID, bool _hasBeenBought)
+{
+	shopInventory.Add(FShopState(_objectID, _hasBeenBought));
 }
 
 

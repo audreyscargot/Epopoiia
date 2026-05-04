@@ -47,6 +47,9 @@ struct FItemStruct : public FTableRowBase
 	int levelOfFix = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int price = 0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EObjectType ObjectType = EObjectType::Furniture;
 };
 

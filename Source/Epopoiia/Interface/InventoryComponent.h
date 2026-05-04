@@ -31,9 +31,6 @@ protected:
 	FOnUseItem OnUseItem;
 	
 	UPROPERTY()
-	int inventorySlots = 10;
-	
-	UPROPERTY()
 	AEpopoiiaGameMode* gameMode;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowedPrivateAccess = true))
@@ -43,6 +40,8 @@ protected:
 	TSubclassOf<UBaseWidget> InventoryWidgetClass;
 
 public:	
+	UPROPERTY()
+	int inventorySlots = 10;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UDataTable* ItemsData;

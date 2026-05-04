@@ -9,6 +9,9 @@
 
 class AInteractableObject;
 class USaveGameEpopoiia;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSuccessfullyBought);
+
 //struct to register all elements placed in temples and if they are fixed
 USTRUCT(BlueprintType)
 struct FFurnitureState
@@ -35,7 +38,7 @@ struct FShopState
 	FName index = "";
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | ShopState")
-	bool state = false;
+	bool hasBeenBought = false;
 };
 
 USTRUCT(BlueprintType)
@@ -72,8 +75,6 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	GENERATED_BODY()
 	
 	protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main")
-	APlayerCharacter* player;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	TArray<FFurnitureState> TempleState;
@@ -97,7 +98,7 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	TArray<FNPCsQuest> questsOfDay;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
-	int templeLevel;
+	int templeLevel = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	int playerTimeRewindAbilityLevel;
@@ -112,6 +113,12 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	int playerMoney;
 	
 public :
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintAssignable)
+	FSuccessfullyBought SuccessfullyBoughtDelegate;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main")
+	APlayerCharacter* player;
+	
 	virtual void Init() override;
 	
 	TArray<FFurnitureState> GetTempleState();
@@ -139,6 +146,9 @@ public :
 	TArray<FNPCsQuest> GetQuestsOfDay();
 	void AddQuestsOfDay(FNPCsQuest _quest);
 	void UpdateQuestsOfDay(FNPCsQuest _quest);
+	
+	UFUNCTION(BlueprintCallable)
+	void BuyObject(int _price, int _objectID);
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SaveInventory();

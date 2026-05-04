@@ -47,6 +47,10 @@ void APlayerCharacter::BeginPlay()
 	GetController()->SetControlRotation(FRotator (0,0,0));
 	GameMode = Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode());
 	gameInstance = Cast<UGameInstanceMain>(GetWorld()->GetGameInstance());
+	if (gameInstance)
+	{
+		gameInstance->player = this;
+	}
 }
 
 // Called every frame

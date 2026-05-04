@@ -45,4 +45,7 @@ public:
 	
 	UFUNCTION()
 	virtual void LoadShop();
+	
+	UFUNCTION()
+	virtual void UpdateShop(FName _objectID, bool _hasBeenBought);
 };
