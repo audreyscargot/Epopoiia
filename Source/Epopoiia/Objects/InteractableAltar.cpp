@@ -28,11 +28,14 @@ void AInteractableAltar::BeginPlay()
 void AInteractableAltar::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 {
 	Super::Interact_Implementation(InstigatorPawn);
-	if (!hasBeenUsed && gameInstance)
+	if (isFixed)
 	{
-		hasBeenUsed = true;
-		gameInstance->SetHasAltarBeenUsed(true);
-		gameInstance->SetPlayerMoney(currentMoney);
+		if (!hasBeenUsed && gameInstance)
+		{
+			hasBeenUsed = true;
+			gameInstance->SetHasAltarBeenUsed(true);
+			gameInstance->SetPlayerMoney(currentMoney);
+		}
 	}
 }
 

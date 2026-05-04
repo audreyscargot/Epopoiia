@@ -30,10 +30,8 @@ void UQuestComponent::CheckQuestSaved()
 	if (gameInstance)
 	{
 		TArray<FNPCsQuest> _quests = gameInstance->GetQuestsOfDay();
-		UE_LOG(LogTemp, Warning, TEXT("saved quest quantity : %i"), _quests.Num());
 		for (auto _quest : _quests)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("quest check, ID == owner ID ? %hs"), _quest.npcID == owner->GetNPCID() ? "true" : "false");
 			if (_quest.npcID == ownerID)
 			{
 				LoadQuests(_quest);
@@ -51,7 +49,6 @@ void UQuestComponent::LoadQuests(FNPCsQuest _quest)
 
 void UQuestComponent::CreateQuests()
 {
-	UE_LOG(LogTemp, Warning, TEXT("CreateQuests"));
 	int _randQuestQuantity = FMath::RandRange(2, 3);
 	int _seed = 0;
 	NPCquest.questDialogueNPC.SetNum(_randQuestQuantity);

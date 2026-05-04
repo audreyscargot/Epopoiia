@@ -32,7 +32,7 @@ struct FShopState
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | ShopState")
-	int index = 0;
+	FName index = "";
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save | ShopState")
 	bool state = false;
@@ -132,6 +132,9 @@ public :
 	
 	int GetPlayerMoney();
 	void SetPlayerMoney(int _playerMoney);
+	
+	TArray<FShopState> GetShopState();
+	void SetShopState(TArray<FShopState> _shopState);
 	
 	TArray<FNPCsQuest> GetQuestsOfDay();
 	void AddQuestsOfDay(FNPCsQuest _quest);

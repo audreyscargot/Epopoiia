@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FixableObject.h"
 #include "InteractableObject.h"
 #include "InteractableAltar.generated.h"
 
 class UGameInstanceMain;
 
 UCLASS()
-class EPOPOIIA_API AInteractableAltar : public AInteractableObject
+class EPOPOIIA_API AInteractableAltar : public AFixableObject
 {
 	GENERATED_BODY()
 

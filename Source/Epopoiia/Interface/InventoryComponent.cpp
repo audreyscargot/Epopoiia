@@ -36,7 +36,7 @@ void UInventoryComponent::AddToInventory(int itemID)
 //to use if destroyed or used
 void UInventoryComponent::RemoveFromInventory(int itemID)
 {
-	Inventory.Remove(itemID);
+	Inventory.RemoveSingle(itemID);
 }
 
 bool UInventoryComponent::CheckHasSpace()

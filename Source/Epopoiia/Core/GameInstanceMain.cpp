@@ -100,9 +100,18 @@ void UGameInstanceMain::SetPlayerMoney(int _playerMoney)
 	playerMoney += _playerMoney;
 }
 
+TArray<FShopState> UGameInstanceMain::GetShopState()
+{
+	return shopState;
+}
+
+void UGameInstanceMain::SetShopState(TArray<FShopState> _shopState)
+{
+	shopState = _shopState;
+}
+
 TArray<FNPCsQuest> UGameInstanceMain::GetQuestsOfDay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("QuestsOfDay %hs"), questsOfDay.IsEmpty() ? "true" : "false");
 	return questsOfDay;
 }
 
