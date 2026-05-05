@@ -100,6 +100,11 @@ void UGameInstanceMain::SetPlayerMoney(int _playerMoney)
 	playerMoney += _playerMoney;
 }
 
+TArray<int> UGameInstanceMain::GetPlayerInventory()
+{
+	return playerInventory;
+}
+
 TArray<FShopState> UGameInstanceMain::GetShopState()
 {
 	return shopState;
@@ -141,12 +146,16 @@ void UGameInstanceMain::BuyObject(int _price, int _objectID, int _shopSlot)
 	}
 }
 
+void UGameInstanceMain::UpdateGIInventory(UInventoryComponent* _inventory)
+{
+	playerInventory = _inventory->GetInventory();
+}
+
 
 //--------SAVE FUNCTIONS-----------
 
 void UGameInstanceMain::SaveInventory()
 {
-	player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
 	TSubclassOf<UInventoryComponent> inventoryClass = UInventoryComponent::StaticClass();
 	playerInventory = Cast<UInventoryComponent>(player->GetComponentByClass(inventoryClass))->GetInventory();
 	currentSaveGame->SetPlayerInventory(playerInventory);

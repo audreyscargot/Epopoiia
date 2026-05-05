@@ -107,7 +107,7 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	bool hasAltarBeenUsed;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
-	int templeReviewGrade;
+	int templeReviewGrade = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	int playerMoney;
@@ -140,6 +140,8 @@ public :
 	int GetPlayerMoney();
 	void SetPlayerMoney(int _playerMoney);
 	
+	TArray<int> GetPlayerInventory();
+	
 	TArray<FShopState> GetShopState();
 	void SetShopState(TArray<FShopState> _shopState);
 	
@@ -149,6 +151,9 @@ public :
 	
 	UFUNCTION(BlueprintCallable)
 	void BuyObject(int _price, int _objectID, int _shopSlot);
+	
+	UFUNCTION(BlueprintCallable)
+	void UpdateGIInventory(UInventoryComponent* _inventory);
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SaveInventory();

@@ -8,6 +8,7 @@
 
 class UBaseWidget;
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnUseItem, int, itemID);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdated, UInventoryComponent*, inventory);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class EPOPOIIA_API UInventoryComponent : public UActorComponent
@@ -46,6 +47,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UDataTable* ItemsData;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FOnInventoryUpdated OnInventoryUpdated;
+	
 	UFUNCTION()
 	virtual void AddToInventory(int itemID);
 	
@@ -60,6 +64,9 @@ public:
 	
 	UFUNCTION()
 	TArray<int> GetInventory();
+	
+	UFUNCTION()
+	void SetInventory(TArray<int> _inventory);
 	
 	// Use Object Functions
 	UFUNCTION(BlueprintCallable)

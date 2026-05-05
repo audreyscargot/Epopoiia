@@ -50,6 +50,7 @@ void APlayerCharacter::BeginPlay()
 	if (gameInstance)
 	{
 		gameInstance->player = this;
+		Inventory->SetInventory(gameInstance->GetPlayerInventory());
 	}
 }
 

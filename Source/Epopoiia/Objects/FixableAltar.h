@@ -4,19 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "FixableObject.h"
-#include "InteractableObject.h"
-#include "InteractableAltar.generated.h"
+#include "FixableAltar.generated.h"
 
 class UGameInstanceMain;
 
 UCLASS()
-class EPOPOIIA_API AInteractableAltar : public AFixableObject
+class EPOPOIIA_API AFixableAltar : public AFixableObject
 {
 	GENERATED_BODY()
-
-public:
-	// Sets default values for this actor's properties
-	AInteractableAltar();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Components", meta = (AllowPrivateAccess = true))
+	UStaticMeshComponent* OfferingMesh;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -28,6 +26,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Properties")
 	bool hasBeenUsed = false;
 	
+public:
+	// Sets default values for this actor's properties
+	AFixableAltar();
+
+protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -36,4 +39,22 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void MakeMoney();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SetOfferingVisibility(bool _shouldBeVisible);
+	
+	UFUNCTION()
+	virtual void SetOfferingLocation();
+	
+	virtual void Repair() override;
+
 };
+
+inline void AFixableAltar::Repair()
+{
+	Super::Repair();
+	if (isFixed)
+	{
+		SetOfferingVisibility(true);
+	}
+}

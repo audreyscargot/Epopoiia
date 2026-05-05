@@ -4,6 +4,7 @@
 #include "Epopoiia/Interface/InventoryComponent.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Widgets/BaseWidget.h"
 
 // Sets default values for this component's properties
@@ -26,17 +27,25 @@ void UInventoryComponent::BeginPlay()
 	OnUseItem.BindDynamic(gameMode, &AEpopoiiaGameMode::UseObject);
 	gameMode->OnSuccessfullyUsed.AddDynamic(this, &UInventoryComponent::RemoveFromInventory);
 	
+	UGameInstanceMain* _gameInstance = Cast<UGameInstanceMain>(GetWorld()->GetGameInstance());
+	if (_gameInstance)
+	{
+		OnInventoryUpdated.AddDynamic(_gameInstance, &UGameInstanceMain::UpdateGIInventory);
+	}
+	
 }
 
 void UInventoryComponent::AddToInventory(int itemID)
 {
 	Inventory.Add(itemID);
+	OnInventoryUpdated.Broadcast(this);
 }
 
 //to use if destroyed or used
 void UInventoryComponent::RemoveFromInventory(int itemID)
 {
 	Inventory.RemoveSingle(itemID);
+	OnInventoryUpdated.Broadcast(this);
 }
 
 bool UInventoryComponent::CheckHasSpace()
@@ -60,9 +69,15 @@ TArray<int> UInventoryComponent::GetInventory()
 	return Inventory;
 }
 
+void UInventoryComponent::SetInventory(TArray<int> _inventory)
+{
+	Inventory = _inventory;
+}
+
 void UInventoryComponent::UseItem(int itemID)
 {
 	OnUseItem.ExecuteIfBound(itemID);
+	OnInventoryUpdated.Broadcast(this);
 }
 
 
