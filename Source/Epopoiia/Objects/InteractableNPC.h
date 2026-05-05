@@ -56,6 +56,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category= "Properties")
 	int npcID;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess), Category= "Properties")
+	FString npcName;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Quest")
 	FNPCsQuest Quests;
 	

@@ -4,6 +4,7 @@
 #include "InteractableShop.h"
 
 #include "Epopoiia/Core/GameInstanceMain.h"
+#include "Kismet/KismetArrayLibrary.h"
 
 
 // Sets default values
@@ -65,9 +66,9 @@ void AInteractableShop::LoadShop()
 	shopInventory = gameInstance->GetShopState();
 }
 
-void AInteractableShop::UpdateShop(FName _objectID, bool _hasBeenBought)
+void AInteractableShop::UpdateShop(FName _objectID, bool _hasBeenBought, int _slot)
 {
-	shopInventory.Add(FShopState(_objectID, _hasBeenBought));
+	shopInventory[_slot] = FShopState(_objectID, _hasBeenBought);
 }
 
 

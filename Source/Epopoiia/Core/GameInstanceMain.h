@@ -10,7 +10,7 @@
 class AInteractableObject;
 class USaveGameEpopoiia;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSuccessfullyBought);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSuccessfullyBought, int, _shopSlot);
 
 //struct to register all elements placed in temples and if they are fixed
 USTRUCT(BlueprintType)
@@ -148,7 +148,7 @@ public :
 	void UpdateQuestsOfDay(FNPCsQuest _quest);
 	
 	UFUNCTION(BlueprintCallable)
-	void BuyObject(int _price, int _objectID);
+	void BuyObject(int _price, int _objectID, int _shopSlot);
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SaveInventory();
