@@ -30,6 +30,11 @@ void AInteractableShop::Interact_Implementation(APlayerCharacter* InstigatorPawn
 	Super::Interact_Implementation(InstigatorPawn);
 }
 
+TArray<FShopState> AInteractableShop::GetShopInventory()
+{
+	return shopInventory;
+}
+
 void AInteractableShop::CheckIsShopSaved()
 {
 	if (!gameInstance->GetShopState().IsEmpty())
@@ -69,6 +74,7 @@ void AInteractableShop::LoadShop()
 void AInteractableShop::UpdateShop(FName _objectID, bool _hasBeenBought, int _slot)
 {
 	shopInventory[_slot] = FShopState(_objectID, _hasBeenBought);
+	gameInstance->SetShopState(shopInventory);
 }
 
 

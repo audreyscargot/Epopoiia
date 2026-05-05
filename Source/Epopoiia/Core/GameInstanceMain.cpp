@@ -10,6 +10,7 @@
 #include "Epopoiia/Interface/PickUpInterface.h"
 #include "Epopoiia/Objects/FixableObject.h"
 #include "Epopoiia/Objects/InteractableObject.h"
+#include "Epopoiia/Objects/InteractableShop.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
 
@@ -26,6 +27,7 @@ void UGameInstanceMain::Init()
 		currentSaveGame = Cast<USaveGameEpopoiia>(UGameplayStatics::CreateSaveGameObject(saveGameClass));
 		UGameplayStatics::SaveGameToSlot(currentSaveGame, saveName, 0);
 		UE_LOG(LogTemp, Warning, TEXT("Save Created"));
+		InitVariables();
 	}
 	else
 	{
@@ -297,6 +299,14 @@ void UGameInstanceMain::setSavedVariables()
 		templeReviewGrade = currentSaveGame->GetTempleReviewGrade();
 		seed = currentSaveGame->GetSeed();
 	}
+}
+
+void UGameInstanceMain::InitVariables()
+{
+	currentSaveGame->SetPlayerMoney(playerMoney);
+	currentSaveGame->SetTempleState(TempleState);
+	
+	SaveGameToSlot();
 }
 
 

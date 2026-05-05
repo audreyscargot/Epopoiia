@@ -47,8 +47,10 @@ void AFixableAltar::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 
 void AFixableAltar::MakeMoney()
 {
-	int _multiplier = UKismetMathLibrary::FCeil(gameInstance->GetReviewGrade()/5);
-	currentMoney = _multiplier * templeBaseMoney;
+	float _multiplier = gameInstance->GetReviewGrade();
+	_multiplier = _multiplier/5;
+	UE_LOG(LogTemp, Warning, TEXT("multiplier = %f"), _multiplier);
+	currentMoney = UKismetMathLibrary::FCeil(_multiplier * templeBaseMoney);
 }
 
 void AFixableAltar::SetOfferingVisibility(bool _shouldBeVisible)

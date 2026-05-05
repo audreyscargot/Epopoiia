@@ -38,6 +38,9 @@ public:
 	virtual void Interact_Implementation(APlayerCharacter* InstigatorPawn) override;
 	
 	UFUNCTION()
+	TArray<FShopState> GetShopInventory();
+	
+	UFUNCTION()
 	virtual void CheckIsShopSaved();
 	
 	UFUNCTION()

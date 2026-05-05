@@ -7,6 +7,7 @@
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "GameInstanceMain.generated.h"
 
+class AInteractableShop;
 class AInteractableObject;
 class USaveGameEpopoiia;
 
@@ -192,5 +193,8 @@ public :
 	
 	UFUNCTION()
 	virtual void setSavedVariables();
+	
+	UFUNCTION()
+	virtual void InitVariables();
 	
 };
