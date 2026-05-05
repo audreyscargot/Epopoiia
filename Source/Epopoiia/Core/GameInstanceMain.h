@@ -7,6 +7,9 @@
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "GameInstanceMain.generated.h"
 
+struct FReviewStruct;
+struct FReviewBaseStruct;
+class UReviewManagerComponent;
 class AInteractableShop;
 class AInteractableObject;
 class USaveGameEpopoiia;
@@ -111,6 +114,9 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	int templeReviewGrade = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<FReviewStruct> reviews;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	int playerMoney;
 	
 public :
@@ -137,6 +143,9 @@ public :
 	
 	int GetReviewGrade();
 	void SetReviewGrade(int _reviewGrade);
+	
+	TArray<FReviewStruct> GetReviews();
+	void SetReviews(TArray<FReviewStruct> _reviews);
 	
 	int GetPlayerMoney();
 	void SetPlayerMoney(int _playerMoney);
@@ -184,6 +193,9 @@ public :
 	virtual void SaveAltar();
 	
 	virtual void SavePlayerMoney();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void SaveReviews();
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void SaveGameToSlot();

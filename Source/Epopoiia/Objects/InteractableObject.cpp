@@ -36,7 +36,11 @@ AInteractableObject::AInteractableObject()
 void AInteractableObject::BeginPlay()
 {
 	Super::BeginPlay();
-	if (Mesh) BoxComponent->SetBoxExtent(Mesh->Bounds.BoxExtent, false);
+	if (Mesh)
+	{
+		FVector _boxExtent = Mesh->Bounds.BoxExtent;
+		BoxComponent->SetBoxExtent(FVector(_boxExtent.X, _boxExtent.Y, _boxExtent.Z+200), false);
+	}
 	BoxComponent->SetWorldRotation(FRotator(0, 0, 0));
 	
 	//Make all pushing/pulling points

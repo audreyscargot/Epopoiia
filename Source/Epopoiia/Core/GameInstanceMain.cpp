@@ -8,6 +8,7 @@
 #include "SaveGameEpopoiia.h"
 #include "Epopoiia/Interface/InventoryComponent.h"
 #include "Epopoiia/Interface/PickUpInterface.h"
+#include "Epopoiia/Interface/ReviewManagerComponent.h"
 #include "Epopoiia/Objects/FixableObject.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Epopoiia/Objects/InteractableShop.h"
@@ -90,6 +91,16 @@ int UGameInstanceMain::GetReviewGrade()
 void UGameInstanceMain::SetReviewGrade(int _reviewGrade)
 {
 	templeReviewGrade = _reviewGrade;
+}
+
+TArray<FReviewStruct> UGameInstanceMain::GetReviews()
+{
+	return reviews;
+}
+
+void UGameInstanceMain::SetReviews(TArray<FReviewStruct> _reviews)
+{
+	reviews = _reviews;
 }
 
 int UGameInstanceMain::GetPlayerMoney()
@@ -247,6 +258,7 @@ void UGameInstanceMain::SaveGeneral()
 		SaveAltar();
 		SavePlayerMoney();
 		SavePlayerTimeRewindAbility();
+		SaveReviews();
 		
 		SaveGameToSlot();
 	}
@@ -267,6 +279,11 @@ void UGameInstanceMain::SaveAltar()
 void UGameInstanceMain::SavePlayerMoney()
 {
 	currentSaveGame->SetPlayerMoney(playerMoney);
+}
+
+void UGameInstanceMain::SaveReviews()
+{
+	currentSaveGame->SetReviews(reviews);
 }
 
 void UGameInstanceMain::SaveGameToSlot()
@@ -298,6 +315,7 @@ void UGameInstanceMain::setSavedVariables()
 		playerMoney = currentSaveGame->GetPlayerMoney();
 		templeReviewGrade = currentSaveGame->GetTempleReviewGrade();
 		seed = currentSaveGame->GetSeed();
+		reviews = currentSaveGame->GetReviews();
 	}
 }
 

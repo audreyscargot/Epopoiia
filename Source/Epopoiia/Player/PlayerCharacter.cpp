@@ -20,6 +20,7 @@
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Interface/InventoryComponent.h"
 #include "Epopoiia/Interface/PickUpInterface.h"
+#include "Epopoiia/Interface/ReviewManagerComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -38,6 +39,8 @@ APlayerCharacter::APlayerCharacter()
 	CameraRegularTransform = CameraBoom->GetRelativeTransform();
 
 	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
+	
+	ReviewManager = CreateDefaultSubobject<UReviewManagerComponent>(TEXT("ReviewManager"));
 }
 
 // Called when the game starts or when spawned

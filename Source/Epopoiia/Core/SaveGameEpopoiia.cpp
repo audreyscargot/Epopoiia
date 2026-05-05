@@ -83,6 +83,16 @@ void USaveGameEpopoiia::SetTempleReviewGrade(int _templeReviewGrade)
 	templeReviewGrade = _templeReviewGrade;
 }
 
+TArray<FReviewStruct> USaveGameEpopoiia::GetReviews()
+{
+	return reviews;
+}
+
+void USaveGameEpopoiia::SetReviews(TArray<FReviewStruct> _reviews)
+{
+	reviews = _reviews;
+}
+
 int USaveGameEpopoiia::GetPlayerMoney()
 {
 	return playerMoney;

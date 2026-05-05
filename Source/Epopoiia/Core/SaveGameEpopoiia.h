@@ -46,6 +46,9 @@ protected:
 	int templeReviewGrade;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<FReviewStruct> reviews;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	int playerMoney;
 	
 public:
@@ -73,6 +76,9 @@ public:
 	
 	int GetTempleReviewGrade();
 	void SetTempleReviewGrade(int _templeReviewGrade);
+	
+	TArray<FReviewStruct> GetReviews();
+	void SetReviews(TArray<FReviewStruct> _reviews);
 	
 	int GetPlayerMoney();
 	void SetPlayerMoney(int _playerMoney);
