@@ -22,7 +22,7 @@ struct FReviewStruct
 	FString reviewText;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UTexture2D* pfpTexture;
+	UObject* pfpTexture;
 };
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -71,6 +71,6 @@ public:
 	void MakeReview(bool _isQuestSucceeded);
 	
 	UFUNCTION(BlueprintCallable)
-	void AddReview(FString _reviewNPCName, int _reviewGrade, FString _reviewText, UTexture2D* _pfpTexture);
+	void AddReview(FString _reviewNPCName, int _reviewGrade, FString _reviewText, UObject* _pfpTexture);
 	
 };

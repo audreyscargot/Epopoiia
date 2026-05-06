@@ -101,6 +101,8 @@ TArray<FReviewStruct> UGameInstanceMain::GetReviews()
 void UGameInstanceMain::SetReviews(TArray<FReviewStruct> _reviews)
 {
 	reviews = _reviews;
+	SaveReviews();
+	SaveGameToSlot();
 }
 
 int UGameInstanceMain::GetPlayerMoney()

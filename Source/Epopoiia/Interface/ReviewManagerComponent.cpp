@@ -21,6 +21,10 @@ void UReviewManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	gameInstance = Cast<UGameInstanceMain>(GetWorld()->GetGameInstance());
+	if (gameInstance)
+	{
+		reviews = gameInstance->GetReviews();
+	}
 }
 
 int UReviewManagerComponent::GetTempleReview()
@@ -101,17 +105,17 @@ void UReviewManagerComponent::MakeReview(bool _isQuestSucceeded)
 		
 		FString _randomName = "@" + reviewersName[FMath::RandRange(0,reviewersName.Num()-1)];
 		
-		int _randomGrade = GetTempleReview() - FMath::RandRange(0, GetTempleReview()-1);
+		int _randomGrade = GetTempleReview() - FMath::RandRange(0, GetTempleReview() - 1);
 		_randomGrade += _isQuestSucceeded ? 1 : 0;
 		
 		int _randomPfpIndex = FMath::RandRange(0, reviewTexture.Num() - 1);
-		UTexture2D* _randomPfp = reviewTexture[_randomPfpIndex];
+		UObject* _randomPfp = reviewTexture[_randomPfpIndex];
 		
 		AddReview(_randomName, _randomGrade, _templeReview, _randomPfp);
 	}
 }
 
-void UReviewManagerComponent::AddReview(FString _reviewNPCName, int _reviewGrade, FString _reviewText, UTexture2D* _pfpTexture)
+void UReviewManagerComponent::AddReview(FString _reviewNPCName, int _reviewGrade, FString _reviewText, UObject* _pfpTexture)
 {
 	reviews.Add(FReviewStruct(_reviewNPCName, _reviewGrade, _reviewText));
 	gameInstance->SetReviews(reviews);
