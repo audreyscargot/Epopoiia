@@ -7,6 +7,8 @@
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "GameInstanceMain.generated.h"
 
+enum class EVocabularyType : uint8;
+struct FMythipediaPost;
 struct FReviewStruct;
 struct FReviewBaseStruct;
 class UReviewManagerComponent;
@@ -119,6 +121,12 @@ class EPOPOIIA_API UGameInstanceMain : public UGameInstance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	int playerMoney;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<FMythipediaPost> playerPosts;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TMap<FString, EVocabularyType> playerVocabulary;
+	
 public :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintAssignable)
 	FSuccessfullyBought SuccessfullyBoughtDelegate;
@@ -151,6 +159,12 @@ public :
 	void SetPlayerMoney(int _playerMoney);
 	
 	TArray<int> GetPlayerInventory();
+	
+	TArray<FMythipediaPost> GetPlayerPosts();
+	virtual void SetPlayerPosts(TArray<FMythipediaPost> _playerPosts);
+	
+	TMap<FString, EVocabularyType> GetPlayerVocabulary();
+	virtual void SetPlayerVocabulary(TMap<FString, EVocabularyType> _vocabulary);
 	
 	TArray<FShopState> GetShopState();
 	void SetShopState(TArray<FShopState> _shopState);

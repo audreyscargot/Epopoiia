@@ -39,6 +39,13 @@ void AFixableAltar::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 			hasBeenUsed = true;
 			gameInstance->SetHasAltarBeenUsed(true);
 			gameInstance->SetPlayerMoney(currentMoney);
+			gameInstance->SaveAltar();
+			gameInstance->SavePlayerMoney();
+			gameInstance->SaveGameToSlot();
+			SetOfferingVisibility(false);
+		}
+		if (hasBeenUsed)
+		{
 			SetOfferingVisibility(false);
 		}
 	}
@@ -66,6 +73,15 @@ void AFixableAltar::SetOfferingLocation()
 	float _radius;
 	UKismetSystemLibrary::GetComponentBounds(GetMesh(), _origin, _boxExtent, _radius);
 	OfferingMesh->SetRelativeLocation(FVector(0,0,_origin.Z + _boxExtent.Z));
+}
+
+void AFixableAltar::Repair()
+{
+	Super::Repair();
+	if (isFixed && !hasBeenUsed)
+	{
+		SetOfferingVisibility(true);
+	}
 }
 
 

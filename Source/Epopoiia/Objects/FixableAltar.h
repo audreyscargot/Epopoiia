@@ -49,12 +49,3 @@ public:
 	virtual void Repair() override;
 
 };
-
-inline void AFixableAltar::Repair()
-{
-	Super::Repair();
-	if (isFixed)
-	{
-		SetOfferingVisibility(true);
-	}
-}

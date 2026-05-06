@@ -3,6 +3,7 @@
 
 #include "QuestComponent.h"
 
+#include "ReviewManagerComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 const int progressWhenFinished = 1;
@@ -100,6 +101,9 @@ void UQuestComponent::FinishQuest(bool _isGoodAnswer)
 			owner->GetActivePlayer()->UpdateTimeRewindAbility(progressWhenFinished);
 		}
 		gameInstance->UpdateQuestsOfDay(NPCquest);
+		gameInstance->SaveQuests();
+		gameInstance->SaveGameToSlot();
+		gameInstance->player->GetReviewManager()->MakeReview(_isGoodAnswer);
 	}
 }
 

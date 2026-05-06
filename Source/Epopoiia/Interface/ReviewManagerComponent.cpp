@@ -24,6 +24,7 @@ void UReviewManagerComponent::BeginPlay()
 	if (gameInstance)
 	{
 		reviews = gameInstance->GetReviews();
+		MakeGeneralReviewGrade();
 	}
 }
 
@@ -58,8 +59,14 @@ void UReviewManagerComponent::MakeGeneralReviewGrade()
 	
 	if (gameInstance)
 	{
+		if (reviews.IsEmpty())
+		{
+			gameInstance->SetReviewGrade(0);
+			return;
+		}
 		int _generalGrade = GetTempleReview() + GetQuestReview();
 		gameInstance->SetReviewGrade(_generalGrade);
+		UE_LOG(LogTemp, Warning, TEXT("grade : %i "), _generalGrade);
 	}
 }
 

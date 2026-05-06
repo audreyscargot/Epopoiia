@@ -122,6 +122,26 @@ TArray<int> UGameInstanceMain::GetPlayerInventory()
 	return playerInventory;
 }
 
+TArray<FMythipediaPost> UGameInstanceMain::GetPlayerPosts()
+{
+	return playerPosts;
+}
+
+void UGameInstanceMain::SetPlayerPosts(TArray<FMythipediaPost> _playerPosts)
+{
+	playerPosts = _playerPosts;
+}
+
+TMap<FString, EVocabularyType> UGameInstanceMain::GetPlayerVocabulary()
+{
+	return playerVocabulary;
+}
+
+void UGameInstanceMain::SetPlayerVocabulary(TMap<FString, EVocabularyType> _vocabulary)
+{
+	playerVocabulary = _vocabulary;
+}
+
 TArray<FShopState> UGameInstanceMain::GetShopState()
 {
 	return shopState;

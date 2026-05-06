@@ -26,7 +26,10 @@ struct FMythipediaPost
 	TArray<FString> botAnswers;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	ESpirit correctAnswer;
+	TArray<FString> usedWords;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int date;
 };
 
 UENUM(BlueprintType)

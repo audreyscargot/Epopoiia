@@ -312,3 +312,8 @@ void APlayerCharacter::SetCanLookMove(bool _canLookMove)
 {
 	bCanLookMove = _canLookMove;
 }
+
+UReviewManagerComponent* APlayerCharacter::GetReviewManager()
+{
+	return ReviewManager;
+}

@@ -51,6 +51,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
 	int playerMoney;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TArray<FMythipediaPost> playerPosts;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Save")
+	TMap<FString, EVocabularyType> playerVocabulary;
+	
 public:
 	
 	TArray<FFurnitureState> GetTempleState();
@@ -85,4 +91,10 @@ public:
 	
 	int GetPlayerTimeRewindAbility();
 	void SetPlayerTimeRewindAbility(int _playerTimeRewindAbility);
+	
+	TArray<FMythipediaPost> GetPlayerPosts();
+	virtual void SetPlayerPosts(TArray<FMythipediaPost> _playerPosts);
+	
+	TMap<FString, EVocabularyType> GetPlayerVocabulary();
+	virtual void SetPlayerVocabulary(TMap<FString, EVocabularyType> _vocabulary);
 };

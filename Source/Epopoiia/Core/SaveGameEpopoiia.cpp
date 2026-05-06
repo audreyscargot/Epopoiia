@@ -113,4 +113,24 @@ void USaveGameEpopoiia::SetPlayerTimeRewindAbility(int _playerTimeRewindAbility)
 	playerTimeRewindAbilityLevel = _playerTimeRewindAbility;
 }
 
+TArray<FMythipediaPost> USaveGameEpopoiia::GetPlayerPosts()
+{
+	return playerPosts;
+}
+
+void USaveGameEpopoiia::SetPlayerPosts(TArray<FMythipediaPost> _playerPosts)
+{
+	playerPosts = _playerPosts;
+}
+
+TMap<FString, EVocabularyType> USaveGameEpopoiia::GetPlayerVocabulary()
+{
+	return playerVocabulary;
+}
+
+void USaveGameEpopoiia::SetPlayerVocabulary(TMap<FString, EVocabularyType> _vocabulary)
+{
+	playerVocabulary = _vocabulary;
+}
+
 

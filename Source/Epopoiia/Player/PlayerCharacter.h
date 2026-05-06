@@ -153,8 +153,11 @@ public:
 	//Get and Set
 	int GetTimeRewindAbilityLevel();
 	FTransform GetCameraRegularTransform();
+	
 	float GetRegularTargetArmLength();
 	void SetCanLookMove(bool _canLookMove);
+	
+	UReviewManagerComponent* GetReviewManager();
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
