@@ -41,5 +41,10 @@ void UMythipediaManager::AddToVocabulary(FString _word, EVocabularyType _type)
 	vocabulary.Add(_word, _type);
 }
 
+void UMythipediaManager::AddPost(FMythipediaPost _newPost)
+{
+	allPosts.Add(_newPost);
+}
+
 
 

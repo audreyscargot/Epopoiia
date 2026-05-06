@@ -9,6 +9,17 @@
 
 enum class ESpirit : uint8;
 
+USTRUCT(BlueprintType)
+struct FAvailableVocabularyMap
+{
+	GENERATED_BODY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	EVocabularyType Type;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	TArray<FString> Sentences;
+};
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class EPOPOIIA_API UMythipediaManager : public UActorComponent
 {
@@ -18,6 +29,9 @@ class EPOPOIIA_API UMythipediaManager : public UActorComponent
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 	TMap<FString, EVocabularyType> vocabulary;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	TArray<FAvailableVocabularyMap> sentencesMap;
 	
 
 public:
@@ -37,5 +51,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void AddToVocabulary(FString _word, EVocabularyType _type);
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void AddPost(FMythipediaPost _newPost);
 	
 };
