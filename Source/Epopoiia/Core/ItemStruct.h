@@ -23,13 +23,13 @@ struct FMythipediaPost
 	FString playerPost;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FString> botAnswers;
+	TMap<FString, FString> botAnswers; //string username, string answer
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FString> usedWords;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int date;
+	TArray<int> date;
 };
 
 UENUM(BlueprintType)

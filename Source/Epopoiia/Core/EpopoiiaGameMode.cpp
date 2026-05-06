@@ -64,7 +64,7 @@ void AEpopoiiaGameMode::UseObject(int itemID)
 	FName _row = FName(FString::FromInt(itemID));
 	FString _context = "";
 	FItemStruct* _itemProperty = new FItemStruct();
-	if (AvailableItems) _itemProperty = AvailableItems->FindRow<FItemStruct>(_row, _context , true);
+	if (AvailableItems && itemID!=0) _itemProperty = AvailableItems->FindRow<FItemStruct>(_row, _context , true);
 	
 	//execute use object (currently spawn only)
 	if (_itemProperty)
@@ -147,6 +147,7 @@ void AEpopoiiaGameMode::makeSeed()
 		UE_LOG(LogTemp, Warning, TEXT("New Seed: %i"), _GI->GetSeed());
 		_GI->ResetGameInstance();
 	}
+	OnSeedUpdated.Broadcast();
 }
 
 UDataTable* AEpopoiiaGameMode::GetAvailableItems()

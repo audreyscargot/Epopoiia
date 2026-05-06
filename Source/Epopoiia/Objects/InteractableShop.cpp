@@ -3,6 +3,7 @@
 
 #include "InteractableShop.h"
 
+#include "Epopoiia/Core/EpopoiiaGameMode.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Kismet/KismetArrayLibrary.h"
 
@@ -19,10 +20,7 @@ void AInteractableShop::BeginPlay()
 {
 	Super::BeginPlay();
 	gameInstance = Cast<UGameInstanceMain>(GetGameInstance());
-	if (gameInstance)
-	{
-		CheckIsShopSaved();
-	}
+	Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode())->OnSeedUpdated.AddDynamic(this, &AInteractableShop::CheckIsShopSaved);
 }
 
 void AInteractableShop::Interact_Implementation(APlayerCharacter* InstigatorPawn)

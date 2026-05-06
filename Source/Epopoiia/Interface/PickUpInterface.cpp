@@ -28,7 +28,7 @@ void UPickUpInterface::BeginPlay()
 	//Initialize objet with data from ID row
 	FName _row = FName(FString::FromInt(Owner->ID));
 	FString _context = "";
-	if (Temp)
+	if (Temp && Owner->ID != 0)
 	{
 		FItemStruct* Row = Temp->FindRow<FItemStruct>(_row, _context , true);
 		if (Row)

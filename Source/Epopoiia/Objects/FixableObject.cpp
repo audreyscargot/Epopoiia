@@ -65,12 +65,15 @@ void AFixableObject::MakeMesh()
 	FString _context = "";
 	if (!DataTable)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("DataTable null"));
 		return;
 	}
-	FItemStruct* _itemInfo = DataTable->FindRow<FItemStruct>(_row, _context, true);
-	if (_itemInfo)
+	if (ID!=0)
 	{
-		SetMesh(isFixed ? _itemInfo->FixedMesh : _itemInfo->Mesh);
+		FItemStruct* _itemInfo = DataTable->FindRow<FItemStruct>(_row, _context, true);
+		if (_itemInfo)
+		{
+			SetMesh(isFixed ? _itemInfo->FixedMesh : _itemInfo->Mesh);
+		}
 	}
+	
 }

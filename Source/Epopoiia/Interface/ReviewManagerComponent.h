@@ -16,13 +16,13 @@ struct FReviewStruct
 	FString reviewNPCName;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int reviewGrade;
+	int reviewGrade = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString reviewText;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int reviewPfpIndex;
+	int reviewPfpIndex = 0;
 };
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
