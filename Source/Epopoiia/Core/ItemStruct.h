@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -13,6 +12,30 @@ enum class ESpirit : uint8
 	None = 0,
 	Korrigan = 1 UMETA(DisplayName = "Korrigan"),
 	Willowisp = 2 UMETA(DisplayName = "Will'o the Wisp"),
+};
+
+
+USTRUCT(BlueprintType)
+struct FMythipediaPost
+{
+	GENERATED_BODY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString playerPost;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FString> botAnswers;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	ESpirit correctAnswer;
+};
+
+UENUM(BlueprintType)
+enum class EVocabularyType : uint8
+{
+	None = 0,
+	Noun = 1,
+	Verb = 2,
+	Adjective = 3,
 };
 
 UENUM(BlueprintType)
@@ -64,5 +87,5 @@ struct FQuestsInfo : public FTableRowBase
 	TArray<FString> DialogueSentences;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FString> ThinkingBubbles;
+	TMap<FString, EVocabularyType> learnedVocabulary;
 };

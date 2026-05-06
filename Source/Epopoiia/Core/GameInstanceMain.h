@@ -198,6 +198,9 @@ public :
 	virtual void SaveReviews();
 	
 	UFUNCTION(BlueprintCallable)
+	virtual void SaveReviewGrade();
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void SaveGameToSlot();
 	
 	UFUNCTION()

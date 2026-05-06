@@ -8,6 +8,7 @@
 #include "InputAction.h"
 #include "PlayerCharacter.generated.h"
 
+class UMythipediaManager;
 class UReviewManagerComponent;
 class UGameInstanceMain;
 class AEpopoiiaGameMode;
@@ -76,6 +77,9 @@ class EPOPOIIA_API APlayerCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UReviewManagerComponent* ReviewManager;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UMythipediaManager* MythipediaManager;
 	
 
 protected:

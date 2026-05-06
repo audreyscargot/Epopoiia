@@ -91,6 +91,8 @@ int UGameInstanceMain::GetReviewGrade()
 void UGameInstanceMain::SetReviewGrade(int _reviewGrade)
 {
 	templeReviewGrade = _reviewGrade;
+	SaveReviewGrade();
+	SaveGameToSlot();
 }
 
 TArray<FReviewStruct> UGameInstanceMain::GetReviews()
@@ -286,6 +288,11 @@ void UGameInstanceMain::SavePlayerMoney()
 void UGameInstanceMain::SaveReviews()
 {
 	currentSaveGame->SetReviews(reviews);
+}
+
+void UGameInstanceMain::SaveReviewGrade()
+{
+	currentSaveGame->SetTempleReviewGrade(templeReviewGrade);
 }
 
 void UGameInstanceMain::SaveGameToSlot()

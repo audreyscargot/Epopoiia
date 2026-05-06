@@ -19,21 +19,24 @@ AInteractableNPC::AInteractableNPC()
 
 void AInteractableNPC::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 {
-	if (!isInteracted)
+	if (GameInstance->GetQuestsOfDay()[npcID].quest.IsValidIndex(GameInstance->GetQuestsOfDay()[npcID].currentQuestIndex))
 	{
-		isInteracted = true;
-	}
-	else
-	{
-		if (interactWidgetRef)
+		if (!isInteracted)
 		{
-			interactWidgetRef->RemoveFromParent();
-			interactWidgetRef = nullptr;
+			isInteracted = true;
 		}
-		isInteracted = false;
+		else
+		{
+			if (interactWidgetRef)
+			{
+				interactWidgetRef->RemoveFromParent();
+				interactWidgetRef = nullptr;
+			}
+			isInteracted = false;
+		}
+		SetDialogueView(InstigatorPawn);
+		activePlayer = InstigatorPawn;
 	}
-	SetDialogueView(InstigatorPawn);
-	activePlayer = InstigatorPawn;
 }
 
 void AInteractableNPC::BeginPlay()

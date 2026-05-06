@@ -6,8 +6,8 @@
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Reviews/ReviewInfos.h"
 
-const int middleGradeFurniture = 5;
-const int highestGradeFurniture = 10;
+const int middleGradeFurniture = 1;
+const int highestGradeFurniture = 2;
 
 // Sets default values for this component's properties
 UReviewManagerComponent::UReviewManagerComponent()
@@ -77,6 +77,7 @@ FString UReviewManagerComponent::GetRandomLine(int _index, int _type)
 			if (_column.IsValidIndex(_randomLine))
 			{
 				FString _reviewText = _column[_randomLine];
+				
 				return _reviewText;
 			}
 		}
@@ -109,15 +110,15 @@ void UReviewManagerComponent::MakeReview(bool _isQuestSucceeded)
 		_randomGrade += _isQuestSucceeded ? 1 : 0;
 		
 		int _randomPfpIndex = FMath::RandRange(0, reviewTexture.Num() - 1);
-		UObject* _randomPfp = reviewTexture[_randomPfpIndex];
 		
-		AddReview(_randomName, _randomGrade, _templeReview, _randomPfp);
+		AddReview(_randomName, _randomGrade, _templeReview, _randomPfpIndex);
+		MakeGeneralReviewGrade();
 	}
 }
 
-void UReviewManagerComponent::AddReview(FString _reviewNPCName, int _reviewGrade, FString _reviewText, UObject* _pfpTexture)
+void UReviewManagerComponent::AddReview(FString _reviewNPCName, int _reviewGrade, FString _reviewText, int _reviewPfpIndex)
 {
-	reviews.Add(FReviewStruct(_reviewNPCName, _reviewGrade, _reviewText));
+	reviews.Add(FReviewStruct(_reviewNPCName, _reviewGrade, _reviewText, _reviewPfpIndex));
 	gameInstance->SetReviews(reviews);
 }
 

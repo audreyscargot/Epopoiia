@@ -152,4 +152,4 @@ void AEpopoiiaGameMode::makeSeed()
 UDataTable* AEpopoiiaGameMode::GetAvailableItems()
 {
 	return AvailableItems;
-};
+}

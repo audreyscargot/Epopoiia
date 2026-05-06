@@ -53,7 +53,7 @@ public:
 	UFUNCTION()
 	virtual void AddToInventory(int itemID);
 	
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	virtual void RemoveFromInventory(int itemID);
 	
 	UFUNCTION()

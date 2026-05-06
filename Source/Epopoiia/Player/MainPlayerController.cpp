@@ -29,6 +29,7 @@ void AMainPlayerController::SwitchInput(bool isNewInputUI, bool isCameraChange)
 			{
 				Subsystem->RemoveMappingContext(isNewInputUI ? InputMappingContext : UIInputMappingContext);
 				Subsystem->AddMappingContext(isNewInputUI ? UIInputMappingContext : InputMappingContext, 0);
+				SetShowMouseCursor(isNewInputUI);
 			}
 		}
 	}

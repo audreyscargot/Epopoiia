@@ -19,6 +19,7 @@
 #include "Epopoiia/Epopoiia.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Interface/InventoryComponent.h"
+#include "Epopoiia/Interface/MythipediaManager.h"
 #include "Epopoiia/Interface/PickUpInterface.h"
 #include "Epopoiia/Interface/ReviewManagerComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -41,6 +42,7 @@ APlayerCharacter::APlayerCharacter()
 	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
 	
 	ReviewManager = CreateDefaultSubobject<UReviewManagerComponent>(TEXT("ReviewManager"));
+	MythipediaManager = CreateDefaultSubobject<UMythipediaManager>("MythipediaManager");
 }
 
 // Called when the game starts or when spawned
