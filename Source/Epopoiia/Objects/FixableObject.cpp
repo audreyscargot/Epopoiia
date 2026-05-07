@@ -9,13 +9,17 @@
 
 AFixableObject::AFixableObject()
 {
-	
+	RepairedWidget = CreateDefaultSubobject<UWidgetComponent>("RepairedWidget");
+	RepairedWidget->SetVisibility(false);
+	RepairedWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	RepairedWidget->SetupAttachment(RootComponent);
 }
 
 void AFixableObject::BeginPlay()
 {
 	Super::BeginPlay();
 	if (isFixed) SetMesh(itemInfo.FixedMesh);
+	RepairedWidget->SetRelativeLocation(FVector(0.0f, 0.0f, (GetMesh()->Bounds.Origin.Z+GetMesh()->Bounds.BoxExtent.Z)/2));
 }
 
 void AFixableObject::OnConstruction(const FTransform& Transform)
@@ -40,11 +44,16 @@ void AFixableObject::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 void AFixableObject::CanBeInteracted_Implementation()
 {
 	Super::CanBeInteracted_Implementation();
+	if (!isFixed)
+	{
+		RepairedWidget->SetVisibility(true);
+	}
 }
 
 void AFixableObject::RemoveInteractFeedback_Implementation()
 {
 	Super::RemoveInteractFeedback_Implementation();
+	RepairedWidget->SetVisibility(false);
 }
 
 //Repair To do : add Niagara feedback
@@ -55,6 +64,7 @@ void AFixableObject::Repair()
 	InteractWidget->SetVisibility(false);
 	UE_LOG(LogTemp, Warning, TEXT("Fixing !"))
 	Mesh->SetStaticMesh(itemInfo.FixedMesh);
+	RepairedWidget->SetVisibility(false);
 	
 }
 

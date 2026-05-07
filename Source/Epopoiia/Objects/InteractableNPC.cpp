@@ -99,3 +99,8 @@ void AInteractableNPC::AddToPlayerVocabulary(APlayerCharacter* _player)
 	}
 	
 }
+
+void AInteractableNPC::InitFeedback_Implementation()
+{
+	
+}

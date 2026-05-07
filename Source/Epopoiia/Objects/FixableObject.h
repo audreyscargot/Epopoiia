@@ -13,6 +13,8 @@ UCLASS()
 class EPOPOIIA_API AFixableObject : public AInteractableObject
 {
 	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties", meta = (AllowPrivateAccess = true))
+	UWidgetComponent* RepairedWidget;
 	
 	
 	

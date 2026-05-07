@@ -99,4 +99,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void AddToPlayerVocabulary(APlayerCharacter* _player);
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void InitFeedback();
 };

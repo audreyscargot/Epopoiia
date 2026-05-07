@@ -4,6 +4,7 @@
 #include "QuestComponent.h"
 
 #include "ReviewManagerComponent.h"
+#include "Epopoiia/Core/EpopoiiaGameMode.h"
 #include "Kismet/KismetMathLibrary.h"
 
 const int progressWhenFinished = 1;
@@ -23,7 +24,7 @@ void UQuestComponent::BeginPlay()
 	{
 		ownerID = owner->GetNPCID();
 	}
-	CheckQuestSaved();
+	Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode())->OnSeedUpdated.AddDynamic(this, &UQuestComponent::CheckQuestSaved);
 }
 
 void UQuestComponent::CheckQuestSaved()
@@ -36,10 +37,12 @@ void UQuestComponent::CheckQuestSaved()
 			if (_quest.npcID == ownerID)
 			{
 				LoadQuests(_quest);
+				owner->InitFeedback();
 				return;
 			}
 		}
 		CreateQuests();
+		owner->InitFeedback();
 	}
 }
 
@@ -99,11 +102,13 @@ void UQuestComponent::FinishQuest(bool _isGoodAnswer)
 		if (_isGoodAnswer && owner)
 		{
 			owner->GetActivePlayer()->UpdateTimeRewindAbility(progressWhenFinished);
+			owner->GetActivePlayer()->GettingStronger();
 		}
 		gameInstance->UpdateQuestsOfDay(NPCquest);
 		gameInstance->SaveQuests();
 		gameInstance->SaveGameToSlot();
 		gameInstance->player->GetReviewManager()->MakeReview(_isGoodAnswer);
+		owner->GetActivePlayer()->ReceiveReview();
 	}
 }
 

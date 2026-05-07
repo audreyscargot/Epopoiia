@@ -68,6 +68,8 @@ int UGameInstanceMain::GetTimeRewindAbility()
 void UGameInstanceMain::SetTimeRewindAbility(int _toAdd)
 {
 	playerTimeRewindAbilityLevel += _toAdd;
+	SavePlayerTimeRewindAbility();
+	SaveGameToSlot();
 }
 
 bool UGameInstanceMain::GetHasAltarBeenUsed()
@@ -356,6 +358,7 @@ void UGameInstanceMain::setSavedVariables()
 		reviews = currentSaveGame->GetReviews();
 		playerVocabulary = currentSaveGame->GetPlayerVocabulary();
 		playerPosts = currentSaveGame->GetPlayerPosts();
+		playerTimeRewindAbilityLevel = currentSaveGame->GetPlayerTimeRewindAbility();
 	}
 }
 

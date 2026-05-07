@@ -216,4 +216,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	UMythipediaManager* GetMythipediaManager();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void ReceiveReview();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void GettingStronger();
 };

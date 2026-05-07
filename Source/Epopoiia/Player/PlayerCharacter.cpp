@@ -298,6 +298,16 @@ UMythipediaManager* APlayerCharacter::GetMythipediaManager()
 	return MythipediaManager;
 }
 
+void APlayerCharacter::GettingStronger_Implementation()
+{
+	
+}
+
+void APlayerCharacter::ReceiveReview_Implementation()
+{
+	
+}
+
 FTransform APlayerCharacter::GetCameraRegularTransform()
 {
 	return CameraRegularTransform;
