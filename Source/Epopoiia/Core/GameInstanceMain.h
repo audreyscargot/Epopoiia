@@ -218,6 +218,9 @@ public :
 	virtual void SavePlayerVocabulary();
 	
 	UFUNCTION(BlueprintCallable)
+	virtual void SavePosts();
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void SaveGameToSlot();
 	
 	UFUNCTION()

@@ -9,9 +9,10 @@ class AInteractableObject;
 UENUM(BlueprintType)
 enum class ESpirit : uint8
 {
-	None = 0,
-	Korrigan = 1 UMETA(DisplayName = "Korrigan"),
-	Willowisp = 2 UMETA(DisplayName = "Will'o the Wisp"),
+	None,
+	Korrigan UMETA(DisplayName = "Korrigan"),
+	Willowisp UMETA(DisplayName = "Will'o the Wisp"),
+	LastIndex
 };
 
 

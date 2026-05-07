@@ -318,6 +318,12 @@ void UGameInstanceMain::SavePlayerVocabulary()
 	SaveGameToSlot();
 }
 
+void UGameInstanceMain::SavePosts()
+{
+	currentSaveGame->SetPlayerPosts(playerPosts);
+	SaveGameToSlot();
+}
+
 void UGameInstanceMain::SaveGameToSlot()
 {
 	UGameplayStatics::SaveGameToSlot(currentSaveGame, saveName, 0);
@@ -349,6 +355,7 @@ void UGameInstanceMain::setSavedVariables()
 		seed = currentSaveGame->GetSeed();
 		reviews = currentSaveGame->GetReviews();
 		playerVocabulary = currentSaveGame->GetPlayerVocabulary();
+		playerPosts = currentSaveGame->GetPlayerPosts();
 	}
 }
 

@@ -4,6 +4,8 @@
 #include "MythipediaManager.h"
 
 #include "Epopoiia/Core/GameInstanceMain.h"
+#include "Epopoiia/Core/ItemStruct.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 // Sets default values for this component's properties
@@ -20,6 +22,7 @@ void UMythipediaManager::BeginPlay()
 	if (gameInstance)
 	{
 		vocabulary = gameInstance->GetPlayerVocabulary();
+		allPosts = gameInstance->GetPlayerPosts();
 	}
 }
 
@@ -54,6 +57,8 @@ void UMythipediaManager::AddToVocabulary(FString _word, EVocabularyType _type)
 void UMythipediaManager::AddPost(FMythipediaPost _newPost)
 {
 	allPosts.Add(_newPost);
+	gameInstance->SetPlayerPosts(allPosts);
+	gameInstance->SavePosts();
 }
 
 TMap<FString, FString> UMythipediaManager::GenerateAnswers(TArray<FString> _wordUsed)
@@ -83,6 +88,7 @@ FString UMythipediaManager::CreateAnswer(TArray<FString> _wordUsed)
 {
 	if (questInfos)
 	{
+		FString _comment = commentSentences[FMath::RandRange(0, commentSentences.Num() - 1)];
 		TArray<FQuestsInfo*> _allQuestsInfo;
 		questInfos->GetAllRows<FQuestsInfo>("", _allQuestsInfo);
 		int _highestIndex = 0;
@@ -104,10 +110,16 @@ FString UMythipediaManager::CreateAnswer(TArray<FString> _wordUsed)
 				_highestLikelySpirit = _currentSpirit;
 			}
 		}
-		FString _comment = commentSentences[FMath::RandRange(0, commentSentences.Num() - 1)] + UEnum::GetDisplayValueAsText(_highestLikelySpirit).ToString();
+		int _probabilty = FMath::RandRange(0, 2);
+		if (_probabilty < 2)
+		{
+			int _lastIndex = static_cast<int>(ESpirit::LastIndex);
+			_comment.Append(UEnum::GetDisplayValueAsText(ESpirit(FMath::RandRange(1, _lastIndex-1))).ToString());
+			return (_comment);
+		}
+		_comment.Append(UEnum::GetDisplayValueAsText(_highestLikelySpirit).ToString());
 		return (_comment);
 	}
-	
 	return FString("");
 }
 
