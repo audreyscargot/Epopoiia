@@ -144,6 +144,7 @@ void APlayerCharacter::DoGridMove(float Right, float Forward)
 				if (UKismetMathLibrary::Dot_VectorVector(_moveVector*_moveSign, GetMesh()->GetForwardVector()) < 0) currentState = PushPullState::PULL;
 				else currentState = PushPullState::PUSH;
 			}
+			else;
 		}
 		canGridMove = false;
 		UKismetSystemLibrary::K2_SetTimer(this, "ResetCanGridMove", _timeToMove*1.5, false, false);

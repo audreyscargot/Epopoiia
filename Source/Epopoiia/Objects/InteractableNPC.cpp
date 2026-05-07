@@ -63,11 +63,11 @@ void AInteractableNPC::SetDialogueView(APlayerCharacter* InstigatorPawn)
 	UE_LOG(LogTemp, Warning, TEXT("%hhd"), isInteracted);
 	FVector _locationToLookAt = (InstigatorPawn->GetActorLocation()+GetActorLocation())/2;
 	
-	FVector _location = InstigatorPawn->GetActorLocation()+_locationToLookAt;
+	FVector _location = _locationToLookAt;
 	cameraInteractTransform.SetLocation(_location);
 	
 	FRotator _rotation = UKismetMathLibrary::FindLookAtRotation(cameraInteractTransform.GetLocation(), InstigatorPawn->GetCameraRegularTransform().GetLocation());
-	cameraInteractTransform.SetRotation(_rotation.Quaternion());
+	// cameraInteractTransform.SetRotation(_rotation.Quaternion());
 	
 	FTransform _transform = isInteracted ? cameraInteractTransform : InstigatorPawn->GetCameraRegularTransform();
 	float _targetArmLength = isInteracted ? interactTargetArmLength : InstigatorPawn->GetRegularTargetArmLength();

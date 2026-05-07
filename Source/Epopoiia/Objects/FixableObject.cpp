@@ -65,7 +65,6 @@ void AFixableObject::Repair()
 	UE_LOG(LogTemp, Warning, TEXT("Fixing !"))
 	Mesh->SetStaticMesh(itemInfo.FixedMesh);
 	RepairedWidget->SetVisibility(false);
-	
 }
 
 void AFixableObject::MakeMesh()

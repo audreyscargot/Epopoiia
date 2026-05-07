@@ -35,9 +35,6 @@ void UHoldInteractComponent::ActivateHold(bool _isActive, APlayerCharacter* _pla
 	isActiveHold = _isActive;
 	if (isActiveHold)
 	{
-		Owner->RemoveInteractFeedback_Implementation();
-		//TODO: Remove Can Be Interacted while held !!
-		
 		Player = _player;
 		Player->OnMovedDelegate.BindDynamic(this, &ThisClass::PushPull);
 		Player->OnShouldTurn.BindDynamic(this, &UHoldInteractComponent::Turn);
@@ -51,7 +48,6 @@ void UHoldInteractComponent::ActivateHold(bool _isActive, APlayerCharacter* _pla
 		Player->SetActorLocation(_closestPoint); // Move Player to the closest side 
 		FRotator _lookAtRotation = UKismetMathLibrary::FindLookAtRotation(Player->GetActorLocation(), Owner->GetActorLocation());
 		Player->SetActorRotation((FRotator (0, _lookAtRotation.Yaw, 0)));
-		UE_LOG(LogTemp, Warning, TEXT("%f"), _lookAtRotation.Yaw);
 		vectorToPlayer = Owner->GetActorLocation() - Player->GetActorLocation();
 	}
 	else

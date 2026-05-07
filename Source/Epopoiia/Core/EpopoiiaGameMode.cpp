@@ -11,8 +11,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetStringLibrary.h"
 
-const int startingWidth = 15; //DO NOT USE ODD NUMBERS (for perfect middle)
-const int startingDepth = 11;
+const int startingWidth = 35; //DO NOT USE EVEN NUMBERS (for perfect middle)
+const int startingDepth = 21;
 const int cellSize = 100;
 
 AEpopoiiaGameMode::AEpopoiiaGameMode()
@@ -105,7 +105,7 @@ void AEpopoiiaGameMode::SpawnObject(FItemStruct& _itemInfo)
 		_spawnToCell = FVector (_playerCell.X, _spawnToY, _playerCell.Z);
 		if (_spawnToY >= GetGridMinY() && _spawnToY <= GetGridMaxY()) //check if spawnable (in between grid availables cell)
 		{
-			bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, _playerCell, _spawnToCell, ECC_Visibility, QueryParams);
+			bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, _playerCell, _spawnToCell, ECC_GameTraceChannel2, QueryParams);
 			DrawDebugLine(GetWorld(), _playerCell, _spawnToCell, bHit ? FColor::Green : FColor::Red, false, 1.0f, 0, 1.0f);
 			_canSpawn = !bHit;
 		}
@@ -117,7 +117,7 @@ void AEpopoiiaGameMode::SpawnObject(FItemStruct& _itemInfo)
 		_spawnToCell = FVector (_spawnToX, _playerCell.Y, _playerCell.Z);
 		if (_spawnToX >= GetGridMinX() && _spawnToX <= GetGridMaxX()) //check if spawnable (in between grid availables cell)
 		{
-			bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, _playerCell, _spawnToCell, ECC_Visibility, QueryParams);
+			bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, _playerCell, _spawnToCell, ECC_GameTraceChannel2, QueryParams);
 			_canSpawn = !bHit;
 		}
 	}
