@@ -2,10 +2,6 @@
 
 
 #include "WorldManager.h"
-
-#include <string>
-
-#include "K2Node_GetDataTableRow.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Core/ItemStruct.h"
 #include "Epopoiia/Interface/PickUpInterface.h"
@@ -13,7 +9,6 @@
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
-#include "Runtime/Datasmith/DatasmithCore/Public/DatasmithDefinitions.h"
 
 
 // Sets default values

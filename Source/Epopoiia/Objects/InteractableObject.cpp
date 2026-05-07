@@ -3,16 +3,11 @@
 
 #include "InteractableObject.h"
 
-#include "K2Node_GetDataTableRow.h"
 #include "Epopoiia/Widgets/DetectUserWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Epopoiia/Interface/InteractInterface.h"
 #include "Components/BoxComponent.h"
 #include "Epopoiia/Core/EpopoiiaGameMode.h"
-#include "GameFramework/Character.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "Net/Core/Connection/NetConnectionFaultRecoveryBase.h"
 
 // Sets default values
 AInteractableObject::AInteractableObject()

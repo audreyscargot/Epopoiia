@@ -6,8 +6,6 @@
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
-#include "Epopoiia/Objects/FixableObject.h"
-#include "Epopoiia/Objects/InteractableObject.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values

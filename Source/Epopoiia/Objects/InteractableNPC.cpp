@@ -5,8 +5,8 @@
 
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "Blueprint/UserWidget.h"
+#include "Epopoiia/Interface/MythipediaManager.h"
 #include "Epopoiia/Interface/QuestComponent.h"
-#include "Kismet/BlueprintMapLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 
 AInteractableNPC::AInteractableNPC()
@@ -77,4 +77,25 @@ void AInteractableNPC::SetDialogueView(APlayerCharacter* InstigatorPawn)
 	//Turn Character to face Player
 	FRotator _newRotation = isInteracted ? UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), InstigatorPawn->GetActorLocation()) : regularRotator;
 	SetActorRotation(FRotator(0, _newRotation.Yaw, 0));
+}
+
+void AInteractableNPC::AddToPlayerVocabulary(APlayerCharacter* _player)
+{
+	FName _rowName = GameInstance->GetQuestsOfDay()[npcID].quest[GameInstance->GetQuestsOfDay()[npcID].currentQuestIndex];
+	FQuestsInfo* _row = availableQuests->FindRow<FQuestsInfo>(_rowName, "", true);
+	TArray<int> _answers = GameInstance->GetQuestsOfDay()[npcID].questDialogueNPC[GameInstance->GetQuestsOfDay()[npcID].currentQuestIndex].questDialogueIndex;
+	
+	TArray<FString> _wordsArray;
+	for (auto i : _row->learnedVocabulary)
+	{
+		_wordsArray.Add(i.Key);
+	}
+	
+	for (auto _dialogueIndex : _answers)
+	{
+		FString _key = _wordsArray[_dialogueIndex];
+		EVocabularyType _value = *_row->learnedVocabulary.Find(_key);
+		if (_player->GetMythipediaManager()) _player->GetMythipediaManager()->AddToVocabulary(_key, _value);
+	}
+	
 }

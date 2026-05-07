@@ -213,4 +213,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void UpdateTimeRewindAbility(int _progress);
+	
+	UFUNCTION(BlueprintCallable)
+	UMythipediaManager* GetMythipediaManager();
 };

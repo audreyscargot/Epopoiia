@@ -3,20 +3,15 @@
 
 #include "PlayerCharacter.h"
 
-#include <ranges>
-
 #include "Epopoiia/Widgets/DetectUserWidget.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "Epopoiia/Interface/HoldInteractComponent.h"
 #include "InputActionValue.h"
 #include "Epopoiia/Interface/InteractInterface.h"
 #include "Blueprint/UserWidget.h"
-#include "Epopoiia/Epopoiia.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Interface/InventoryComponent.h"
 #include "Epopoiia/Interface/MythipediaManager.h"
@@ -296,6 +291,11 @@ void APlayerCharacter::UpdateTimeRewindAbility(int _progress)
 		gameInstance->SetTimeRewindAbility(_progress);
 		gameInstance->SavePlayerTimeRewindAbility();
 	}
+}
+
+UMythipediaManager* APlayerCharacter::GetMythipediaManager()
+{
+	return MythipediaManager;
 }
 
 FTransform APlayerCharacter::GetCameraRegularTransform()

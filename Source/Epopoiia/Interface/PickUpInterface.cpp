@@ -2,10 +2,6 @@
 
 
 #include "Epopoiia/Interface/PickUpInterface.h"
-
-#include <string>
-
-#include "IDetailTreeNode.h"
 #include "InventoryComponent.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Epopoiia/Player/PlayerCharacter.h"

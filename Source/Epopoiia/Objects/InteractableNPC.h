@@ -96,4 +96,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetDialogueView(APlayerCharacter* InstigatorPawn);
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void AddToPlayerVocabulary(APlayerCharacter* _player);
 };

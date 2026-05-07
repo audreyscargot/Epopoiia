@@ -7,6 +7,7 @@
 #include "Epopoiia/Core/ItemStruct.h"
 #include "MythipediaManager.generated.h"
 
+class UGameInstanceMain;
 enum class ESpirit : uint8;
 
 USTRUCT(BlueprintType)
@@ -14,7 +15,7 @@ struct FAvailableVocabularyMap
 {
 	GENERATED_BODY()
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
-	EVocabularyType Type;
+	EVocabularyType Type = EVocabularyType::None;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 	TArray<FString> Sentences;
@@ -28,10 +29,22 @@ class EPOPOIIA_API UMythipediaManager : public UActorComponent
 	TArray<FMythipediaPost> allPosts;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	TArray<FString> godUsernames;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 	TMap<FString, EVocabularyType> vocabulary;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
 	TArray<FAvailableVocabularyMap> sentencesMap;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	TArray<FString> commentSentences;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UGameInstanceMain* gameInstance;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess = true))
+	UDataTable* questInfos;
 	
 
 public:
@@ -54,5 +67,11 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void AddPost(FMythipediaPost _newPost);
+	
+	UFUNCTION(BlueprintCallable)
+	TMap<FString, FString> GenerateAnswers(TArray<FString> _wordUsed);
+	
+	UFUNCTION(BlueprintCallable)
+	FString CreateAnswer(TArray<FString> _wordUsed);
 	
 };

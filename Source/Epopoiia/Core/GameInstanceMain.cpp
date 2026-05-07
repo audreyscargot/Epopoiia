@@ -3,7 +3,6 @@
 
 #include "GameInstanceMain.h"
 
-#include "GroomVisualizationData.h"
 #include "GameFramework/SaveGame.h"
 #include "SaveGameEpopoiia.h"
 #include "Epopoiia/Interface/InventoryComponent.h"
@@ -11,9 +10,7 @@
 #include "Epopoiia/Interface/ReviewManagerComponent.h"
 #include "Epopoiia/Objects/FixableObject.h"
 #include "Epopoiia/Objects/InteractableObject.h"
-#include "Epopoiia/Objects/InteractableShop.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetStringLibrary.h"
 
 const FString saveName = "EpopoiiaSave";
 const TSubclassOf<USaveGameEpopoiia> saveGameClass = USaveGameEpopoiia::StaticClass();
@@ -315,6 +312,12 @@ void UGameInstanceMain::SaveReviewGrade()
 	currentSaveGame->SetTempleReviewGrade(templeReviewGrade);
 }
 
+void UGameInstanceMain::SavePlayerVocabulary()
+{
+	currentSaveGame->SetPlayerVocabulary(playerVocabulary);
+	SaveGameToSlot();
+}
+
 void UGameInstanceMain::SaveGameToSlot()
 {
 	UGameplayStatics::SaveGameToSlot(currentSaveGame, saveName, 0);
@@ -345,6 +348,7 @@ void UGameInstanceMain::setSavedVariables()
 		templeReviewGrade = currentSaveGame->GetTempleReviewGrade();
 		seed = currentSaveGame->GetSeed();
 		reviews = currentSaveGame->GetReviews();
+		playerVocabulary = currentSaveGame->GetPlayerVocabulary();
 	}
 }
 

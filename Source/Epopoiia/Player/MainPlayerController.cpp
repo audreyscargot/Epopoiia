@@ -4,7 +4,6 @@
 #include "MainPlayerController.h"
 #include "Engine/LocalPlayer.h"
 #include "EnhancedInputSubsystems.h"
-#include "PlayerCharacter.h"
 
 void AMainPlayerController::SetupInputComponent()
 {

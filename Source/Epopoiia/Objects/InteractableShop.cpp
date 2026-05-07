@@ -5,7 +5,6 @@
 
 #include "Epopoiia/Core/EpopoiiaGameMode.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
-#include "Kismet/KismetArrayLibrary.h"
 
 
 // Sets default values
