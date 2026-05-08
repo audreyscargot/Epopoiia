@@ -13,7 +13,6 @@ AInteractableNPC::AInteractableNPC()
 {
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMesh");
 	SkeletalMesh->SetupAttachment(RootComponent);
-	regularRotator = GetActorRotation();
 	QuestComponent = CreateDefaultSubobject<UQuestComponent>("QuestComponent");
 }
 
@@ -43,6 +42,7 @@ void AInteractableNPC::BeginPlay()
 {
 	Super::BeginPlay();
 	GameInstance = Cast<UGameInstanceMain>(GetWorld()->GetGameInstance());
+	regularRotator = GetActorRotation();
 }
 
 int AInteractableNPC::GetNPCID()
@@ -67,6 +67,10 @@ void AInteractableNPC::SetDialogueView(APlayerCharacter* InstigatorPawn)
 	//Turn Character to face Player
 	FRotator _newRotation = isInteracted ? UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), InstigatorPawn->GetActorLocation()) : regularRotator;
 	SetActorRotation(FRotator(0, _newRotation.Yaw, 0));
+	if (!isInteracted && animIdle)
+	{
+		SkeletalMesh->PlayAnimation(animIdle, true);
+	}
 }
 
 void AInteractableNPC::AddToPlayerVocabulary(APlayerCharacter* _player)
@@ -83,9 +87,12 @@ void AInteractableNPC::AddToPlayerVocabulary(APlayerCharacter* _player)
 	
 	for (auto _dialogueIndex : _answers)
 	{
-		FString _key = _wordsArray[_dialogueIndex];
-		EVocabularyType _value = *_row->learnedVocabulary.Find(_key);
-		if (_player->GetMythipediaManager()) _player->GetMythipediaManager()->AddToVocabulary(_key, _value);
+		if (_wordsArray.IsValidIndex(_dialogueIndex))
+		{
+			FString _key = _wordsArray[_dialogueIndex];
+			EVocabularyType _value = *_row->learnedVocabulary.Find(_key);
+			if (_player->GetMythipediaManager()) _player->GetMythipediaManager()->AddToVocabulary(_key, _value);
+		}
 	}
 	
 }

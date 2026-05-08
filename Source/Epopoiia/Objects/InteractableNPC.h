@@ -83,6 +83,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	APlayerCharacter* activePlayer;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimationAsset* animIdle;
+	
 public:
 	AInteractableNPC();
 	

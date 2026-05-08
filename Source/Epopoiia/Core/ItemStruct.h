@@ -12,6 +12,14 @@ enum class ESpirit : uint8
 	None,
 	Korrigan UMETA(DisplayName = "Korrigan"),
 	Willowisp UMETA(DisplayName = "Will'o the Wisp"),
+	Kobold UMETA(DisplayName = "Kobold"),
+	Imp UMETA(DisplayName = "Imp"),
+	Domovoi UMETA(DisplayName = "Domovoi"),
+	Puck UMETA(DisplayName = "Puck"),
+	Brownie UMETA(DisplayName = "Brownie"),
+	Kallikantzaros UMETA(DisplayName = "Kallikantzaros"),
+	Nopperabo UMETA(DisplayName = "Noppera-bo"),
+	Zashiki UMETA(DisplayName = "Zashiki-warashi"),
 	LastIndex
 };
 
