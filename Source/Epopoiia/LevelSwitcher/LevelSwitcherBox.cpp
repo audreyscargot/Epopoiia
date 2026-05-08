@@ -38,7 +38,7 @@ void ALevelSwitcherBox::Tick(float DeltaTime)
 void ALevelSwitcherBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherOverlappedComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor)) SwitchWorld();
+	if (APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor)) StartSwitchWorld();
 }
 
 void ALevelSwitcherBox::SwitchWorld()
@@ -48,6 +48,13 @@ void ALevelSwitcherBox::SwitchWorld()
 	LevelToOpen.LoadSynchronous();
 	if (!LevelToOpen.IsNull()) UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),LevelToOpen , true, Options);
 	UE_LOG(LogTemp, Warning, TEXT("%d"), LevelToOpen.IsValid());
+}
+
+void ALevelSwitcherBox::StartSwitchWorld()
+{
+	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(0,1,1,FLinearColor(0,0,0,0), true, true);
+	UGameplayStatics::GetPlayerPawn(GetWorld(),0)->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	UKismetSystemLibrary::K2_SetTimer(this, "SwitchWorld", 1, false, false);
 }
 
 void ALevelSwitcherBox::SendToSave()

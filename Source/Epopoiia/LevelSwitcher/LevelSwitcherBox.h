@@ -40,6 +40,9 @@ public:
 	virtual void SwitchWorld();
 	
 	UFUNCTION(BlueprintCallable)
+	virtual void StartSwitchWorld();
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void SendToSave();
 
 };
