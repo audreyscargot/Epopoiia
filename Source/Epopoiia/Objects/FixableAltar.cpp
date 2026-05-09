@@ -82,6 +82,8 @@ void AFixableAltar::Repair()
 	{
 		SetOfferingVisibility(true);
 	}
+	gameInstance->SaveTemple();
+	gameInstance->SaveGeneral();
 }
 
 

@@ -38,10 +38,6 @@ void UGameInstanceMain::Init()
 
 TArray<FFurnitureState> UGameInstanceMain::GetTempleState()
 {
-	for (auto i : TempleState)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Temple State: %i"), i.index)
-	}
 	return TempleState;
 }
 
@@ -70,6 +66,7 @@ void UGameInstanceMain::SetTimeRewindAbility(int _toAdd)
 	playerTimeRewindAbilityLevel += _toAdd;
 	SavePlayerTimeRewindAbility();
 	SaveGameToSlot();
+	player->GettingStronger();
 }
 
 bool UGameInstanceMain::GetHasAltarBeenUsed()

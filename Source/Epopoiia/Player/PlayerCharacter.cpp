@@ -19,6 +19,7 @@
 #include "Epopoiia/Interface/ReviewManagerComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
