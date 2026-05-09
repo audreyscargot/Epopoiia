@@ -41,7 +41,7 @@ void AFixableObject::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 		MakeFeedback();
 		bIsInteractable = false;
 		InteractWidget->SetVisibility(false);
-		UKismetSystemLibrary::K2_SetTimer(this, "Repair", 3, false, false);
+		UKismetSystemLibrary::K2_SetTimer(this, "Repair", 2.5, false, false);
 	}
 }
 
