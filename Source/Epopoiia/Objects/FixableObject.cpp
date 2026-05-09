@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
+#include "Kismet/GameplayStatics.h"
 
 AFixableObject::AFixableObject()
 {
@@ -37,7 +38,10 @@ void AFixableObject::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 {
 	if (Cast<UGameInstanceMain>(GetWorld()->GetGameInstance())->GetTimeRewindAbility() >= RequiredLevel && bIsInteractable)
 	{
-		Repair();
+		MakeFeedback();
+		bIsInteractable = false;
+		InteractWidget->SetVisibility(false);
+		UKismetSystemLibrary::K2_SetTimer(this, "Repair", 3, false, false);
 	}
 }
 
@@ -59,9 +63,7 @@ void AFixableObject::RemoveInteractFeedback_Implementation()
 //Repair To do : add Niagara feedback
 void AFixableObject::Repair()
 {
-	bIsInteractable = false;
 	isFixed = true;
-	InteractWidget->SetVisibility(false);
 	UE_LOG(LogTemp, Warning, TEXT("Fixing !"))
 	Mesh->SetStaticMesh(itemInfo.FixedMesh);
 	RepairedWidget->SetVisibility(false);
@@ -83,5 +85,10 @@ void AFixableObject::MakeMesh()
 			SetMesh(isFixed ? _itemInfo->FixedMesh : _itemInfo->Mesh);
 		}
 	}
+	
+}
+
+void AFixableObject::MakeFeedback_Implementation()
+{
 	
 }

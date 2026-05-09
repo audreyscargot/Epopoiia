@@ -48,4 +48,6 @@ public:
 	
 	virtual void MakeMesh() override;
 	
+	UFUNCTION(BlueprintNativeEvent)
+	void MakeFeedback();
 };

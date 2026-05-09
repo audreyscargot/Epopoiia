@@ -46,6 +46,6 @@ public:
 	UFUNCTION()
 	virtual void SetOfferingLocation();
 	
-	virtual void Repair() override;
+	void Repair() override;
 
 };
