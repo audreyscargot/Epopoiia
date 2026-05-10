@@ -47,5 +47,8 @@ public:
 	virtual void SetOfferingLocation();
 	
 	void Repair() override;
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void InitAltar();
 
 };

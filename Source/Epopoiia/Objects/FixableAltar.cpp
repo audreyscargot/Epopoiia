@@ -3,6 +3,7 @@
 
 #include "FixableAltar.h"
 
+#include "Epopoiia/Core/EpopoiiaGameMode.h"
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -26,7 +27,7 @@ void AFixableAltar::BeginPlay()
 		hasBeenUsed = gameInstance->GetHasAltarBeenUsed();
 		MakeMoney();
 	}
-	SetOfferingVisibility(!hasBeenUsed && isFixed);
+	Cast<AEpopoiiaGameMode>(GetWorld()->GetAuthGameMode())->OnSeedUpdated.AddDynamic(this, &AFixableAltar::InitAltar);
 	
 }
 
@@ -84,6 +85,11 @@ void AFixableAltar::Repair()
 	}
 	gameInstance->SaveTemple();
 	gameInstance->SaveGeneral();
+}
+
+void AFixableAltar::InitAltar()
+{
+	SetOfferingVisibility(!hasBeenUsed && isFixed);
 }
 
 

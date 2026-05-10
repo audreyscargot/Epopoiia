@@ -3,8 +3,10 @@
 
 #include "HoldInteractComponent.h"
 
+#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Epopoiia/Player/PlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -82,6 +84,8 @@ void UHoldInteractComponent::PushPull(FVector _direction)
 {
 		FVector _displacement = Player->GetActorLocation() + vectorToPlayer;
 		Owner->SetActorLocation(FVector(_displacement.X, _displacement.Y, Owner->GetActorLocation().Z));
+		UGameplayStatics::PlaySound2D(GetWorld(), pushPullSound, 1,1, 0, nullptr, nullptr, false);
+
 }
 
 void UHoldInteractComponent::AddTurn()
@@ -128,6 +132,7 @@ void UHoldInteractComponent::AddTurn()
  */
 void UHoldInteractComponent::Turn(FVector _direction)
 {
+	UGameplayStatics::PlaySound2D(GetWorld(), turnSound, 1,1, 0, nullptr, nullptr, false);
 	TurnDirection = _direction;
 	TurnTimerHandle = UKismetSystemLibrary::K2_SetTimer(this, "AddTurn", (0.5/90), true, false, 0, 0);
 	UE_LOG(LogTemp, Warning, TEXT("%d"), TurnTimerHandle.IsValid());
