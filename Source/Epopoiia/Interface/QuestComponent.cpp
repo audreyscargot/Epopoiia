@@ -53,7 +53,7 @@ void UQuestComponent::LoadQuests(FNPCsQuest _quest)
 
 void UQuestComponent::CreateQuests()
 {
-	int _randQuestQuantity = FMath::RandRange(2, 3);
+	int _randQuestQuantity = FMath::RandRange(2, 3); //value to change depending on the amount of quest available per NPC per day
 	int _seed = 0;
 	NPCquest.questDialogueNPC.SetNum(_randQuestQuantity);
 	
@@ -88,8 +88,8 @@ void UQuestComponent::MakeDialogues(int _questIndex)
 	}
 	for (int i = 0; i < 2; i++)
 	{
-		int _index = _allIndex[UKismetMathLibrary::RandomIntegerInRange(0, _allIndex.Num()-1)]; //pick value at random index and stores value
-		NPCquest.questDialogueNPC[_questIndex].questDialogueIndex.Add(_index);
+		int _index = _allIndex[UKismetMathLibrary::RandomIntegerInRange(0, _allIndex.Num()-1)];
+		NPCquest.questDialogueNPC[_questIndex].questDialogueIndex.Add(_index); //stores dialogue to always use same sentence and not give more hints
 		_allIndex.Remove(_index);
 	}
 }

@@ -14,22 +14,14 @@
 // Sets default values
 AWorldManager::AWorldManager()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
-// Called when the game starts or when spawned
 void AWorldManager::BeginPlay()
 {
 	Super::BeginPlay();
 	ManageWorld();
 	
-}
-
-// Called every frame
-void AWorldManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void AWorldManager::ManageWorld()

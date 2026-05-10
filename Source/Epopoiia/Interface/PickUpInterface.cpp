@@ -1,18 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "Epopoiia/Interface/PickUpInterface.h"
 #include "InventoryComponent.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Epopoiia/Player/PlayerCharacter.h"
 
-// Sets default values for this component's properties
 UPickUpInterface::UPickUpInterface()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-
-	
 }
 
 void UPickUpInterface::BeginPlay()
@@ -42,8 +35,6 @@ void UPickUpInterface::PickedUp(APlayerCharacter* Player)
 		Player->Inventory->AddToInventory(ItemProperties.ID);
 		Owner->Destroy(true);
 	}
-	
-	//TODO : else ajouter message "inventory is full"
 }
 
 

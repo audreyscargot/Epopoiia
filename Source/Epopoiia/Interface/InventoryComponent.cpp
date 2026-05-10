@@ -7,18 +7,11 @@
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Widgets/BaseWidget.h"
 
-// Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
-// Called when the game starts
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -41,7 +34,6 @@ void UInventoryComponent::AddToInventory(int itemID)
 	OnInventoryUpdated.Broadcast(this);
 }
 
-//to use if destroyed or used
 void UInventoryComponent::RemoveFromInventory(int itemID)
 {
 	Inventory.RemoveSingle(itemID);

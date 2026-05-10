@@ -3,7 +3,6 @@
 
 #include "HoldInteractComponent.h"
 
-#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "Epopoiia/Objects/InteractableObject.h"
 #include "Epopoiia/Player/PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -12,10 +11,8 @@
 
 const APlayerCharacter* player = nullptr;
 
-// Sets default values for this component's properties
 UHoldInteractComponent::UHoldInteractComponent()
 {
-	
 }
 
 // Called when the game starts
@@ -23,7 +20,6 @@ void UHoldInteractComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = Cast<AInteractableObject>(GetOwner());
-	
 }
 
 
@@ -41,18 +37,18 @@ void UHoldInteractComponent::ActivateHold(bool _isActive, APlayerCharacter* _pla
 		Player->OnMovedDelegate.BindDynamic(this, &ThisClass::PushPull);
 		Player->OnShouldTurn.BindDynamic(this, &UHoldInteractComponent::Turn);
 		
-		//Make close Point
+		//Find closest side
 		FVector _closestPoint;
 		_closestPoint.X = GetPointCloserTo().X;
 		_closestPoint.Y = GetPointCloserTo().Y;
 		_closestPoint.Z = Player->GetActorLocation().Z;
 		
-		Player->SetActorLocation(_closestPoint); // Move Player to the closest side 
+		Player->SetActorLocation(_closestPoint); // Move Player to the closest side with rotation toward object
 		FRotator _lookAtRotation = UKismetMathLibrary::FindLookAtRotation(Player->GetActorLocation(), Owner->GetActorLocation());
 		Player->SetActorRotation((FRotator (0, _lookAtRotation.Yaw, 0)));
 		vectorToPlayer = Owner->GetActorLocation() - Player->GetActorLocation();
 	}
-	else
+	else //if Activate Hold is released
 	{
 		Owner->SetActorLocation(FVector(Player->GetActorLocation().X+vectorToPlayer.X, Player->GetActorLocation().Y+vectorToPlayer.Y, Owner->GetActorLocation().Z));
 		Player->OnMovedDelegate.Unbind();
@@ -128,7 +124,7 @@ void UHoldInteractComponent::AddTurn()
 
 /**
  * Turn furniture function
- * @param _direction vecteur de direction
+ * @param _direction direction vector
  */
 void UHoldInteractComponent::Turn(FVector _direction)
 {

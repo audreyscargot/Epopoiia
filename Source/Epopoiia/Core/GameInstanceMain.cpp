@@ -35,7 +35,7 @@ void UGameInstanceMain::Init()
 	}
 }
 
-
+//---------------GETTER SETTER----------------------
 TArray<FFurnitureState> UGameInstanceMain::GetTempleState()
 {
 	return TempleState;
@@ -240,7 +240,7 @@ void UGameInstanceMain::SaveTemple()
 	
 }
 
-void UGameInstanceMain::SaveFixedTemple(TArray<AInteractableObject*> _registeredActors)
+void UGameInstanceMain::SaveFixedTemple(TArray<AInteractableObject*> _registeredActors) //registers all fixable elements of scene that are not pickables
 {
 	TArray<AActor*> _actorInScene;
 	TArray<AInteractableObject*> _objectsInScene;

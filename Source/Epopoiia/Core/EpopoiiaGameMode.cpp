@@ -49,7 +49,7 @@ int AEpopoiiaGameMode::GetGridMinY() const
 	return gridMinY;
 }
 
-//Grid For Spawners
+//Create grid for decorative space size
 void AEpopoiiaGameMode::CreateGrid(int _width, int _depth)
 {
 	gridMinX = 0;
@@ -71,7 +71,6 @@ void AEpopoiiaGameMode::UseObject(int itemID)
 	{
 		SpawnObject(*_itemProperty);
 	}
-	//TODO : add if more variations
 }
 
 
@@ -82,8 +81,6 @@ void AEpopoiiaGameMode::SpawnObject(FItemStruct& _itemInfo)
 	//make Parameters
 	ACharacter* _player = Cast<ACharacter>(GetWorld()->GetFirstPlayerController()->GetPawn()); 
 	FVector _location = _player->GetActorLocation();
-	
-	float _size = _itemInfo.Mesh->GetBounds().BoxExtent.X;
 	TSubclassOf<AInteractableObject> _classToSpawn = _itemInfo.actorClass;
 	
 	//choose Z for object on the ground depending on size
@@ -95,7 +92,7 @@ void AEpopoiiaGameMode::SpawnObject(FItemStruct& _itemInfo)
 	FCollisionQueryParams QueryParams;
 	QueryParams.AddIgnoredActor(this);
 	
-	//find closest cell in direction of player look	
+	//find closest cell in direction of where the player looks	
 	bool isLookingRight = UKismetMathLibrary::Abs(_player->GetActorForwardVector().X) < UKismetMathLibrary::Abs(_player->GetActorForwardVector().Y);
 	UE_LOG(LogTemp, Warning, TEXT("isLookingRight: %d"), isLookingRight);
 	if (isLookingRight)
@@ -140,7 +137,7 @@ void AEpopoiiaGameMode::makeSeed()
 	FString _seed = FString::Printf(TEXT("%i%i%i") , _now.GetYear(), _now.GetMonth(), _now.GetDay());
 	int _newSeed = UKismetStringLibrary::Conv_StringToInt(_seed);
 	UGameInstanceMain* _GI = Cast<UGameInstanceMain>(GetGameInstance());
-	if (_GI->GetSeed() != _newSeed)
+	if (_GI->GetSeed() != _newSeed) //if seed is different then it means new day has started so reset of daily variables
 	{
 		_GI->SetSeed(_newSeed);
 		_GI->SaveSeed();

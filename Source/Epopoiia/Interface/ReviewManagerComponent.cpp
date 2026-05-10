@@ -6,16 +6,12 @@
 #include "Epopoiia/Core/GameInstanceMain.h"
 #include "Epopoiia/Reviews/ReviewInfos.h"
 
-const int middleGradeFurniture = 1;
-const int highestGradeFurniture = 2;
+const int middleGradeFurniture = 5;
+const int highestGradeFurniture = 10;
 
-// Sets default values for this component's properties
 UReviewManagerComponent::UReviewManagerComponent()
 {
-	
 }
-
-
 
 void UReviewManagerComponent::BeginPlay()
 {
@@ -66,11 +62,10 @@ void UReviewManagerComponent::MakeGeneralReviewGrade()
 		}
 		int _generalGrade = GetTempleReview() + GetQuestReview();
 		gameInstance->SetReviewGrade(_generalGrade);
-		UE_LOG(LogTemp, Warning, TEXT("grade : %i "), _generalGrade);
 	}
 }
 
-FString UReviewManagerComponent::GetRandomLine(int _index, int _type)
+FString UReviewManagerComponent::GetRandomLine(int _index, int _type) //type is for 0 : temple review, 1 : was quest succeeded, 2 : based on the temple current grade
 {
 	TArray<FName> _dataRow = reviewDataTable->GetRowNames();
 	if (_dataRow.IsValidIndex(_index))

@@ -37,7 +37,6 @@ public:
 	AFixableObject();
 	virtual void BeginPlay() override;
 	virtual void OnConstruction(const FTransform& Transform) override;
-	virtual void Tick(float DeltaTime) override;
 	
 	virtual void Interact_Implementation(APlayerCharacter* InstigatorPawn) override;
 	virtual void CanBeInteracted_Implementation() override;

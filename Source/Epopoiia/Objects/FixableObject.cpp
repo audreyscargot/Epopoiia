@@ -28,11 +28,6 @@ void AFixableObject::OnConstruction(const FTransform& Transform)
 	Super::OnConstruction(Transform);
 }
 
-void AFixableObject::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 
 void AFixableObject::Interact_Implementation(APlayerCharacter* InstigatorPawn)
 {

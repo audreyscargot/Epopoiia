@@ -57,7 +57,6 @@ void AFixableAltar::MakeMoney()
 {
 	float _multiplier = gameInstance->GetReviewGrade();
 	_multiplier = _multiplier/5;
-	UE_LOG(LogTemp, Warning, TEXT("multiplier = %f"), _multiplier);
 	currentMoney = UKismetMathLibrary::FCeil(_multiplier * templeBaseMoney);
 }
 

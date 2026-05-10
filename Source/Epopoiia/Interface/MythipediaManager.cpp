@@ -64,7 +64,7 @@ void UMythipediaManager::AddPost(FMythipediaPost _newPost)
 TMap<FString, FString> UMythipediaManager::GenerateAnswers(TArray<FString> _wordUsed)
 {
 	TMap<FString, FString> _postAnswers;
-	int _randomIndex = FMath::RandRange(5, 10);
+	int _randomIndex = FMath::RandRange(5, 10); //value to change depending on the fork of amount of answers wanted 
 	
 	if (_randomIndex < godUsernames.Num())
 	{
@@ -110,7 +110,7 @@ FString UMythipediaManager::CreateAnswer(TArray<FString> _wordUsed)
 				_highestLikelySpirit = _currentSpirit;
 			}
 		}
-		int _probabilty = FMath::RandRange(0, 2);
+		int _probabilty = FMath::RandRange(0, 2); //value to change depending on the wanted probability wanted, here : 33% chance of good answer
 		if (_probabilty < 2)
 		{
 			int _lastIndex = static_cast<int>(ESpirit::LastIndex);

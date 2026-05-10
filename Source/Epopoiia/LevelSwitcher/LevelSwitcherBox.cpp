@@ -38,7 +38,7 @@ void ALevelSwitcherBox::Tick(float DeltaTime)
 void ALevelSwitcherBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherOverlappedComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor)) StartSwitchWorld();
+	if (Cast<APlayerCharacter>(OtherActor)) StartSwitchWorld();
 }
 
 void ALevelSwitcherBox::SwitchWorld()
